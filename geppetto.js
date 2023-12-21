@@ -32,7 +32,10 @@ function onGotHist(item) {
     } else {
       name = "ChatGeppetto";
     }
-    addChatMessage(name, history[i].content);
+    var converter = new showdown.Converter();
+    converter.setFlavor("github");
+    var html = converter.makeHtml(history[i].content);
+    addChatMessage(name, html);
   }
 }
 
@@ -473,8 +476,6 @@ async function sendChatMessage(message) {
   addChatMessage("ChatGeppetto", "");
 
   if (message.startsWith("http://") || message.startsWith("https://")) {
-    const proxyurl = "https://corsanywhere.thele.me/" + message.split("://")[1];
-    console.log(proxyurl);
     await fetch(message, { origin: "https://searx.thele.me" })
       .then((response) => {
         if (!response.ok) {
@@ -507,13 +508,12 @@ async function sendChatMessage(message) {
     const listMessageBody = document.querySelectorAll(".chat-message-body");
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "";
-    //history.push({role: 'user', content: "make a summary in the same language as the rext of the text in the following webpage:\n\n" + text + "\n\n make the summary quite short and in the same language as the text. use markdown to make it more readable."});
     history.push({
       role: "user",
       content:
-        "Fait un très court résumé dans la même langue du texte suivant:\n\n" +
+        "Fait un court résumé dans la même langue du texte suivant:\n\n----------\n\n" +
         text +
-        "\n\n fait ce très court résumé dans la langue du text, en étant très bref et en utilisant du markdown pour rendre le résumé plus lisible.",
+        "\n\n----------\n\n Fait ce court résumé dans la langue du text, en étant très bref et en utilisant du markdown pour rendre le résumé plus lisible.",
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     sendBtn.disabled = false;
