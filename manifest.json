@@ -14,7 +14,8 @@
     "storage",
     "https://chatapi.thele.me/*",
     "https://corsanywhere.thele.me/*",
-    "https://chef.thele.me/*"
+    "https://chef.thele.me/*",
+    "*://*/*"
   ],
   "content_scripts": [
     {
@@ -26,7 +27,8 @@
   "host_permissions": [
     "https://chatapi.thele.me/*",
     "https://corsanywhere.thele.me/*",
-    "https://chef.thele.me/*"
+    "https://chef.thele.me/*",
+    "*://*/*"
   ],
   "browser_specific_settings": {
     "gecko": {

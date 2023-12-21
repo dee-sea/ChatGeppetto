@@ -473,12 +473,14 @@ async function sendChatMessage(message) {
   addChatMessage("ChatGeppetto", "");
 
   if (message.startsWith("http://") || message.startsWith("https://")) {
-    const proxyurl = "https://corsanywhere.thele.me/" + message;
-    await fetch(proxyurl, { origin: "https://chef.thele.me" })
+    const proxyurl = "https://corsanywhere.thele.me/" + message.split("://")[1];
+    console.log(proxyurl);
+    await fetch(message, { origin: "https://searx.thele.me" })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Erreur HTTP ${response.status}`);
         }
+        console.log(response);
         return response.text();
       })
       .then((html) => {
@@ -2087,7 +2089,7 @@ async function sendChatMessage(message) {
       prayer_beads: "ðŸ“¿",
       pregnant_woman: "ðŸ¤°",
       previous_track_button: "â®",
-      prince: "ðŸ¤´",
+      prince: "ðŸ¤��",
       princess: "ðŸ‘¸",
       printer: "ðŸ–¨",
       purple_heart: "ðŸ’œ",
