@@ -11,6 +11,7 @@
   "permissions": [
     "activeTab",
     "contextMenus",
+    "storage",
     "https://chatapi.thele.me/*",
     "https://corsanywhere.thele.me/*",
     "https://chef.thele.me/*"

@@ -5,7 +5,7 @@
   transform: translateY(-50%);
   width: 450px;
   z-index: 9999;
-  transition: right 0.5s;
+  transition: right 0s;
   height: 100%;
 }
 
