@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2,
+  "name": "ChatGeppetto",
+  "version": "1.0",
+  "description": "Adds a browser action icon to the toolbar. Click the button to activate chatbot.",
+  "homepage_url": "https://github.com/dee-sea/ChatGeppetto",
+  "icons": {
+    "48": "icons/geppetto-48.png",
+    "96": "icons/geppetto-96.png"
+  },
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "https://chatapi.thele.me/*",
+    "https://corsanywhere.thele.me/*",
+    "https://chef.thele.me/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["geppetto.js"],
+      "css": ["style.css"]
+    }
+  ],
+  "host_permissions": [
+    "https://chatapi.thele.me/*",
+    "https://corsanywhere.thele.me/*",
+    "https://chef.thele.me/*"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "geppetto@thele.me"
+    }
+  }
+}
