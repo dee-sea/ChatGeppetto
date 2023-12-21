@@ -486,7 +486,7 @@ async function sendChatMessage(message) {
       })
       .then((html) => {
         var doc = new DOMParser().parseFromString(html, "text/html");
-        elementList = doc.querySelectorAll("p");
+        elementList = doc.querySelectorAll(["p", "h1", "h2", "h3", "h4", "h5"]);
         for (u = 0; u < elementList.length; u++) {
           text = text + "\n\n" + elementList.item(u).textContent.trim();
         }
@@ -1965,7 +1965,7 @@ async function sendChatMessage(message) {
       name_badge: "ðŸ“›",
       national_park: "ðŸž",
       nauseated_face: "ðŸ¤¢",
-      necktie: "ðŸ‘”",
+      necktie: "ð��‘”",
       negative_squared_cross_mark: "��Ž",
       nerd_face: "ðŸ¤“",
       neutral_face: "ðŸ˜",
