@@ -20,8 +20,14 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["geppetto.js"],
-      "css": ["style.css"]
+      "js": [
+        "geppetto.js",
+        "ui.js",
+        "highlight.min.js",
+        "sse.js",
+        "showdown.min.js"
+      ],
+      "css": ["style.css", "github-dark-dimmed.min.css"]
     }
   ],
   "host_permissions": [

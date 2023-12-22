@@ -1,4 +1,4 @@
-#chat-widget {
+#chatgeppetto-widget {
   position: fixed;
   top: 50%;
   right: -450px;
@@ -9,11 +9,11 @@
   height: 100%;
 }
 
-#chat-widget.visible {
+#chatgeppetto-widget.visible {
   right: 0;
 }
 
-#chat-container {
+#chatgeppetto-container {
   height: 100%;
   border-radius: 10px;
   background-color: #434343;
@@ -23,7 +23,7 @@
   color: #f8f8f8;
 }
 
-#chat-title {
+#chatgeppetto-title {
   padding: 10px;
   font-weight: bold;
   background-color: #252525;
@@ -32,25 +32,25 @@
   border-top-right-radius: 10px;
 }
 
-#chat-messages {
+#chatgeppetto-messages {
   height: 90%;
   overflow-y: scroll;
   padding: 10px;
 }
 
-.chat-message-container {
+.chatgeppetto-message-container {
   margin-bottom: 10px;
 }
 
-.chat-message-header {
+.chatgeppetto-message-header {
   font-weight: bold;
 }
 
-.chat-message-body {
+.chatgeppetto-message-body {
   margin-top: 5px;
 }
 
-#chat-input-container {
+#chatgeppetto-input-container {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -60,7 +60,7 @@
   height: 30px;
 }
 
-#chat-input {
+#chatgeppetto-input {
   flex: 1;
   padding: 5px;
   border: none;
@@ -69,7 +69,7 @@
   width: 90%;
 }
 
-#chat-send {
+#chatgeppetto-send {
   font-family: "Open Sans", sans-serif;
   padding: 5px 10px;
   border: none;
@@ -81,7 +81,7 @@
   display: none;
 }
 
-#chat-toggle {
+#chatgeppetto-toggle {
   font-family: "Open Sans", sans-serif;
   position: fixed;
   bottom: 10px;
@@ -104,12 +104,12 @@
   visibility: hidden;
 }
 
-#chat-toggle:hover {
+#chatgeppetto-toggle:hover {
   transform: scale(1.2);
   transition: transform 0.3s ease-in-out;
 }
 
-#chat-toggle i {
+#chatgeppetto-toggle i {
   font-size: 30px;
   line-height: 60px;
 }
