@@ -28,7 +28,7 @@ async function sendChatMessage(message) {
       content:
         "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
         text +
-        '\n\n----------\n\nQuand tu auras fini, tape juste "OK" sans rien de plus.',
+        '\n\n----------\n\nQuand tu auras fini, fait bien attention a ne dire que "OK" sans rien de plus ni avant ni après.',
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
@@ -38,6 +38,7 @@ async function sendChatMessage(message) {
   } else if (message.startsWith("/readpagecontent")) {
     //remove /readpagecontent from message
     text = message.replace("/readpagecontent ", "");
+    console.log(text);
 
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-body"
@@ -316,4 +317,27 @@ function onErrorShow(error) {
 function KeyPress(e) {
   var evtobj = window.event ? event : e;
   if (evtobj.keyCode == 89 && evtobj.ctrlKey) toggleGeppetto();
+}
+
+function readPageContent() {
+  let text = "";
+  pagecontent = document.body.innerHTML;
+  let widget = document.querySelector("#chatgeppetto-widget").innerHTML;
+  pagecontent = pagecontent.replace(widget, "");
+  var doc = new DOMParser().parseFromString(pagecontent, "text/html");
+  elementList = doc.querySelectorAll([
+    "p",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "figcaption",
+  ]);
+  for (u = 0; u < elementList.length - 1; u++) {
+    text = text + "\n\n" + elementList.item(u).textContent.trim();
+  }
+  text = text.trim();
+  command = "/readpagecontent " + text;
+  sendChatMessage(command);
 }
