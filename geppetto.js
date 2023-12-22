@@ -486,7 +486,15 @@ async function sendChatMessage(message) {
       })
       .then((html) => {
         var doc = new DOMParser().parseFromString(html, "text/html");
-        elementList = doc.querySelectorAll(["p", "h1", "h2", "h3", "h4", "h5"]);
+        elementList = doc.querySelectorAll([
+          "p",
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "figcaption",
+        ]);
         for (u = 0; u < elementList.length; u++) {
           text = text + "\n\n" + elementList.item(u).textContent.trim();
         }
@@ -511,9 +519,9 @@ async function sendChatMessage(message) {
     history.push({
       role: "user",
       content:
-        "Fait un court résumé dans la même langue du texte suivant:\n\n----------\n\n" +
+        "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
         text +
-        "\n\n----------\n\n Fait ce court résumé dans la langue du text, en étant très bref et en utilisant du markdown pour rendre le résumé plus lisible.",
+        '\n\n----------\n\nQuand tu auras fini, tape juste "OK" sans rien de plus.',
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     sendBtn.disabled = false;
@@ -536,7 +544,7 @@ async function sendChatMessage(message) {
     payload: JSON.stringify({
       messages: history,
       mode: "chat",
-      instruction_template: "Alpaca",
+      instruction_template: "Mistral",
       character: "ChatGeppetto_searx",
       stream: true,
       temperature: 0.7,
@@ -2103,7 +2111,7 @@ async function sendChatMessage(message) {
       racing_car: "ðŸŽ",
       radio: "ðŸ“��",
       radio_button: "ðŸ”˜",
-      radioactive: "â˜¢ï¸��",
+      radioactive: "â˜¢ï¸���",
       railway_car: "ðŸšƒ",
       railway_track: "ð��›¤",
       rainbow: "ðŸŒˆ",
