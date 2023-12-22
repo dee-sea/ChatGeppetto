@@ -35,6 +35,27 @@ async function sendChatMessage(message) {
     //
     // Clear command
     //
+  } else if (message.startsWith("/readpagecontent")) {
+    //remove /readpagecontent from message
+    text = message.replace("/readpagecontent ", "");
+
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-body"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.innerHTML = "";
+    history.push({
+      role: "user",
+      content:
+        "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
+        text +
+        '\n\n----------\n\nQuand tu auras fini, tape juste "OK" sans rien de plus.',
+    });
+    browser.storage.local.set({ hist: JSON.stringify(history) });
+    enableChat();
+    //
+    // Clear command
+    //
   } else if (message == "/clear") {
     history = [];
     browser.storage.local.set({ hist: JSON.stringify(history) });

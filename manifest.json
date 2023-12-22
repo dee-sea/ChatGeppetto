@@ -30,6 +30,10 @@
       "css": ["style.css", "github-dark-dimmed.min.css"]
     }
   ],
+  "background": {
+    "scripts": ["context-menu.js"],
+    "persistent": false
+  },
   "host_permissions": [
     "https://chatapi.thele.me/*",
     "https://corsanywhere.thele.me/*",
