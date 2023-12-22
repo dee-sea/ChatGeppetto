@@ -38,7 +38,6 @@ async function sendChatMessage(message) {
   } else if (message.startsWith("/readpagecontent")) {
     //remove /readpagecontent from message
     text = message.replace("/readpagecontent ", "");
-    console.log(text);
 
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-body"
@@ -120,9 +119,7 @@ async function getResponse(history) {
     // Assuming we receive JSON-encoded data payloads:
     try {
       var payload = JSON.parse(e.data);
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
     if (payload.choices[0].finish_reason != "stop") {
       const chatbotResponseElement = payload.choices[0].delta.content;
       appendChatElement(chatbotResponseElement);
@@ -204,7 +201,6 @@ async function getWebpage(url) {
       if (!response.ok) {
         throw new Error(`Erreur HTTP ${response.status}`);
       }
-      console.log(response);
       return response.text();
     })
     .then((html) => {
@@ -244,13 +240,11 @@ async function getWebpage(url) {
 // @return void
 //
 function toggleGeppetto() {
-  console.log("show 1: " + show);
   chatVisible = !chatVisible;
   chatWidget.classList.toggle("visible", chatVisible);
   chatToggle.innerText = chatVisible ? "Close" : "Chat";
   chatInput.focus();
   show = !show;
-  console.log("show 2: " + show);
   browser.storage.local.set({ visible: show });
 }
 
@@ -291,7 +285,6 @@ function onErrorHist(error) {
 // @return void
 //
 function onGotShow(item) {
-  console.log("got shoe: " + item.visible);
   chatVisible = item.visible;
   chatWidget.classList.toggle("visible", chatVisible);
   chatToggle.innerText = chatVisible ? "Close" : "Chat";
@@ -305,7 +298,6 @@ function onGotShow(item) {
 // @return void
 //
 function onErrorShow(error) {
-  console.log(error);
   show = false;
 }
 

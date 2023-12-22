@@ -81,12 +81,18 @@ chatInput.addEventListener("keydown", (event) => {
 // listner for the input field drop event
 chatInput.addEventListener("drop", (event) => {
   event.preventDefault();
-  event.target.value = event.dataTransfer.getData("text");
-  const userInput = chatInput.value.trim();
-  if (userInput) {
+  const userInput = event.dataTransfer.getData("text");
+  if (userInput.startsWith("http://") || userInput.startsWith("https://")) {
     addChatMessage("You", userInput);
     sendChatMessage(userInput);
-    chatInput.value = "";
+  } else {
+    let query =
+      "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
+      userInput +
+      '\n\n----------\n\nQuand tu auras fini, fait bien attention a ne dire que "OK" sans rien de plus ni avant ni après.';
+    addChatMessage("You", "**Selected Text**");
+    history.push({ role: "user", content: userInput });
+    sendChatMessage(query);
   }
 });
 
@@ -99,5 +105,12 @@ chatSendButton.addEventListener("click", () => {
     browser.storage.local.set({ hist: JSON.stringify(history) });
     sendChatMessage(userInput);
     chatInput.value = "";
+  }
+});
+
+// listner for the read-it message
+browser.runtime.onMessage.addListener(async (msg) => {
+  if (msg.command === "read-it") {
+    alert("read-it");
   }
 });
