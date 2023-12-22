@@ -535,6 +535,24 @@ async function sendChatMessage(message) {
     sendInput.disabled = false;
     sendInput.focus();
     return;
+  } else if (message.startsWith("/")) {
+    addChatMessage(
+      "ChatGeppetto",
+      "Sorry, I don't understand this command. the commands I understand are:\n\n- /clear: clear the chat history\n\n"
+    );
+    sendBtn.disabled = false;
+    sendInput.disabled = false;
+    sendInput.focus();
+    return;
+  } else if (message == "Help" || message == "help" || message == "?") {
+    addChatMessage(
+      "ChatGeppetto",
+      "I'm a chatbot, I can answer your questions. You can also ask me to search the web for you. Just type your question or request and press enter. If you want me to read a page, just enter the url starting with http or https and you can also send commands by starting your input with /."
+    );
+    sendBtn.disabled = false;
+    sendInput.disabled = false;
+    sendInput.focus();
+    return;
   }
   var source = new SSE(OPENAI_API_ENDPOINT, {
     headers: {
@@ -1963,7 +1981,7 @@ async function sendChatMessage(message) {
       movie_camera: "ðŸŽ¥",
       moyai: "ðŸ—¿",
       mrs_claus: "ðŸ¤¶",
-      muscle: "ðŸ’ª",
+      muscle: "ðŸ’����",
       mushroom: "ðŸ„",
       musical_keyboard: "ðŸŽ¹",
       musical_note: "ðŸŽµ",
@@ -2098,7 +2116,7 @@ async function sendChatMessage(message) {
       pregnant_woman: "ðŸ¤°",
       previous_track_button: "â®",
       prince: "ðŸ¤��",
-      princess: "ðŸ‘¸",
+      princess: "ðŸ���¸",
       printer: "ðŸ–¨",
       purple_heart: "ðŸ’œ",
       purse: "ðŸ‘›",
