@@ -8,3 +8,4 @@
 [X] Add syntax highlighting to the chatbot.
 [x] Add a "Read current page" option in the context menu.
 [x] Add a "Read selected text" option
+[ ] add a read all link on page.

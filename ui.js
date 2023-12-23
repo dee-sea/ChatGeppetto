@@ -114,3 +114,11 @@ browser.runtime.onMessage.addListener(async (msg) => {
     alert("read-it");
   }
 });
+
+// insert a first message in the chat if the history is empty
+if (history.length === 0) {
+  addChatMessage(
+    "ChatGeppetto",
+    "Hello, I am ChatGeppetto, your personal assistant. I can help you to read the web. Just select a text and drop it here or write a question. ;-)"
+  );
+}
