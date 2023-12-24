@@ -93,3 +93,7 @@ function markdownToHtml(text) {
   var html = converter.makeHtml(text);
   return html;
 }
+
+function onlyUnique(value, index, array) {
+  return array.indexOf(value) === index;
+}

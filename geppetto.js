@@ -147,7 +147,7 @@ async function getResponse(history) {
         ".chatgeppetto-message-body"
       );
       const messageBody = listMessageBody.item(listMessageBody.length - 1);
-      markdownToHtml(answer);
+      let html = markdownToHtml(answer);
       messageBody.innerHTML = html;
       hljs.highlightAll();
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -193,7 +193,7 @@ function appendChatElement(token) {
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
   const text = messageBody.innerHTML;
   if (token.startsWith("\n")) {
-    markdownToHtml(answer);
+    let html = markdownToHtml(answer);
     messageBody.innerHTML = html + token;
   } else {
     messageBody.innerHTML = messageBody.innerHTML + token;
