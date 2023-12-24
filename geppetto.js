@@ -37,7 +37,7 @@ async function sendChatMessage(message) {
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
     //
-    // Clear command
+    // Read page command
     //
   } else if (message.startsWith("/readpagecontent")) {
     //remove /readpagecontent from message
@@ -56,15 +56,40 @@ async function sendChatMessage(message) {
         '\n\n----------\n\nQuand tu auras fini, tape juste "OK" sans rien de plus.',
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
+    addChatMessage("ChatGeppetto", "OK, I did it");
+    history.push({ role: "assistant", content: "OK, I did it" });
+    browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
+    return;
+  } else if (message == "/hist") {
+    console.log(history);
+    // remove last div whith class chatgeppetto-message-header
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    enableChat();
+    return;
     //
     // Clear command
     //
   } else if (message == "/clear") {
     history = [];
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    addChatMessage("ChatGeppetto", "New chat started.");
     enableChat();
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-body"
+    );
+    const listMessageHeader = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    for (let i = 0; i < listMessageBody.length; i++) {
+      listMessageBody.item(i).remove();
+    }
+    for (let i = 0; i < listMessageHeader.length; i++) {
+      listMessageHeader.item(i).remove();
+    }
     return;
     //
     // unknown command
@@ -277,7 +302,7 @@ function onGotHist(item) {
 }
 
 //
-// Callback functions to handle errors when reading history from the local storage
+// Callback functions to handle errors when reading history from he local storage
 // @param error: the error to handle
 // @return void
 //
@@ -318,6 +343,8 @@ function KeyPress(e) {
 }
 
 function readPageContent() {
+  addChatMessage("You", "Please read the page.");
+  history.push({ role: "user", content: "Please read the page." });
   let text = "";
   pagecontent = document.body.innerHTML;
   let widget = document.querySelector("#chatgeppetto-widget").innerHTML;
@@ -330,6 +357,8 @@ function readPageContent() {
     "h3",
     "h4",
     "h5",
+    "li",
+    "span",
     "figcaption",
   ]);
   for (u = 0; u < elementList.length - 1; u++) {
