@@ -28,7 +28,7 @@ async function sendChatMessage(message) {
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "";
     history.push({
-      role: "user",
+      role: "system",
       content:
         "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
         text +
@@ -49,7 +49,7 @@ async function sendChatMessage(message) {
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "";
     history.push({
-      role: "user",
+      role: "system",
       content:
         "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
         text +
@@ -263,8 +263,10 @@ function onGotHist(item) {
   for (var i = 0; i < history.length; i++) {
     if (history[i].role == "user") {
       name = "You";
-    } else {
+    } else if (history[i].role == "assistant") {
       name = "ChatGeppetto";
+    } else {
+      continue;
     }
     var converter = new showdown.Converter();
     converter.setFlavor("github");
