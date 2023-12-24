@@ -33,10 +33,6 @@ document.onkeydown = KeyPress;
 let show;
 browser.storage.local.get("visible").then(onGotShow, onErrorShow);
 
-// hos and key for the API
-const OPENAI_API_KEY = "sk-Skynet-openchatKEY";
-const OPENAI_API_ENDPOINT = "https://chatapi.thele.me/v1/chat/completions";
-
 // get refs to UI elements
 const chatToggle = document.getElementById("chatgeppetto-toggle");
 const chatWidget = document.getElementById("chatgeppetto-widget");

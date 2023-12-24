@@ -1,0 +1,149 @@
+#chatgeppetto-widget {
+  position: fixed;
+  top: 50%;
+  right: -450px;
+  transform: translateY(-50%);
+  width: 450px;
+  z-index: 9999;
+  transition: right 0s;
+  height: 100%;
+}
+
+#chatgeppetto-widget.visible {
+  right: 0;
+}
+
+#chatgeppetto-container {
+  height: 100%;
+  border-radius: 10px;
+  background-color: #434343;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  color: #f8f8f8;
+}
+
+#chatgeppetto-title {
+  padding: 10px;
+  font-weight: bold;
+  background-color: #252525;
+  color: #ffffff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+#chatgeppetto-messages {
+  height: 90%;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+.chatgeppetto-message-container {
+  margin-bottom: 10px;
+}
+
+.chatgeppetto-message-header {
+  font-weight: bold;
+}
+
+.chatgeppetto-message-body {
+  margin-top: 5px;
+}
+
+#chatgeppetto-input-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  position:350absolute;
+  bottom: 0;
+  width: 450px
+  height: 30px;
+}
+
+#chatgeppetto-input {
+  flex: 1;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  width: 90%;
+}
+
+#chatgeppetto-send {
+  font-family: "Open Sans", sans-serif;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #284269;
+  color: #ffffff;
+  cursor: pointer;
+  visibility: hidden;
+  display: none;
+}
+
+#chatgeppetto-toggle {
+  font-family: "Open Sans", sans-serif;
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  z-index: 9999;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  background-color: #2d2926;
+  box-shadow: 0px 0px 0px #284269;
+  color: white;
+  font-weight: lighter;
+  font-size: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.95;
+  transition: background-color 0.3s ease-in-out;
+  visibility: hidden;
+}
+
+#chatgeppetto-toggle:hover {
+  transform: scale(1.2);
+  transition: transform 0.3s ease-in-out;
+}
+
+#chatgeppetto-toggle i {
+  font-size: 30px;
+  line-height: 60px;
+}
+
+#loading {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid #ccc;
+  border-top-color: #666;
+  animation: spin 1s infinite linear;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.message {
+  position: absolute;
+  top: 60%;
+  right: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: #666;
+}

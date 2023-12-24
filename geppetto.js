@@ -1,3 +1,7 @@
+// hos and key for the API
+const OPENAI_API_KEY = "sk-Skynet-openchatKEY";
+const OPENAI_API_ENDPOINT = "https://chatapi.thele.me/v1/chat/completions";
+
 //
 // Function to sent messages to the chatbot
 // @param message: the message to send
