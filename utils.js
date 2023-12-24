@@ -86,3 +86,10 @@ function KeyPress(e) {
   var evtobj = window.event ? event : e;
   if (evtobj.keyCode == 89 && evtobj.ctrlKey) toggleGeppetto();
 }
+
+function markdownToHtml(text) {
+  var converter = new showdown.Converter();
+  converter.setFlavor("github");
+  var html = converter.makeHtml(text);
+  return html;
+}
