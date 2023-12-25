@@ -194,7 +194,7 @@ async function getResponse(history) {
     },
     payload: JSON.stringify({
       messages: history,
-      mode: "chat",
+      mode: "chat-instruct",
       instruction_template: "Mistral",
       character: "ChatGeppetto",
       stream: true,
