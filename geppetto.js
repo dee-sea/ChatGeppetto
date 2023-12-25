@@ -32,9 +32,10 @@ async function sendChatMessage(message) {
     history.push({
       role: "system",
       content:
-        "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
+        getText("readText") +
+        getText("longSeparator") +
         text +
-        '\n\n----------\n\nQuand tu auras fini, fait bien attention a ne dire que "OK" sans rien de plus ni avant ni après.',
+        getText("longSeparator"),
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
@@ -59,7 +60,7 @@ async function sendChatMessage(message) {
       content: text,
     });
     addChatMessage("You", markdownToHtml(text));
-    addChatMessage("ChatGeppetto", "Searching the web");
+    addChatMessage("ChatGeppetto", getText("searching"));
     let searchQuery = await getSearchQuery(history).then((response) => {
       return response;
     });
@@ -86,13 +87,14 @@ async function sendChatMessage(message) {
     history.push({
       role: "system",
       content:
-        "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
+        getText("readText") +
+        getText("longSeparator") +
         text +
-        '\n\n----------\n\nQuand tu auras fini, tape juste "OK" sans rien de plus.',
+        getText("longSeparator"),
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    addChatMessage("ChatGeppetto", "OK, I did it");
-    history.push({ role: "assistant", content: "OK, I did it" });
+    addChatMessage("ChatGeppetto", getText("ok"));
+    history.push({ role: "assistant", content: getText("ok") });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
     return;
@@ -127,30 +129,17 @@ async function sendChatMessage(message) {
     }
     history.push({
       role: "assistant",
-      content:
-        "Salut, je suis ChatGeppetto.\nComment puis-je t'aider aujourd'hui ?",
+      content: getText("greeting"),
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    addChatMessage(
-      "ChatGeppetto",
-      markdownToHtml(
-        "Salut, je suis ChatGeppetto.\nComment puis-je t'aider aujourd'hui ?"
-      )
-    );
+    addChatMessage("ChatGeppetto", markdownToHtml(getText("greeting")));
     enableChat();
     return;
     //
     // unknown command
     //
   } else if (message.startsWith("/")) {
-    msg =
-      "Désolé, je ne comprends pas cette commande. Les commandes que je comprends sont:\n\n" +
-      "| Commande | Description |\n" +
-      "| --- | --- |\n" +
-      "| **/clear** | efface l'historique de la conversation |\n" +
-      "| **/hist** | affiche l'historique de la conversation dans la console Javascript (Debug) |\n" +
-      "| **help** | affiche cette aide\n\n |" +
-      "Comment puis-je t'aider aujourd'hui ?";
+    msg = getText("helpcmd");
     addChatMessage("ChatGeppetto", markdownToHtml(msg));
     enableChat();
     return;
@@ -158,20 +147,7 @@ async function sendChatMessage(message) {
     // Help command
     //
   } else if (message == "Help" || message == "help" || message == "?") {
-    let msg =
-      "Salut, je suis ChatGeppetto. Je peux répondre à tes questions.\n\n" +
-      "Si tu veux simplement discuter, il te suffit de taper ta question ou ta demande et d'appuyer sur entrée.\n\n" +
-      "Tu peux aussi me demander de faire une recherche sur le web avant de répondre en ajoutant '+i' à la fin de ta phrase, ça prendra plus longtemps, mais j'aurais plus d'informations et plus récentes.\n\n" +
-      "N'hésite pas à selectionner du texte sur une page web et le faire glisser dans le champs d'entrée de texte pour que je le lise et on poura en discuter.\n\n" +
-      "Et l'entrée 'Read Page Content' du menu contextuel sert à me demander de lire la page courante pour qu'on puisse en discuter.\n\n" +
-      "Si tu veux que je lise une autre page web, tape juste l'url en commençant par http:// ou https:// ou Drag&Drop un lien dans le champs d'entrée de texte.\n\n" +
-      "finalement tu peux envoyer des commandes en commençant ton entrée par /. Les commandes que je comprends sont:\n\n" +
-      "| Commande | Description |\n" +
-      "| --- | --- |\n" +
-      "| **/clear** | efface l'historique de la conversation |\n" +
-      "| **/hist** | affiche l'historique de la conversation dans la console Javascript (Debug) |\n" +
-      "| **help** | affiche cette aide\n\n |" +
-      "Comment puis-je t'aider aujourd'hui ?";
+    let msg = getText("help");
     addChatMessage("ChatGeppetto", markdownToHtml(msg));
     enableChat();
     return;
@@ -304,10 +280,7 @@ async function getWebpage(url) {
     })
     .catch((error) => {
       console.error(error);
-      addChatMessage(
-        "ChatGeppetto",
-        "Sorry, I was unable to process your request."
-      );
+      addChatMessage("ChatGeppetto", markdownToHtml(getText("loadError")));
       sendBtn.disabled = false;
       sendInput.disabled = false;
       sendInput.focus();
@@ -319,8 +292,8 @@ async function getWebpage(url) {
 }
 
 function readPageContent() {
-  addChatMessage("You", "Please read the page.");
-  history.push({ role: "user", content: "Please read the page." });
+  addChatMessage("You", getText("readText"));
+  history.push({ role: "user", content: getText("readText") });
   let text = "";
   pagecontent = document.body.innerHTML;
   let widget = document.querySelector("#chatgeppetto-widget").innerHTML;
@@ -349,8 +322,7 @@ async function getSearchQuery(history) {
   var localhistory = history;
   localhistory.push({
     role: "user",
-    content:
-      "Ne réponds pas à la question, donne juste des mots clés à chercher sur Google pour trouver la réponse. soit facuel, ajoute aucun text. Donne juste une liste de mots clés.",
+    content: getText("keywords"),
   });
   const searchQuery = await fetch(OPENAI_API_ENDPOINT, {
     method: "POST",
@@ -422,7 +394,7 @@ async function getSearchResults(url) {
     }
   );
   var doc = new DOMParser().parseFromString(pagecontent, "text/html");
-  let pagelist = "Here are a bunch of results to help you answer:\n\n";
+  let pagelist = getText("resultPages");
   elementList = doc.querySelectorAll(["a"]);
   for (u = 0; u < elementList.length - 1; u++) {
     if (
@@ -444,13 +416,14 @@ async function getSearchResults(url) {
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
   messageBody.innerHTML = "";
   for (t = 0; t < urllist.length; t++) {
-    messageBody.innerHTML = "Reading page " + (t + 1) + "/" + urllist.length;
+    messageBody.innerHTML =
+      getText("reading") + (t + 1) + "/" + urllist.length + "*";
     pagelist =
       pagelist +
       urllist[t] +
-      "\n\n-----\n\n" +
+      getText("shortSeparator") +
       (await getWebSearchResult(urllist[t])) +
-      "\n\n----------\n\n";
+      getText("longSeparator");
   }
   history.pop();
   pagelist =
