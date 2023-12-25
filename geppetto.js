@@ -3,8 +3,10 @@ var searchEngine = "";
 var GEPPETTO_API_KEY = "";
 var GEPPETTO_API_ENDPOINT = "";
 var language = "en";
-var assistant_name = "ChatGeppetto";
-var your_name = "You";
+var template = "default";
+var character = "ChatGeppetto";
+var assistant = "ChatGeppetto";
+var you = "You";
 
 var searchUrl = searchEngine + "?q=";
 //

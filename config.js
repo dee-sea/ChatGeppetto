@@ -14,6 +14,10 @@ async function setConfig(message) {
     key = value.split(" ")[0];
     value = message.replace("/set " + key + " ", "");
     // chack if key is an existing key in config
+    if (key == "help") {
+      addChatMessage(assistant, markdownToHtml(getText("helpset")));
+      return;
+    }
     if (config[key]) {
       console.log("Setting config :" + key + " => " + value);
       config[key] = value;

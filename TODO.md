@@ -11,7 +11,7 @@
 [X] Add a search on the web option.
 [X] cleanup the chat using system messages
 [X] Make plugin multi-lingual
-[ ] Add a configuration popup for api address and api key.
+[X] Add a configuration popup for api address and api key.
 [ ] Ajouter la possibilité de sauver et charger des conversations.
 [ ] Add input history.
 [ ] Add a command to remove last message.
