@@ -94,7 +94,7 @@ chatInput.addEventListener("drop", (event) => {
     addChatMessage("You", markdownToHtml(getText("selectedText")));
     history.push({ role: "system", content: selectedText });
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    addChatMessage("ChatGeppetto", "OK");
+    addChatMessage("ChatGeppetto", getText("ok"));
   }
 });
 
