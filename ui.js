@@ -90,8 +90,7 @@ chatInput.addEventListener("drop", (event) => {
       userInput +
       '\n\n----------\n\nQuand tu auras fini, fait bien attention a ne dire que "OK" sans rien de plus ni avant ni après.';
     addChatMessage("You", "**Selected Text**");
-    history.push({ role: "user", content: userInput });
-    sendChatMessage(query);
+    history.push({ role: "system", content: userInput });
   }
 });
 
