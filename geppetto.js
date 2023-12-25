@@ -30,7 +30,6 @@ async function sendChatMessage(message) {
     );
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "";
-    console.log("system insert 2");
     history.push({
       role: "system",
       content:
@@ -65,18 +64,10 @@ async function sendChatMessage(message) {
     let searchQuery = await getSearchQuery(history).then((response) => {
       return response;
     });
-    console.log("searchQuery: " + searchQuery);
     searchQuery = searchQuery.replace('"', "");
-    console.log(history);
     console.log("Searching the web for: " + searchQuery);
     urlsearch = searchUrl + encodeURIComponent(searchQuery);
-    console.log("urlsearch: " + urlsearch);
     let searchResults = await getSearchResults(urlsearch);
-    console.log("searchResults: " + searchResults);
-    // history.push({
-    //   role: "user",
-    //   content: text,
-    // });
     getResponse(history).then((response) => {
       enableChat();
     });
@@ -93,7 +84,6 @@ async function sendChatMessage(message) {
     );
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "";
-    console.log("system insert 3");
     history.push({
       role: "system",
       content:
@@ -108,7 +98,6 @@ async function sendChatMessage(message) {
     enableChat();
     return;
   } else if (message == "/hist") {
-    console.log(history);
     // remove last div whith class chatgeppetto-message-header
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-header"
@@ -361,8 +350,6 @@ async function getSearchQuery(history) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("data: ");
-      console.log(data);
       return data.choices[0].message.content;
     })
     .catch((error) => {
@@ -451,7 +438,6 @@ async function getSearchResults(url) {
   pagelist =
     pagelist +
     "Read and remember them carefully, you will be tested on them later.";
-  console.log("system insert 1");
   history.push({ role: "system", content: pagelist });
   browser.storage.local.set({ hist: JSON.stringify(history) });
   messageBody.innerHTML = "";
