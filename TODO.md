@@ -10,7 +10,7 @@
 [x] Add a "Read selected text" option
 [X] Add a search on the web option.
 [X] cleanup the chat using system messages
-[ ] Make plugin multi-lingual
+[X] Make plugin multi-lingual
 [ ] Add a configuration popup for api address and api key.
 [ ] Ajouter la possibilité de sauver et charger des conversations.
 [ ] Add input history.
