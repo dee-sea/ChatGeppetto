@@ -12,6 +12,7 @@
 [X] cleanup the chat using system messages
 [X] Make plugin multi-lingual
 [X] Add a configuration popup for api address and api key.
+[ ] Add the poassibility to have different character to handle multiple languages.
 [ ] Ajouter la possibilité de sauver et charger des conversations.
 [ ] Add input history.
 [ ] Add a command to remove last message.
