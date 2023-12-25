@@ -91,6 +91,8 @@ chatInput.addEventListener("drop", (event) => {
       '\n\n----------\n\nQuand tu auras fini, fait bien attention a ne dire que "OK" sans rien de plus ni avant ni après.';
     addChatMessage("You", "**Selected Text**");
     history.push({ role: "system", content: userInput });
+    browser.storage.local.set({ hist: JSON.stringify(history) });
+    addChatMessage("ChatGeppetto", "OK");
   }
 });
 
