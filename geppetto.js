@@ -435,7 +435,7 @@ async function getSearchResults(url) {
     urllist.push(url);
   }
   urllist = urllist.filter(onlyUnique);
-  urllist = urllist.slice(0, 10);
+  urllist = urllist.slice(0, 5);
   let urlnum = urllist.length;
   const listMessageBody = document.querySelectorAll(
     ".chatgeppetto-message-body"
