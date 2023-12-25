@@ -102,3 +102,14 @@ function markdownToHtml(text) {
 function onlyUnique(value, index, array) {
   return array.indexOf(value) === index;
 }
+
+function getText(textName) {
+  // Check if the text name exists
+  if (statements[textName]) {
+    // Check if the specified language exists, fallback to English if not found
+    const selectedLanguage = statements[textName][language] ? language : "en";
+    return statements[textName][selectedLanguage];
+  } else {
+    return "Text not found";
+  }
+}
