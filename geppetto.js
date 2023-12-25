@@ -14,8 +14,7 @@ async function sendChatMessage(message) {
   answer = "";
   let text = "";
 
-  sendBtn.disabled = true;
-  sendInput.disabled = true;
+  disableChat();
 
   addChatMessage("ChatGeppetto", "");
 
@@ -127,35 +126,47 @@ async function sendChatMessage(message) {
     }
     history.push({
       role: "assistant",
-      content:
-        "Salut, je suis ChatGeppetto. Comment puis-je t'aider aujourd'hui ?",
+      content: "Salut, ChatGeppetto.\nComment puis-je t'aider aujourd'hui ?",
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     addChatMessage(
       "ChatGeppetto",
       markdownToHtml(
-        "Salut, je suis ChatGeppetto. Comment puis-je t'aider aujourd'hui ?"
+        "Salut, je suis ChatGeppetto.\nComment puis-je t'aider aujourd'hui ?"
       )
     );
+    enableChat();
     return;
     //
     // unknown command
     //
   } else if (message.startsWith("/")) {
-    addChatMessage(
-      "ChatGeppetto",
-      "Sorry, I don't understand this command. the commands I understand are:\n\n- /clear: clear the chat history\n\n"
-    );
+    msg =
+      "Désolé, je ne comprends pas cette commande. Les commandes que je comprends sont:\n\n" +
+      "- **/clear** : efface l'historique de la conversation\n\n" +
+      "- **/hist** : affiche l'historique de la conversation\n\n" +
+      "- **/help** : affiche l'aide\n\n" +
+      "Comment puis-je t'aider aujourd'hui ?";
+    addChatMessage("ChatGeppetto", markdownToHtml(msg));
     enableChat();
     return;
     //
     // Help command
     //
   } else if (message == "Help" || message == "help" || message == "?") {
-    addChatMessage(
-      "ChatGeppetto",
-      "I'm a chatbot, I can answer your questions. You can also ask me to search the web for you. Just type your question or request and press enter. If you want me to read a page, just enter the url starting with http or https and you can also send commands by starting your input with /."
-    );
+    let msg =
+      "Salut, je suis ChatGeppetto. Je peux répondre à tes questions.\n\n" +
+      "Si tu veux simplement discuter, il te suffit de taper ta question ou ta demande et d'appuyer sur entrée.\n\n" +
+      "Tu peux aussi me demander de faire une recherche sur le web avant de répondre en ajoutant '+i' à la fin de ta phrase, ça prendra plus longtemps, mais j'aurais plus d'informations et plus récentes.\n\n" +
+      "N'hésite pas à selectionner du texte sur une page web et le faire glisser dans le champs d'entrée de texte pour que je le lise et on poura en discuter.\n\n" +
+      "Et l'entrée 'Read Page Content' du menu contextuel sert à me demander de lire la page courante pour qu'on puisse en discuter.\n\n" +
+      "Si tu veux que je lise une autre page web, tape juste l'url en commençant par http:// ou https:// ou Drag&Drop un lien dans le champs d'entrée de texte.\n\n" +
+      "finalement tu peux envoyer des commandes en commençant ton entrée par /. Les commandes que je comprends sont:\n\n" +
+      "- **/clear** : efface l'historique de la conversation\n" +
+      "- **/hist** : affiche l'historique de la conversation dans la console Javascript (Debug)\n" +
+      "- **help** : affiche cette aide\n\n" +
+      "Comment puis-je t'aider aujourd'hui ?";
+    addChatMessage("ChatGeppetto", markdownToHtml(msg));
     enableChat();
     return;
   } else {
@@ -165,6 +176,7 @@ async function sendChatMessage(message) {
     await getResponse(history).then((response) => {
       enableChat();
     });
+    content;
   }
   return;
 }
