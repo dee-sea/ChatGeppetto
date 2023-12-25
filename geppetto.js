@@ -143,9 +143,11 @@ async function sendChatMessage(message) {
   } else if (message.startsWith("/")) {
     msg =
       "Désolé, je ne comprends pas cette commande. Les commandes que je comprends sont:\n\n" +
-      "- **/clear** : efface l'historique de la conversation\n\n" +
-      "- **/hist** : affiche l'historique de la conversation\n\n" +
-      "- **/help** : affiche l'aide\n\n" +
+      "| Commande | Description |\n" +
+      "| --- | --- |\n" +
+      "| **/clear** | efface l'historique de la conversation |\n" +
+      "| **/hist** | affiche l'historique de la conversation dans la console Javascript (Debug) |\n" +
+      "| **help** | affiche cette aide\n\n |" +
       "Comment puis-je t'aider aujourd'hui ?";
     addChatMessage("ChatGeppetto", markdownToHtml(msg));
     enableChat();
@@ -162,9 +164,11 @@ async function sendChatMessage(message) {
       "Et l'entrée 'Read Page Content' du menu contextuel sert à me demander de lire la page courante pour qu'on puisse en discuter.\n\n" +
       "Si tu veux que je lise une autre page web, tape juste l'url en commençant par http:// ou https:// ou Drag&Drop un lien dans le champs d'entrée de texte.\n\n" +
       "finalement tu peux envoyer des commandes en commençant ton entrée par /. Les commandes que je comprends sont:\n\n" +
-      "- **/clear** : efface l'historique de la conversation\n" +
-      "- **/hist** : affiche l'historique de la conversation dans la console Javascript (Debug)\n" +
-      "- **help** : affiche cette aide\n\n" +
+      "| Commande | Description |\n" +
+      "| --- | --- |\n" +
+      "| **/clear** | efface l'historique de la conversation |\n" +
+      "| **/hist** | affiche l'historique de la conversation dans la console Javascript (Debug) |\n" +
+      "| **help** | affiche cette aide\n\n |" +
       "Comment puis-je t'aider aujourd'hui ?";
     addChatMessage("ChatGeppetto", markdownToHtml(msg));
     enableChat();
