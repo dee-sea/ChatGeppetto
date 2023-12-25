@@ -32,9 +32,9 @@ function onGotHist(item) {
   var name = "";
   for (var i = 0; i < history.length; i++) {
     if (history[i].role == "user") {
-      name = "You";
+      name = you;
     } else if (history[i].role == "assistant") {
-      name = "ChatGeppetto";
+      name = assistant;
     } else {
       continue;
     }

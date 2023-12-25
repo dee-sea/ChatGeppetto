@@ -65,7 +65,7 @@ async function readConfigFromLocalStorage() {
         language: "en",
         template: "Enter your instruction template here",
         character: "Enter your TextGen character here",
-        assistant: "ChatGeppetto",
+        assistant: assistant,
         you: "You",
       };
       browser.storage.local.set({ config: config });

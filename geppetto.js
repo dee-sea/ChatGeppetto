@@ -20,7 +20,7 @@ async function sendChatMessage(message) {
 
   disableChat();
 
-  addChatMessage("ChatGeppetto", "");
+  addChatMessage(assistant, "");
 
   //
   // Read webpage command
@@ -63,8 +63,8 @@ async function sendChatMessage(message) {
       role: "user",
       content: text,
     });
-    addChatMessage("You", markdownToHtml(text));
-    addChatMessage("ChatGeppetto", getText("searching"));
+    addChatMessage(you, markdownToHtml(text));
+    addChatMessage(assistant, getText("searching"));
     let searchQuery = await getSearchQuery(history).then((response) => {
       return response;
     });
@@ -97,7 +97,7 @@ async function sendChatMessage(message) {
         getText("longSeparator"),
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    addChatMessage("ChatGeppetto", getText("ok"));
+    addChatMessage(assistant, getText("ok"));
     history.push({ role: "assistant", content: getText("ok") });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
@@ -167,7 +167,7 @@ async function sendChatMessage(message) {
       content: getText("greeting"),
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    addChatMessage("ChatGeppetto", markdownToHtml(getText("greeting")));
+    addChatMessage(assistant, markdownToHtml(getText("greeting")));
     enableChat();
     return;
     //
@@ -175,7 +175,7 @@ async function sendChatMessage(message) {
     //
   } else if (message.startsWith("/")) {
     msg = getText("helpcmd");
-    addChatMessage("ChatGeppetto", markdownToHtml(msg));
+    addChatMessage(assistant, markdownToHtml(msg));
     enableChat();
     return;
     //
@@ -183,7 +183,7 @@ async function sendChatMessage(message) {
     //
   } else if (message == "Help" || message == "help" || message == "?") {
     let msg = getText("help");
-    addChatMessage("ChatGeppetto", markdownToHtml(msg));
+    addChatMessage(assistant, markdownToHtml(msg));
     enableChat();
     return;
   } else {
@@ -315,7 +315,7 @@ async function getWebpage(url) {
     })
     .catch((error) => {
       console.error(error);
-      addChatMessage("ChatGeppetto", markdownToHtml(getText("loadError")));
+      addChatMessage(assistant, markdownToHtml(getText("loadError")));
       sendBtn.disabled = false;
       sendInput.disabled = false;
       sendInput.focus();
@@ -327,7 +327,7 @@ async function getWebpage(url) {
 }
 
 function readPageContent() {
-  addChatMessage("You", getText("readText"));
+  addChatMessage(you, getText("readText"));
   history.push({ role: "user", content: getText("readText") });
   let text = "";
   pagecontent = document.body.innerHTML;

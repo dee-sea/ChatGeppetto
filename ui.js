@@ -69,11 +69,10 @@ chatInput.addEventListener("keydown", (event) => {
     const userInput = chatInput.value.trim();
     if (userInput) {
       if (!userInput.startsWith("/") && !userInput.endsWith("+i")) {
-        addChatMessage("You", markdownToHtml(userInput));
+        addChatMessage(you, markdownToHtml(userInput));
         history.push({ role: "user", content: userInput });
         browser.storage.local.set({ hist: JSON.stringify(history) });
       }
-      //addChatMessage("You", userInput);
       sendChatMessage(userInput);
       chatInput.value = "";
     }
@@ -85,7 +84,7 @@ chatInput.addEventListener("drop", (event) => {
   event.preventDefault();
   const userInput = event.dataTransfer.getData("text");
   if (userInput.startsWith("http://") || userInput.startsWith("https://")) {
-    addChatMessage("You", userInput);
+    addChatMessage(you, userInput);
     sendChatMessage(userInput);
   } else {
     let selectedText =
@@ -93,10 +92,10 @@ chatInput.addEventListener("drop", (event) => {
       getText("longSeparator") +
       userInput +
       getText("longSeparator");
-    addChatMessage("You", markdownToHtml(getText("selectedText")));
+    addChatMessage(you, markdownToHtml(getText("selectedText")));
     history.push({ role: "system", content: selectedText });
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    addChatMessage("ChatGeppetto", getText("ok"));
+    addChatMessage(assistant, getText("ok"));
   }
 });
 
@@ -104,7 +103,7 @@ chatInput.addEventListener("drop", (event) => {
 chatSendButton.addEventListener("click", () => {
   const userInput = chatInput.value.trim();
   if (userInput) {
-    addChatMessage("You", userInput);
+    addChatMessage(you, userInput);
     history.push({ role: "user", content: userInput });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     sendChatMessage(userInput);
