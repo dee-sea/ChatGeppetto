@@ -2,7 +2,7 @@
 
 Basically, ChatGeppetto is a Firefox extension that allows you to chat with a LLM hosted on a OobaBooga TextGen interface in api mode. 
 
-The initail idea was taken from Felipe Oliveria's [OpenAI-Chatbot](https://github.com/felipeOliveira-1/openai-chatbot) a nice and simple widget wrotten in HTML, CSS and Javascript. It inspired me to make a chatbot widget for my SearxNG instance. I wanted to be able to chat with a bot and make to help in web searches. Then I tought that it would be great if it was ont only on the search engine, but on all the web. So I switched to a Firefox extention.
+The initial idea was taken from Felipe Oliveria's [OpenAI-Chatbot](https://github.com/felipeOliveira-1/openai-chatbot) a nice and simple widget wrotten in HTML, CSS and Javascript. It inspired me to make a chatbot widget for my SearxNG instance. I wanted to be able to chat with a bot and make him help me in web searches. Then I tought that it would be great if it was ont only on the search engine, but on all the web. So I switched to a Firefox extention.
 
 # Features
 
@@ -15,7 +15,7 @@ The initail idea was taken from Felipe Oliveria's [OpenAI-Chatbot](https://githu
 # What do I need to run ChatGeppetto?
 
 You need to have several things to be able to use all chatgeppetto features:
-
+a
 1. You need an instance of [Oobabooga Text Genaration](https://github.com/oobabooga/text-generation-webui) running with the api mode enabled.
 2. To make ChatGeppetto internet aware, you need to use a SearxNG [searxng](https://github.com/searxng/searxng) instance.
 3. You need to use a Firefox browser with the ChatGeppetto extension installed.
