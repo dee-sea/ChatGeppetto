@@ -136,6 +136,18 @@ async function sendChatMessage(message) {
     for (let i = 0; i < listMessageHeader.length; i++) {
       listMessageHeader.item(i).remove();
     }
+    history.push({
+      role: "assistant",
+      content:
+        "Salut, je suis ChatGeppetto. Comment puis-je t'aider aujourd'hui ?",
+    });
+    browser.storage.local.set({ hist: JSON.stringify(history) });
+    addChatMessage(
+      "ChatGeppetto",
+      markdownToHtml(
+        "Salut, je suis ChatGeppetto. Comment puis-je t'aider aujourd'hui ?"
+      )
+    );
     return;
     //
     // unknown command
