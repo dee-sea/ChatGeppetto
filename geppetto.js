@@ -126,7 +126,8 @@ async function sendChatMessage(message) {
     }
     history.push({
       role: "assistant",
-      content: "Salut, ChatGeppetto.\nComment puis-je t'aider aujourd'hui ?",
+      content:
+        "Salut, je suis ChatGeppetto.\nComment puis-je t'aider aujourd'hui ?",
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     addChatMessage(
