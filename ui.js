@@ -1,3 +1,4 @@
+language = "fr";
 //
 // Inject HTML code in the page
 //
@@ -85,12 +86,13 @@ chatInput.addEventListener("drop", (event) => {
     addChatMessage("You", userInput);
     sendChatMessage(userInput);
   } else {
-    let query =
-      "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
+    let selectedText =
+      getText("readText") +
+      getText("longSeparator") +
       userInput +
-      '\n\n----------\n\nQuand tu auras fini, fait bien attention a ne dire que "OK" sans rien de plus ni avant ni après.';
-    addChatMessage("You", "**Selected Text**");
-    history.push({ role: "system", content: userInput });
+      getText("longSeparator");
+    addChatMessage("You", markdownToHtml(getText("selectedText")));
+    history.push({ role: "system", content: selectedText });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     addChatMessage("ChatGeppetto", "OK");
   }
