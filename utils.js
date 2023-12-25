@@ -84,7 +84,12 @@ function onErrorShow(error) {
 //
 function KeyPress(e) {
   var evtobj = window.event ? event : e;
-  if (evtobj.keyCode == 89 && evtobj.ctrlKey) toggleGeppetto();
+  if (evtobj.keyCode == 89 && evtobj.ctrlKey) {
+    toggleGeppetto();
+    if (chatVisible) {
+      chatInput.focus();
+    }
+  }
 }
 
 function markdownToHtml(text) {

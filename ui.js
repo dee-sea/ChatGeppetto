@@ -65,9 +65,12 @@ chatInput.addEventListener("keydown", (event) => {
     event.preventDefault();
     const userInput = chatInput.value.trim();
     if (userInput) {
-      addChatMessage("You", userInput);
-      history.push({ role: "user", content: userInput });
-      browser.storage.local.set({ hist: JSON.stringify(history) });
+      if (!userInput.startsWith("/") && !userInput.endsWith("+i")) {
+        addChatMessage("You", markdownToHtml(userInput));
+        history.push({ role: "user", content: userInput });
+        browser.storage.local.set({ hist: JSON.stringify(history) });
+      }
+      //addChatMessage("You", userInput);
       sendChatMessage(userInput);
       chatInput.value = "";
     }

@@ -44,30 +44,39 @@ async function sendChatMessage(message) {
     // answer with internet command
     //
   } else if (message.endsWith("+i")) {
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-body"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    //remove last div whith class chatgeppetto-message-header
+    const listMessageHeader = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
+    messageHeader.remove();
     text = message.replace("+i", "");
     history.push({
       role: "user",
       content: text,
     });
+    addChatMessage("You", markdownToHtml(text));
+    addChatMessage("ChatGeppetto", "Searching the web");
     let searchQuery = await getSearchQuery(history).then((response) => {
       return response;
     });
     console.log("searchQuery: " + searchQuery);
     searchQuery = searchQuery.replace('"', "");
     console.log(history);
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-body"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
     console.log("Searching the web for: " + searchQuery);
     urlsearch = searchUrl + encodeURIComponent(searchQuery);
     console.log("urlsearch: " + urlsearch);
     let searchResults = await getSearchResults(urlsearch);
     console.log("searchResults: " + searchResults);
-    history.push({
-      role: "user",
-      content: text,
-    });
+    // history.push({
+    //   role: "user",
+    //   content: text,
+    // });
     getResponse(history).then((response) => {
       enableChat();
     });
@@ -410,13 +419,14 @@ async function getSearchResults(url) {
     urllist.push(url);
   }
   urllist = urllist.filter(onlyUnique);
-  urllist = urllist.slice(0, 5);
+  urllist = urllist.slice(0, 10);
   let urlnum = urllist.length;
+  const listMessageBody = document.querySelectorAll(
+    ".chatgeppetto-message-body"
+  );
+  const messageBody = listMessageBody.item(listMessageBody.length - 1);
+  messageBody.innerHTML = "";
   for (t = 0; t < urllist.length; t++) {
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-body"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "Reading page " + (t + 1) + "/" + urllist.length;
     pagelist =
       pagelist +
@@ -432,5 +442,6 @@ async function getSearchResults(url) {
   console.log("system insert 1");
   history.push({ role: "system", content: pagelist });
   browser.storage.local.set({ hist: JSON.stringify(history) });
+  messageBody.innerHTML = "";
   return pagelist;
 }
