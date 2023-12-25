@@ -79,9 +79,8 @@ async function sendChatMessage(message) {
     //
     // Read page command
     //
-  } else if (message.startsWith("/readpagecontent")) {
-    //remove /readpagecontent from message
-    text = message.replace("/readpagecontent ", "");
+  } else if (message.startsWith(":readpagecontent")) {
+    text = message.replace(":readpagecontent ", "");
 
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-body"
@@ -102,7 +101,7 @@ async function sendChatMessage(message) {
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
     return;
-  } else if (message == "/hist") {
+  } else if (message == ":hist") {
     // remove last div whith class chatgeppetto-message-header
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-header"
@@ -112,7 +111,7 @@ async function sendChatMessage(message) {
     console.log(history);
     enableChat();
     return;
-  } else if (message == "/deleteConfig") {
+  } else if (message == ":deleteConfig") {
     // remove last div whith class chatgeppetto-message-header
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-header"
@@ -122,7 +121,7 @@ async function sendChatMessage(message) {
     await deleteConfigFromLocalStorage();
     enableChat();
     return;
-  } else if (message == "/config") {
+  } else if (message == ":config") {
     // remove last div whith class chatgeppetto-message-header
     let config = await readConfigFromLocalStorage();
     const listMessageBody = document.querySelectorAll(
@@ -133,7 +132,7 @@ async function sendChatMessage(message) {
     console.log(config);
     enableChat();
     return;
-  } else if (message.startsWith("/set ")) {
+  } else if (message.startsWith(":set ")) {
     // remove last div whith class chatgeppetto-message-header
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-header"
@@ -146,7 +145,7 @@ async function sendChatMessage(message) {
     //
     // Clear command
     //
-  } else if (message == "/clear") {
+  } else if (message == ":clear") {
     history = [];
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
@@ -349,7 +348,7 @@ function readPageContent() {
     text = text + "\n\n" + elementList.item(u).textContent.trim();
   }
   text = text.trim();
-  command = "/readpagecontent " + text;
+  command = ":readpagecontent " + text;
   sendChatMessage(command);
 }
 
