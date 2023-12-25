@@ -10,7 +10,11 @@
 [x] Add a "Read selected text" option
 [X] Add a search on the web option.
 [X] cleanup the chat using system messages
+[ ] Make plugin multi-lingual
 [ ] Add a configuration popup for api address and api key.
-[ ] ajouter la possibilité de gérer combien de résultats pour les recherches
-[ ] paraléiser les chargement de pages web
 [ ] Ajouter la possibilité de sauver et charger des conversations.
+[ ] Add input history.
+[ ] Add a command to remove last message.
+[ ] Add a commande to clean the history from system messages
+[ ] Ajouter la possibilité de gérer combien de résultats pour les recherches
+[ ] Paraléiser les chargement de pages web
