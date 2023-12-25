@@ -1,4 +1,10 @@
+// define the search url
 searchUrl = "https://searx.thele.me/?q=";
+
+// hos and key for the API
+const OPENAI_API_KEY = "sk-Skynet-openchatKEY";
+const OPENAI_API_ENDPOINT = "https://chatapi.thele.me/v1/chat/completions";
+
 //
 // Function to sent messages to the chatbot
 // @param message: the message to send
@@ -24,8 +30,9 @@ async function sendChatMessage(message) {
     );
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "";
+    console.log("system insert 2");
     history.push({
-      role: "user",
+      role: "system",
       content:
         "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
         text +
@@ -34,23 +41,48 @@ async function sendChatMessage(message) {
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
     //
-    // search command
+    // answer with internet command
     //
-  } else if (message.startsWith("/s ")) {
-    //remove /readpagecontent from message
-    query = await message.replace("/s ", "");
-
-    text = searchTheWeb(query);
-
+  } else if (message.endsWith("+i")) {
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-body"
     );
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.innerHTML = "";
-    enableChat();
+    messageBody.remove();
+    //remove last div whith class chatgeppetto-message-header
+    const listMessageHeader = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
+    messageHeader.remove();
+    text = message.replace("+i", "");
+    history.push({
+      role: "user",
+      content: text,
+    });
+    addChatMessage("You", markdownToHtml(text));
+    addChatMessage("ChatGeppetto", "Searching the web");
+    let searchQuery = await getSearchQuery(history).then((response) => {
+      return response;
+    });
+    console.log("searchQuery: " + searchQuery);
+    searchQuery = searchQuery.replace('"', "");
+    console.log(history);
+    console.log("Searching the web for: " + searchQuery);
+    urlsearch = searchUrl + encodeURIComponent(searchQuery);
+    console.log("urlsearch: " + urlsearch);
+    let searchResults = await getSearchResults(urlsearch);
+    console.log("searchResults: " + searchResults);
+    // history.push({
+    //   role: "user",
+    //   content: text,
+    // });
+    getResponse(history).then((response) => {
+      enableChat();
+    });
     return;
     //
-    // Read webpage command
+    // Read page command
     //
   } else if (message.startsWith("/readpagecontent")) {
     //remove /readpagecontent from message
@@ -61,23 +93,49 @@ async function sendChatMessage(message) {
     );
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "";
+    console.log("system insert 3");
     history.push({
-      role: "user",
+      role: "system",
       content:
         "Lis attentivement et souviens toi du texte suivant:\n\n----------\n\n" +
         text +
         '\n\n----------\n\nQuand tu auras fini, tape juste "OK" sans rien de plus.',
     });
     browser.storage.local.set({ hist: JSON.stringify(history) });
+    addChatMessage("ChatGeppetto", "OK, I did it");
+    history.push({ role: "assistant", content: "OK, I did it" });
+    browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
+    return;
+  } else if (message == "/hist") {
+    console.log(history);
+    // remove last div whith class chatgeppetto-message-header
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    enableChat();
+    return;
     //
     // Clear command
     //
   } else if (message == "/clear") {
     history = [];
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    addChatMessage("ChatGeppetto", "New chat started.");
     enableChat();
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-body"
+    );
+    const listMessageHeader = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    for (let i = 0; i < listMessageBody.length; i++) {
+      listMessageBody.item(i).remove();
+    }
+    for (let i = 0; i < listMessageHeader.length; i++) {
+      listMessageHeader.item(i).remove();
+    }
     return;
     //
     // unknown command
@@ -99,41 +157,15 @@ async function sendChatMessage(message) {
     );
     enableChat();
     return;
+  } else {
+    //
+    // Normal message
+    //
+    await getResponse(history).then((response) => {
+      enableChat();
+    });
   }
-  //
-  // Normal message
-  //
-  // get content of last message
-  let msg = history[history.length - 1].content;
-  if (msg.endsWith("+i")) {
-    // internet on
-    addChatMessage("ChatGeppetto", "Searching the web for :");
-    history[history.length - 1].content = msg.replace("+i", "");
-    browser.storage.local.set({ hist: JSON.stringify(history) });
-    let Query = await query(history);
-    let searchQuery = history[history.length - 1].content;
-    searchQuery = searchQuery.replace('"', "").trim();
-    Query = await searchTheWeb(searchQuery);
-    history.push({ role: "user", content: msg.replace("+i", "") });
-  }
-
-  getResponse(history);
-}
-
-async function query(message) {
-  text = await getQuery(message);
-  return text;
-}
-
-function enableChat() {
-  sendBtn.disabled = false;
-  sendInput.disabled = false;
-  sendInput.focus();
-}
-
-function disableChat() {
-  sendBtn.disabled = true;
-  sendInput.disabled = true;
+  return;
 }
 
 async function getResponse(history) {
@@ -165,9 +197,7 @@ async function getResponse(history) {
         ".chatgeppetto-message-body"
       );
       const messageBody = listMessageBody.item(listMessageBody.length - 1);
-      var converter = new showdown.Converter();
-      converter.setFlavor("github");
-      var html = converter.makeHtml(answer);
+      let html = markdownToHtml(answer);
       messageBody.innerHTML = html;
       hljs.highlightAll();
       chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -264,9 +294,7 @@ function appendChatElement(token) {
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
   const text = messageBody.innerHTML;
   if (token.startsWith("\n")) {
-    var converter = new showdown.Converter();
-    converter.setFlavor("github");
-    var html = converter.makeHtml(answer);
+    let html = markdownToHtml(answer);
     messageBody.innerHTML = html + token;
   } else {
     messageBody.innerHTML = messageBody.innerHTML + token;
@@ -322,104 +350,27 @@ async function getWebpage(url) {
   return text;
 }
 
-//
-// Function to turn the widget on or off
-// @return void
-//
-function toggleGeppetto() {
-  chatVisible = !chatVisible;
-  chatWidget.classList.toggle("visible", chatVisible);
-  chatToggle.innerText = chatVisible ? "Close" : "Chat";
-  chatInput.focus();
-  show = !show;
-  browser.storage.local.set({ visible: show });
-}
-
-//
-// Callback functions to read history from the local storage
-// @param item: the item to read
-// @return void
-//
-function onGotHist(item) {
-  history = JSON.parse(item.hist);
-  var name = "";
-  for (var i = 0; i < history.length; i++) {
-    if (history[i].role == "user") {
-      name = "You";
-    } else {
-      name = "ChatGeppetto";
-    }
-    var converter = new showdown.Converter();
-    converter.setFlavor("github");
-    var html = converter.makeHtml(history[i].content);
-    addChatMessage(name, html);
-    hljs.highlightAll();
-  }
-}
-
-//
-// Callback functions to handle errors when reading history from the local storage
-// @param error: the error to handle
-// @return void
-//
-function onErrorHist(error) {
-  history = [];
-}
-
-//
-// Callback functions to read the visibility of the widget from the local storage
-// @param item: the item to read
-// @return void
-//
-function onGotShow(item) {
-  chatVisible = item.visible;
-  chatWidget.classList.toggle("visible", chatVisible);
-  chatToggle.innerText = chatVisible ? "Close" : "Chat";
-  chatInput.focus();
-  show = item.visible;
-}
-
-//
-// Callback functions to handle errors when reading the visibility of the widget from the local storage
-// @param error: the error to handle
-// @return void
-//
-function onErrorShow(error) {
-  show = false;
-}
-
-//
-// Function to handle keypress events
-// @param e: the event to handle
-// @return void
-//
-function KeyPress(e) {
-  var evtobj = window.event ? event : e;
-  if (evtobj.keyCode == 89 && evtobj.ctrlKey) toggleGeppetto();
-}
-
-async function readAllLinks() {
-  sendBtn.disabled = true;
-  sendInput.disabled = true;
-  sendInput.value = "";
+function readPageContent() {
+  addChatMessage("You", "Please read the page.");
+  history.push({ role: "user", content: "Please read the page." });
   let text = "";
   pagecontent = document.body.innerHTML;
   let widget = document.querySelector("#chatgeppetto-widget").innerHTML;
   pagecontent = pagecontent.replace(widget, "");
   var doc = new DOMParser().parseFromString(pagecontent, "text/html");
-  elementList = doc.querySelectorAll(["a"]);
-  pagelist =
-    "Hera are a bunch of webpages with their respective URLs:\n\n----------\n\n";
-  urllist = [];
-  for (u = 0; u < elementList.length; u++) {
-    if (
-      elementList.item(u).href.includes("proxy.thele.me") ||
-      elementList.item(u).href.includes("searx.thele.me") ||
-      elementList.item(u).href.includes("web.archive.org")
-    )
-      continue;
-    url = elementList.item(u).href.trim();
-    urllist.push(url);
+  elementList = doc.querySelectorAll([
+    "p",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "li",
+    "span",
+    "figcaption",
+  ]);
+  for (u = 0; u < elementList.length - 1; u++) {
+    text = text + "\n\n" + elementList.item(u).textContent.trim();
   }
   urllist = urllist.filter(onlyUnique);
   urllist = urllist.slice(0, 25);
@@ -544,4 +495,124 @@ async function searchTheWeb(query) {
   sendBtn.disabled = false;
   sendInput.disabled = false;
   sendInput.focus();
+}
+
+async function getSearchQuery(history) {
+  var localhistory = history;
+  localhistory.push({
+    role: "user",
+    content:
+      "Ne réponds pas à la question, donne juste des mots clés à chercher sur Google pour trouver la réponse. soit facuel, ajoute aucun text. Donne juste une liste de mots clés.",
+  });
+  const searchQuery = await fetch(OPENAI_API_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      messages: localhistory,
+      mode: "instruct",
+      instruction_template: "Mistral",
+      stream: false,
+      temperature: 1,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("data: ");
+      console.log(data);
+      return data.choices[0].message.content;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  return searchQuery;
+}
+
+async function getWebSearchResult(url) {
+  text = "";
+  await fetch(url, { origin: "https://searx.thele.me" })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+      return response.text();
+    })
+    .then((html) => {
+      var doc = new DOMParser().parseFromString(html, "text/html");
+      elementList = doc.querySelectorAll([
+        "p",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "figcaption",
+      ]);
+      for (u = 0; u < elementList.length; u++) {
+        text = text + "\n\n" + elementList.item(u).textContent.trim();
+      }
+      text = text.trim();
+    })
+    .catch((error) => {
+      console.error(error);
+      sendBtn.disabled = false;
+      sendInput.disabled = false;
+      sendInput.focus();
+    });
+  return text;
+}
+
+async function getSearchResults(url) {
+  let text = "";
+  let urllist = [];
+  pagecontent = await fetch(url, { origin: "https://searx.thele.me" }).then(
+    (response) => {
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+      return response.text();
+    }
+  );
+  var doc = new DOMParser().parseFromString(pagecontent, "text/html");
+  let pagelist = "Here are a bunch of results to help you answer:\n\n";
+  elementList = doc.querySelectorAll(["a"]);
+  for (u = 0; u < elementList.length - 1; u++) {
+    if (
+      elementList.item(u).href.includes("proxy.thele.me") ||
+      elementList.item(u).href.includes("searx.thele.me") ||
+      elementList.item(u).href.includes("web.archive.org")
+    )
+      continue;
+    url = elementList.item(u).href.trim();
+    console.log("URL: " + url);
+    urllist.push(url);
+  }
+  urllist = urllist.filter(onlyUnique);
+  urllist = urllist.slice(0, 10);
+  let urlnum = urllist.length;
+  const listMessageBody = document.querySelectorAll(
+    ".chatgeppetto-message-body"
+  );
+  const messageBody = listMessageBody.item(listMessageBody.length - 1);
+  messageBody.innerHTML = "";
+  for (t = 0; t < urllist.length; t++) {
+    messageBody.innerHTML = "Reading page " + (t + 1) + "/" + urllist.length;
+    pagelist =
+      pagelist +
+      urllist[t] +
+      "\n\n-----\n\n" +
+      (await getWebSearchResult(urllist[t])) +
+      "\n\n----------\n\n";
+  }
+  history.pop();
+  pagelist =
+    pagelist +
+    "Read and remember them carefully, you will be tested on them later.";
+  console.log("system insert 1");
+  history.push({ role: "system", content: pagelist });
+  browser.storage.local.set({ hist: JSON.stringify(history) });
+  messageBody.innerHTML = "";
+  return pagelist;
 }
