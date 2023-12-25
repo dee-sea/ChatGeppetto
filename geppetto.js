@@ -1,8 +1,8 @@
 // Config
-var searchEngine = "https://searx.thele.me/";
-var GEPPETTO_API_KEY = "sk-Skynet-openchatKEY";
-var GEPPETTO_API_ENDPOINT = "https://chatapi.thele.me/v1/chat/completions";
-var language = "fr";
+var searchEngine = "";
+var GEPPETTO_API_KEY = "";
+var GEPPETTO_API_ENDPOINT = "";
+var language = "en";
 var assistant_name = "ChatGeppetto";
 var your_name = "You";
 
