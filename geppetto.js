@@ -110,6 +110,37 @@ async function sendChatMessage(message) {
     console.log(history);
     enableChat();
     return;
+  } else if (message == "/deleteConfig") {
+    // remove last div whith class chatgeppetto-message-header
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    await deleteConfigFromLocalStorage();
+    enableChat();
+    return;
+  } else if (message == "/config") {
+    // remove last div whith class chatgeppetto-message-header
+    let config = await readConfigFromLocalStorage();
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    console.log(config);
+    enableChat();
+    return;
+  } else if (message.startsWith("/set ")) {
+    // remove last div whith class chatgeppetto-message-header
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    setConfig(message);
+    enableChat();
+    return;
     //
     // Clear command
     //
@@ -173,7 +204,7 @@ async function getResponse(history) {
     },
     payload: JSON.stringify({
       messages: history,
-      mode: "chat-instruct",
+      mode: "chat",
       instruction_template: "Mistral",
       character: "ChatGeppetto",
       stream: true,

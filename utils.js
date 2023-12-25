@@ -113,3 +113,14 @@ function getText(textName) {
     return "Text not found";
   }
 }
+
+// Calling code
+async function getConfigAndApply() {
+  try {
+    const config = await readConfigFromLocalStorage();
+    applyConfig(config);
+  } catch (error) {
+    // Handle errors here
+    console.error("Error:", error);
+  }
+}

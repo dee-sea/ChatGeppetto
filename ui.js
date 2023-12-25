@@ -29,6 +29,9 @@ document.body.appendChild(chatdiv);
 // Handler to the ctrl+y to show/hide the widget
 document.onkeydown = KeyPress;
 
+// Read configuration from the local storage and apply it
+getConfigAndApply();
+
 // Read the visivility of the widget from the local storage
 let show;
 browser.storage.local.get("visible").then(onGotShow, onErrorShow);

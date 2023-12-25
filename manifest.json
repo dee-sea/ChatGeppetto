@@ -22,8 +22,9 @@
       "matches": ["*://*/*"],
       "js": [
         "geppetto.js",
-        "statements.js",
         "utils.js",
+        "config.js",
+        "statements.js",
         "ui.js",
         "highlight.min.js",
         "sse.js",
