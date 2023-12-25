@@ -103,6 +103,7 @@ async function sendChatMessage(message) {
     );
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.remove();
+    console.log(history);
     enableChat();
     return;
     //
