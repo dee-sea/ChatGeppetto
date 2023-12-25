@@ -1,4 +1,4 @@
-statements = {
+const statements = {
   readText: {
     fr: "Lis attentivement et souviens toi du texte suivant:",
     en: "Read carefully and remember the following text:",

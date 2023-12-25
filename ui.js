@@ -1,4 +1,3 @@
-language = "fr";
 //
 // Inject HTML code in the page
 //

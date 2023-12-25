@@ -1,10 +1,12 @@
-// define the search url
-searchUrl = "https://searx.thele.me/?q=";
+// Config
+var searchEngine = "https://searx.thele.me/";
+var GEPPETTO_API_KEY = "sk-Skynet-openchatKEY";
+var GEPPETTO_API_ENDPOINT = "https://chatapi.thele.me/v1/chat/completions";
+var language = "fr";
+var assistant_name = "ChatGeppetto";
+var your_name = "You";
 
-// hos and key for the API
-const OPENAI_API_KEY = "sk-Skynet-openchatKEY";
-const OPENAI_API_ENDPOINT = "https://chatapi.thele.me/v1/chat/completions";
-
+var searchUrl = searchEngine + "?q=";
 //
 // Function to sent messages to the chatbot
 // @param message: the message to send
@@ -164,10 +166,10 @@ async function sendChatMessage(message) {
 }
 
 async function getResponse(history) {
-  var source = new SSE(OPENAI_API_ENDPOINT, {
+  var source = new SSE(GEPPETTO_API_ENDPOINT, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
+      Authorization: `Bearer ${GEPPETTO_API_KEY}`,
     },
     payload: JSON.stringify({
       messages: history,
@@ -324,11 +326,11 @@ async function getSearchQuery(history) {
     role: "user",
     content: getText("keywords"),
   });
-  const searchQuery = await fetch(OPENAI_API_ENDPOINT, {
+  const searchQuery = await fetch(GEPPETTO_API_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
+      Authorization: `Bearer ${GEPPETTO_API_KEY}`,
     },
     body: JSON.stringify({
       messages: localhistory,
