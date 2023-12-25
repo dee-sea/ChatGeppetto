@@ -68,7 +68,7 @@ chatInput.addEventListener("keydown", (event) => {
     event.preventDefault();
     const userInput = chatInput.value.trim();
     if (userInput) {
-      if (!userInput.startsWith("/") && !userInput.endsWith("+i")) {
+      if (!userInput.startsWith(":") && !userInput.endsWith("+i")) {
         addChatMessage(you, markdownToHtml(userInput));
         history.push({ role: "user", content: userInput });
         browser.storage.local.set({ hist: JSON.stringify(history) });
