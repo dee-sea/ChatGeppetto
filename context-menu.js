@@ -5,7 +5,7 @@ browser.contextMenus.create({
 
 //browser.contextMenus.create({
 //  id: "ReadLink",
-//  title: "Read linked page",
+//  title: "Read linked pages",
 //  contexts: ["link"],
 //});
 
