@@ -61,4 +61,4 @@ If you want to get ChatGeppetto to read other pages, simply tyle a URL in the in
 
 Pay attention feeding too much data to the bot memory. It can lead to unexpected results specially with Model with a short context. Mixtral 8x7b works wonders with a large context and is recommended. As a rule of thumb, the longer the context, the slower the generation.
 
-Finally you can use special commands starting with a colon `:` to interact with the bot. The availlable commands can be listed by saying `help` to the bot.
+Finally you can use special commands starting with a colon `:` to interact with the bot. Yes, I'm a huge Vim fanboy and I use [Surfingkeys](https://github.com/brookhong/Surfingkeys) in my browser ;-). The availlable commands can be listed by just saying `help` to the bot. 
