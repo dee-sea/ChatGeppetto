@@ -60,6 +60,37 @@ let history = [];
 // Get the chat history from the local storage
 browser.storage.local.get("hist").then(onGotHist, onErrorHist);
 
+// Function to load the input history from localStorage
+function loadInputHistory() {
+  browser.storage.local.get("inputHist").then(
+    (result) => {
+      if (result.inputHist) {
+        inputHistory = JSON.parse(result.inputHist);
+        ihLength = inputHistory.length - 1;
+      }
+    },
+    (error) => {
+      console.error("Error loading input history:", error);
+    }
+  );
+}
+
+// Load the input history when the page is loaded
+loadInputHistory();
+
+// Function to update the input history and persist it in localStorage
+function updateAndPersistInputHistory() {
+  // Filter inputHistory to remove empty strings
+  inputHistory = inputHistory.filter((x) => x !== "");
+  inputhistory = inputHistory.slice(0, 100);
+  inputHistory = inputHistory.filter(onlyUnique);
+  inputHistory.unshift("");
+  ihLength = inputHistory.length - 1;
+
+  // Persist the updated inputHistory in localStorage
+  browser.storage.local.set({ inputHist: JSON.stringify(inputHistory) });
+}
+
 // listner for the toggle button
 chatToggle.addEventListener("click", () => {
   chatVisible = !chatVisible;
@@ -75,6 +106,7 @@ chatInput.addEventListener("load", () => {
 chatInput.addEventListener("keydown", function (event) {
   if (event.key === "ArrowUp" || event.key === "ArrowDown") {
     event.preventDefault(); // Prevent the default behavior of arrow keys (e.g., scrolling)
+    loadInputHistory();
 
     if (event.key === "ArrowUp" && ihIndex < ihLength) {
       console.log("ArrowUp");
@@ -116,14 +148,12 @@ chatInput.addEventListener("keyup", function (event) {
       ihLength--;
     }
 
+    // Update and persist the input history
+    updateAndPersistInputHistory();
+
     console.log("ihLength: " + ihLength);
     console.log(inputHistory);
 
-    // filter inputHistory to remove empty strings
-    inputHistory = inputHistory.filter((x) => x !== "");
-    inputHistory = inputHistory.filter(onlyUnique);
-    inputHistory.unshift("");
-    ihLength = inputHistory.length - 1;
     if (userInput) {
       if (!userInput.startsWith(":") && !userInput.endsWith("+i")) {
         addChatMessage(you, markdownToHtml(userInput));
@@ -136,7 +166,6 @@ chatInput.addEventListener("keyup", function (event) {
     }
   }
 });
-
 // listner for the input field drop event
 chatInput.addEventListener("drop", (event) => {
   event.preventDefault();
