@@ -18,6 +18,7 @@
         "config.js",
         "statements.js",
         "ui.js",
+        "conversation.js",
         "highlight.min.js",
         "sse.js",
         "showdown.min.js"
