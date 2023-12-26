@@ -17,6 +17,5 @@
 [X] Add a command to remove last message.
 [X] Add a command to inject a message in the conversation.
 [X] Add a commande to clean the history from system messages
-[ ] Add input history.
-[ ] Ajouter la possibilité de gérer combien de résultats pour les recherches
+[X] Add input history.
 [ ] Paraléiser les chargement de pages web
