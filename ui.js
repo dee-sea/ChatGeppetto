@@ -14,6 +14,7 @@ const htmlContent = `
               placeholder="Write your message"
               autofocus
             />
+            <div id="suggestionBox"></div>
             <button id="chatgeppetto-send">Send</button>
             <div id="loading">
               <div class="spinner"></div>
@@ -60,6 +61,36 @@ let history = [];
 // Get the chat history from the local storage
 browser.storage.local.get("hist").then(onGotHist, onErrorHist);
 
+// Function to suggest input based on the current value of the input field
+function suggestInput() {
+  const inputValue = chatInput.value.toLowerCase().trim();
+
+  // Filter inputHistory to find suggestions containing the current input value
+  const suggestions = inputHistory.filter(
+    (entry) => entry.toLowerCase().includes(inputValue) && entry !== inputValue
+  );
+
+  // Display suggestions in the suggestionBox div
+  const suggestionBox = document.getElementById("suggestionBox");
+  suggestionBox.innerHTML = "";
+
+  suggestions.forEach((suggestion) => {
+    const suggestionItem = document.createElement("div");
+    suggestionItem.classList.add("suggestionItem");
+    suggestionItem.textContent = suggestion;
+
+    suggestionItem.addEventListener("click", () => {
+      chatInput.value = suggestion;
+      suggestionBox.style.display = "none";
+    });
+
+    suggestionBox.appendChild(suggestionItem);
+  });
+
+  // Show/hide the suggestionBox based on the presence of suggestions
+  suggestionBox.style.display = suggestions.length > 0 ? "block" : "none";
+}
+
 // Function to load the input history from localStorage
 function loadInputHistory() {
   browser.storage.local.get("inputHist").then(
@@ -91,6 +122,8 @@ function updateAndPersistInputHistory() {
   browser.storage.local.set({ inputHist: JSON.stringify(inputHistory) });
 }
 
+chatInput.addEventListener("input", suggestInput);
+
 // listner for the toggle button
 chatToggle.addEventListener("click", () => {
   chatVisible = !chatVisible;
@@ -121,6 +154,23 @@ chatInput.addEventListener("keydown", function (event) {
 
       // Set the input value to the selected history entry
       chatInput.value = ihIndex === -1 ? "" : inputHistory[ihIndex];
+    }
+  }
+  if (event.key === "Tab") {
+    event.preventDefault();
+
+    const inputValue = chatInput.value.trim();
+
+    // Filter inputHistory to find suggestions based on the current input value
+    const suggestions = inputHistory.filter(
+      (entry) =>
+        entry.toLowerCase().startsWith(inputValue) && entry !== inputValue
+    );
+
+    // Use the first suggestion if available
+    if (suggestions.length > 0) {
+      chatInput.value = suggestions[0];
+      document.getElementById("suggestionBox").style.display = "none";
     }
   }
 });
@@ -166,6 +216,7 @@ chatInput.addEventListener("keyup", function (event) {
     }
   }
 });
+
 // listner for the input field drop event
 chatInput.addEventListener("drop", (event) => {
   event.preventDefault();

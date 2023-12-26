@@ -147,3 +147,25 @@
   font-size: 16px;
   color: #666;
 }
+
+#suggestionBox {
+  position: absolute;
+  display: none;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 5px;
+  width: 94%;
+  color: #333;
+  max-height: 100px;
+  overflow-y: auto;
+  bottom: 40px;
+}
+
+.suggestionItem {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestionItem:hover {
+  background-color: #f2f2f2;
+}
