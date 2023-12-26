@@ -8,7 +8,6 @@ var character = "ChatGeppetto";
 var assistant = "ChatGeppetto";
 var you = "You";
 
-var searchUrl = searchEngine + "?q=";
 //
 // Function to sent messages to the chatbot
 // @param message: the message to send
@@ -70,6 +69,8 @@ async function sendChatMessage(message) {
     });
     searchQuery = searchQuery.replace('"', "");
     console.log("Searching the web for: " + searchQuery);
+    var searchUrl = searchEngine + "?q=";
+    console.log(searchUrl);
     urlsearch = searchUrl + encodeURIComponent(searchQuery);
     let searchResults = await getSearchResults(urlsearch);
     getResponse(history).then((response) => {
@@ -419,12 +420,14 @@ async function getWebSearchResult(url) {
 async function getSearchResults(url) {
   let text = "";
   let urllist = [];
-  pagecontent = await fetch(url, { origin: searchEngine }).then((response) => {
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP ${response.status}`);
+  pagecontent = await fetch(urlsearch, { origin: searchEngine }).then(
+    (response) => {
+      if (!response.ok) {
+        throw new Error(`Erreur HTTP ${response.status}`);
+      }
+      return response.text();
     }
-    return response.text();
-  });
+  );
   var doc = new DOMParser().parseFromString(pagecontent, "text/html");
   let pagelist = getText("resultPages");
   elementList = doc.querySelectorAll(["a"]);
