@@ -4,7 +4,7 @@
 [X] Add conversation persistence across pages and sessions.
 [X] Add visibility persistence across pages and sessions.
 [X] Add a "read link" functionnality.
-[X] Add a help` system to the chatbot.
+[X] Add a "help" system to the chatbot.
 [X] Add syntax highlighting to the chatbot.
 [x] Add a "Read current page" option in the context menu.
 [x] Add a "Read selected text" option
@@ -12,7 +12,7 @@
 [X] cleanup the chat using system messages
 [X] Make plugin multi-lingual
 [X] Add a configuration popup for api address and api key.
-[ ] Add the poassibility to have different character to handle multiple languages.
+[X] Add the possibility to have different character to handle multiple languages.
 [ ] Ajouter la possibilité de sauver et charger des conversations.
 [ ] Add input history.
 [ ] Add a command to remove last message.
