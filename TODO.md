@@ -13,7 +13,7 @@
 [X] Make plugin multi-lingual
 [X] Add a configuration popup for api address and api key.
 [X] Add the possibility to have different character to handle multiple languages.
-[ ] Ajouter la possibilité de sauver et charger des conversations.
+[X] Ajouter la possibilité de sauver et charger des conversations.
 [ ] Add input history.
 [ ] Add a command to remove last message.
 [ ] Add a commande to clean the history from system messages
