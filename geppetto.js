@@ -45,7 +45,17 @@ async function sendChatMessage(message) {
     //
     // answer with internet command
     //
-  } else if (message.endsWith("+i")) {
+  } else if (
+    message.endsWith("+i") ||
+    message.startsWith("Cherche ") ||
+    message.startsWith("cherche ") ||
+    message.startsWith("Recherche ") ||
+    message.startsWith("recherche ") || // french
+    message.startsWith("Search ") ||
+    message.startsWith("search ") ||
+    message.startsWith("Find ") ||
+    message.startsWith("find ") // english
+  ) {
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-body"
     );
@@ -57,7 +67,13 @@ async function sendChatMessage(message) {
     );
     const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
     messageHeader.remove();
-    text = message.replace("+i", "");
+    if (message.endsWith("+i")) {
+      text = message.replace("+i", "");
+    } else {
+      // remove the first word
+      word = message.split(" ").slice(0).join(" ");
+      text = message.replace(word, "");
+    }
     history.push({
       role: "user",
       content: text,
