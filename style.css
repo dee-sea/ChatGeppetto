@@ -169,3 +169,8 @@
 .suggestionItem:hover {
   background-color: #f2f2f2;
 }
+
+.suggestionItem.selected {
+  background-color: #ACACAC; /* Green background color for the selected suggestion */
+  color: white; /* White text color for the selected suggestion */
+}

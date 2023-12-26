@@ -136,27 +136,11 @@ chatInput.addEventListener("load", () => {
   chatInput.focus();
 });
 
+// Add a keydown event listener to handle Arrow Up and Arrow Down keys
+// Add a keydown event listener to handle Arrow Up and Arrow Down keys
 chatInput.addEventListener("keydown", function (event) {
-  if (event.key === "ArrowUp" || event.key === "ArrowDown") {
-    event.preventDefault(); // Prevent the default behavior of arrow keys (e.g., scrolling)
-    loadInputHistory();
-
-    if (event.key === "ArrowUp" && ihIndex < ihLength) {
-      console.log("ArrowUp");
-      // Move up in history
-      ihIndex++;
-      console.log(inputHistory[ihIndex]);
-      chatInput.value = inputHistory[ihIndex];
-    } else if (event.key === "ArrowDown" && ihIndex > 0) {
-      console.log("ArrowDown");
-      // Move down in history
-      ihIndex--;
-
-      // Set the input value to the selected history entry
-      chatInput.value = ihIndex === -1 ? "" : inputHistory[ihIndex];
-    }
-  }
   if (event.key === "Tab") {
+    // Handle Tab key for accepting suggestions
     event.preventDefault();
 
     const inputValue = chatInput.value.trim();
@@ -172,6 +156,76 @@ chatInput.addEventListener("keydown", function (event) {
       chatInput.value = suggestions[0];
       document.getElementById("suggestionBox").style.display = "none";
     }
+  } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+    // Handle Arrow Up and Arrow Down keys
+    event.preventDefault();
+
+    const inputValue = chatInput.value.trim();
+
+    // If the input field is not empty, navigate through suggestions
+    if (inputValue !== "") {
+      const suggestionBox = document.getElementById("suggestionBox");
+      const suggestionItems =
+        suggestionBox.getElementsByClassName("suggestionItem");
+
+      // Determine the selected suggestion index
+      let selectedSuggestionIndex = -1;
+      for (let i = 0; i < suggestionItems.length; i++) {
+        if (suggestionItems[i].classList.contains("selected")) {
+          selectedSuggestionIndex = i;
+          break;
+        }
+      }
+
+      // Update the selected suggestion index based on the Arrow Up or Arrow Down key
+      if (event.key === "ArrowUp") {
+        selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, 0);
+      } else if (event.key === "ArrowDown") {
+        selectedSuggestionIndex = Math.min(
+          selectedSuggestionIndex + 1,
+          suggestionItems.length - 1
+        );
+      }
+
+      // Update the selected class for suggestion items
+      for (let i = 0; i < suggestionItems.length; i++) {
+        suggestionItems[i].classList.remove("selected");
+      }
+      suggestionItems[selectedSuggestionIndex].classList.add("selected");
+
+      // Update the input field with the selected suggestion
+      chatInput.value = suggestionItems[selectedSuggestionIndex].textContent;
+    } else {
+      // If the input field is empty, navigate through the input history
+      const userInput = chatInput.value.trim();
+
+      if (event.key === "ArrowUp" && ihIndex < ihLength) {
+        console.log("ArrowUp");
+        // Move up in history
+        ihIndex++;
+        console.log(inputHistory[ihIndex]);
+        chatInput.value = inputHistory[ihLength - ihIndex];
+      } else if (event.key === "ArrowDown" && ihIndex > 0) {
+        console.log("ArrowDown");
+        // Move down in history
+        ihIndex--;
+
+        // Set the input value to the selected history entry
+        chatInput.value =
+          ihIndex === -1 ? "" : inputHistory[ihLength - ihIndex];
+      } else if (event.key === "ArrowUp" && ihIndex === ihLength) {
+        console.log("ArrowUp");
+        // If at the bottom of history, move to the last entry
+        ihIndex = 0;
+        chatInput.value = inputHistory[ihLength - ihIndex];
+      }
+    }
+  } else if (event.key === "Escape") {
+    // Handle Escape key to close the suggestion list
+    document.getElementById("suggestionBox").style.display = "none";
+    setTimeout(() => {
+      chatInput.focus();
+    }, 10);
   }
 });
 
