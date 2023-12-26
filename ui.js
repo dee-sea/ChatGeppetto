@@ -48,6 +48,10 @@ const sendBtn = document.getElementById("chatgeppetto-send");
 const sendInput = document.getElementById("chatgeppetto-input");
 const loadingElement = document.getElementById("loading");
 
+var inputHistory = [""];
+var ihLength = 0;
+var ihIndex = 0;
+
 // Variables definitions
 let chatVisible = false;
 let answer = "";
@@ -56,7 +60,7 @@ let history = [];
 // Get the chat history from the local storage
 browser.storage.local.get("hist").then(onGotHist, onErrorHist);
 
-//listner for the toggle button
+// listner for the toggle button
 chatToggle.addEventListener("click", () => {
   chatVisible = !chatVisible;
   chatWidget.classList.toggle("visible", chatVisible);
@@ -68,11 +72,58 @@ chatInput.addEventListener("load", () => {
   chatInput.focus();
 });
 
-// listner for the input field keydown event
-chatInput.addEventListener("keydown", (event) => {
+chatInput.addEventListener("keydown", function (event) {
+  if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+    event.preventDefault(); // Prevent the default behavior of arrow keys (e.g., scrolling)
+
+    if (event.key === "ArrowUp" && ihIndex < ihLength) {
+      console.log("ArrowUp");
+      // Move up in history
+      ihIndex++;
+      console.log(inputHistory[ihIndex]);
+      chatInput.value = inputHistory[ihIndex];
+    } else if (event.key === "ArrowDown" && ihIndex > 0) {
+      console.log("ArrowDown");
+      // Move down in history
+      ihIndex--;
+
+      // Set the input value to the selected history entry
+      chatInput.value = ihIndex === -1 ? "" : inputHistory[ihIndex];
+    }
+  }
+});
+
+chatInput.addEventListener("keyup", function (event) {
   if (event.key === "Enter") {
     event.preventDefault();
     const userInput = chatInput.value.trim();
+
+    // Add the entered text to history when Enter is pressed
+    inputHistory.unshift(userInput);
+    ihLength = inputHistory.length - 1;
+    ihIndex = 0;
+
+    // Ensure "" is always at the first position in history
+    if (inputHistory[0] !== "") {
+      inputHistory.unshift("");
+      ihLength++;
+    }
+
+    // Limit the history to a certain number of entries if needed
+    const maxHistoryLength = 100;
+    if (inputHistory.length > maxHistoryLength) {
+      inputHistory.pop();
+      ihLength--;
+    }
+
+    console.log("ihLength: " + ihLength);
+    console.log(inputHistory);
+
+    // filter inputHistory to remove empty strings
+    inputHistory = inputHistory.filter((x) => x !== "");
+    inputHistory = inputHistory.filter(onlyUnique);
+    inputHistory.unshift("");
+    ihLength = inputHistory.length - 1;
     if (userInput) {
       if (!userInput.startsWith(":") && !userInput.endsWith("+i")) {
         addChatMessage(you, markdownToHtml(userInput));
@@ -81,6 +132,7 @@ chatInput.addEventListener("keydown", (event) => {
       }
       sendChatMessage(userInput);
       chatInput.value = "";
+      ihIndex = 0;
     }
   }
 });
