@@ -20,6 +20,7 @@ function toggleGeppetto() {
   chatInput.focus();
   show = !show;
   browser.storage.local.set({ visible: show });
+  chatInput.focus();
 }
 
 //
@@ -123,4 +124,10 @@ async function getConfigAndApply() {
     // Handle errors here
     console.error("Error:", error);
   }
+}
+
+function cleanHistory(history) {
+  return history.filter(
+    (message) => message.role === "user" || message.role === "assistant"
+  );
 }

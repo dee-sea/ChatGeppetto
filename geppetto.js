@@ -290,6 +290,17 @@ async function sendChatMessage(message) {
       enableChat();
       return;
     }
+  } else if (message == ":clean") {
+    const listMessageHeader = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
+    messageHeader.remove();
+    history = await cleanHistory(history);
+    browser.storage.local.set({ hist: JSON.stringify(history) });
+    enableChat();
+    addChatMessage(assistant, getText("cleanhistory"));
+    return;
   } else if (message == ":clear") {
     history = [];
     browser.storage.local.set({ hist: JSON.stringify(history) });

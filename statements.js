@@ -75,4 +75,8 @@ const statements = {
     fr: "Rôle invalide : Les roles valides sont `user`, `assistant` et `system`.",
     en: "Invalid role : Valid roles are `user`, `assistant` and `system`.",
   },
+  cleanhistory: {
+    fr: "Historique de la conversation nettoyé.",
+    en: "Conversation history cleaned.",
+  },
 };
