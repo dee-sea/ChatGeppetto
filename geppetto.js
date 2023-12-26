@@ -179,6 +179,7 @@ async function sendChatMessage(message) {
       history = await loadConversation(message);
       await addChatMessage(assistant, getText("ok"));
       browser.storage.local.set({ hist: JSON.stringify(history) });
+      location.replace(location.href);
     } else {
       addChatMessage(assistant, getText("invalidName"));
     }
@@ -217,6 +218,78 @@ async function sendChatMessage(message) {
     //
     // Clear command
     //
+  } else if (message == ":pop") {
+    // remove last div whith class chatgeppetto-message-body
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-body"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    // remove last div whith class chatgeppetto-message-header
+    const listMessageHeader = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
+    messageHeader.remove();
+    history.pop();
+    browser.storage.local.set({ hist: JSON.stringify(history) });
+    location.replace(location.href);
+    enableChat();
+    chatInput.focus();
+    return;
+  } else if (message.startsWith(":push ")) {
+    var listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-body"
+    );
+    var messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    var listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    var messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    message = message.replace(":push ", "");
+    let role = message.split(" ")[0];
+    let content = message.replace(role + " ", "");
+    if (
+      role == "user" ||
+      role == "assistant" ||
+      role == "system" ||
+      role == you ||
+      role == assistant
+    ) {
+      if (role == you) {
+        role = "user";
+        name = you;
+      } else if (role == assistant) {
+        role = "assistant";
+        name = assistant;
+      } else if (role == "user") {
+        name = you;
+      } else if (role == "assistant") {
+        name = assistant;
+      } else if (role == "system") {
+        history.push({
+          role: role,
+          content: content,
+        });
+        browser.storage.local.set({ hist: JSON.stringify(history) });
+        enableChat();
+        return;
+      }
+      addChatMessage(name, markdownToHtml(content));
+      history.push({
+        role: role,
+        content: content,
+      });
+      browser.storage.local.set({ hist: JSON.stringify(history) });
+      enableChat();
+      return;
+    } else {
+      addChatMessage(assistant, getText("invalidRole"));
+      enableChat();
+      return;
+    }
   } else if (message == ":clear") {
     history = [];
     browser.storage.local.set({ hist: JSON.stringify(history) });

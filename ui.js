@@ -12,6 +12,7 @@ const htmlContent = `
               id="chatgeppetto-input"
               type="text"
               placeholder="Write your message"
+              autofocus
             />
             <button id="chatgeppetto-send">Send</button>
             <div id="loading">
@@ -55,11 +56,16 @@ let history = [];
 // Get the chat history from the local storage
 browser.storage.local.get("hist").then(onGotHist, onErrorHist);
 
-// listner for the toggle button
+//listner for the toggle button
 chatToggle.addEventListener("click", () => {
   chatVisible = !chatVisible;
   chatWidget.classList.toggle("visible", chatVisible);
   chatToggle.innerText = chatVisible ? "Close" : "Chat";
+});
+
+// add a listner to the input fied to focus make him grab focus on load
+chatInput.addEventListener("load", () => {
+  chatInput.focus();
 });
 
 // listner for the input field keydown event

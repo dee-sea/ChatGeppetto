@@ -15,7 +15,8 @@
 [X] Add the possibility to have different character to handle multiple languages.
 [X] Ajouter la possibilité de sauver et charger des conversations.
 [ ] Add input history.
-[ ] Add a command to remove last message.
+[X] Add a command to remove last message.
+[X] Add a command to inject a message in the conversation.
 [ ] Add a commande to clean the history from system messages
 [ ] Ajouter la possibilité de gérer combien de résultats pour les recherches
 [ ] Paraléiser les chargement de pages web
