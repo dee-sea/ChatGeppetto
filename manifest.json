@@ -8,15 +8,7 @@
     "48": "icons/geppetto-48.png",
     "96": "icons/geppetto-96.png"
   },
-  "permissions": [
-    "activeTab",
-    "contextMenus",
-    "storage",
-    "https://chatapi.thele.me/*",
-    "https://corsanywhere.thele.me/*",
-    "https://chef.thele.me/*",
-    "*://*/*"
-  ],
+  "permissions": ["activeTab", "contextMenus", "storage", "*://*/*"],
   "content_scripts": [
     {
       "matches": ["*://*/*"],
@@ -37,12 +29,7 @@
     "scripts": ["context-menu.js"],
     "persistent": false
   },
-  "host_permissions": [
-    "https://chatapi.thele.me/*",
-    "https://corsanywhere.thele.me/*",
-    "https://chef.thele.me/*",
-    "*://*/*"
-  ],
+  "host_permissions": ["*://*/*"],
   "browser_specific_settings": {
     "gecko": {
       "id": "geppetto@thele.me"

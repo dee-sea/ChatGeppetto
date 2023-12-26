@@ -1,12 +1,3 @@
-// Config file for ChatGeppetto
-// Actual config:
-// searchEngine: "https://searx.thele.me/"
-// GEPPETTO_API_KEY: "sk-Skynet-openchatKEY"
-// GEPPETTO_API_ENDPOINT: "https://chatapi.thele.me/v1/chat/completions"
-// language: "fr"
-// assistant_name: "ChatGeppetto"
-// your_name: "You"
-
 async function setConfig(message) {
   let config = await readConfigFromLocalStorage();
   if (message.startsWith(":set ")) {
@@ -39,7 +30,7 @@ function applyConfig(config) {
     GEPPETTO_API_ENDPOINT = config.api;
     language = config.language;
     template: config.template;
-    character: config.character;
+    character: config.character + "-" + config.language;
     assistant = config.assistant;
     you = config.you;
     browser.storage.local.set({ config: config });
