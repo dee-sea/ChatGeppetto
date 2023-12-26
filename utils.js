@@ -131,3 +131,9 @@ function cleanHistory(history) {
     (message) => message.role === "user" || message.role === "assistant"
   );
 }
+
+function focusInput() {
+  setTimeout(() => {
+    chatInput.focus();
+  }, 100);
+}
