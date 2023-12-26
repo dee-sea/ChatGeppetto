@@ -143,6 +143,77 @@ async function sendChatMessage(message) {
     setConfig(message);
     enableChat();
     return;
+  } else if (message.startsWith(":save ")) {
+    // remove :save from message
+    message = message.replace(":save ", "");
+    //check if message is a valid string to use as a name for the saved config
+    let exists = await conversationExists(message);
+    if (exists) {
+      addChatMessage(assistant, getText("alreadyExists"));
+      enableChat();
+      return;
+    }
+    if (message.match(/^[a-zA-Z0-9]+$/)) {
+      // remove last div whith class chatgeppetto-message-header
+      const listMessageBody = document.querySelectorAll(
+        ".chatgeppetto-message-header"
+      );
+      const messageBody = listMessageBody.item(listMessageBody.length - 1);
+      messageBody.remove();
+      saveConversation(message, history);
+      await addChatMessage(assistant, getText("ok"));
+    } else {
+      addChatMessage(assistant, getText("invalidName"));
+    }
+    enableChat();
+    return;
+  } else if (message.startsWith(":load ")) {
+    message = message.replace(":load ", "");
+    let exists = await conversationExists(message);
+    if (exists) {
+      const listMessageBody = document.querySelectorAll(
+        ".chatgeppetto-message-header"
+      );
+      const messageBody = listMessageBody.item(listMessageBody.length - 1);
+      messageBody.remove();
+      history = await loadConversation(message);
+      await addChatMessage(assistant, getText("ok"));
+      browser.storage.local.set({ hist: JSON.stringify(history) });
+    } else {
+      addChatMessage(assistant, getText("invalidName"));
+    }
+    enableChat();
+  } else if (message.startsWith(":delete ")) {
+    message = message.replace(":delete ", "");
+    let exists = await conversationExists(message);
+    if (exists) {
+      const listMessageBody = document.querySelectorAll(
+        ".chatgeppetto-message-header"
+      );
+      const messageBody = listMessageBody.item(listMessageBody.length - 1);
+      messageBody.remove();
+      await deleteConversation(message);
+      await addChatMessage(assistant, getText("ok"));
+    } else {
+      addChatMessage(assistant, getText("invalidName"));
+    }
+    enableChat();
+  } else if (message == ":list") {
+    // remove last div whith class chatgeppetto-message-header
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    let list = await listSavedConversations();
+    console.log(list);
+    let convlist = getText("savedConversations") + "\n\n";
+    for (let i = 0; i < list.length; i++) {
+      convlist += i + 1 + ". " + list[i].key + "\n";
+    }
+    await addChatMessage(assistant, markdownToHtml(convlist));
+    enableChat();
+    return;
     //
     // Clear command
     //
@@ -173,7 +244,7 @@ async function sendChatMessage(message) {
     //
     // unknown command
     //
-  } else if (message.startsWith("/")) {
+  } else if (message.startsWith(":")) {
     msg = getText("helpcmd");
     addChatMessage(assistant, markdownToHtml(msg));
     enableChat();
