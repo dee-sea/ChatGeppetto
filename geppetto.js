@@ -138,6 +138,16 @@ async function sendChatMessage(message) {
     await deleteConfigFromLocalStorage();
     enableChat();
     return;
+  } else if (message == ":deleteSuggestions") {
+    // remove last div whith class chatgeppetto-message-header
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-header"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.remove();
+    deleteInputHistory();
+    enableChat();
+    return;
   } else if (message == ":config") {
     // remove last div whith class chatgeppetto-message-header
     let config = await readConfigFromLocalStorage();
@@ -251,7 +261,7 @@ async function sendChatMessage(message) {
     browser.storage.local.set({ hist: JSON.stringify(history) });
     location.replace(location.href);
     enableChat();
-    chatInput.focus();
+    focusInput();
     return;
   } else if (message.startsWith(":push ")) {
     var listMessageBody = document.querySelectorAll(
@@ -361,6 +371,8 @@ async function sendChatMessage(message) {
     //
     // Normal message
     //
+    let suggestionBox = document.getElementById("suggestionBox");
+    suggestionBox.style.display = "none";
     await getResponse(history).then((response) => {
       enableChat();
     });
@@ -406,7 +418,6 @@ async function getResponse(history) {
       browser.storage.local.set({ hist: JSON.stringify(history) });
       sendBtn.disabled = false;
       sendInput.disabled = false;
-      sendInput.focus();
     }
   });
 }
@@ -489,7 +500,6 @@ async function getWebpage(url) {
       addChatMessage(assistant, markdownToHtml(getText("loadError")));
       sendBtn.disabled = false;
       sendInput.disabled = false;
-      sendInput.focus();
       let dumb = history.pop();
       dumb = history.pop();
       throw new Error("Something went badly wrong!");
@@ -583,7 +593,6 @@ async function getWebSearchResult(url) {
       console.error(error);
       sendBtn.disabled = false;
       sendInput.disabled = false;
-      sendInput.focus();
     });
   return text;
 }

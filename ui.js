@@ -61,6 +61,13 @@ let history = [];
 // Get the chat history from the local storage
 browser.storage.local.get("hist").then(onGotHist, onErrorHist);
 
+function deleteInputHistory() {
+  inputHistory = [""];
+  ihLength = 0;
+  ihIndex = 0;
+  updateAndPersistInputHistory();
+}
+
 // Function to suggest input based on the current value of the input field
 function suggestInput() {
   const inputValue = chatInput.value.toLowerCase().trim();
@@ -69,6 +76,9 @@ function suggestInput() {
   const suggestions = inputHistory.filter(
     (entry) => entry.toLowerCase().includes(inputValue) && entry !== inputValue
   );
+  // limit the suggestions to 5
+  suggestions.reverse();
+  //suggestions.slice(0, 5);
 
   // Display suggestions in the suggestionBox div
   const suggestionBox = document.getElementById("suggestionBox");
@@ -155,6 +165,11 @@ chatInput.addEventListener("keydown", function (event) {
     if (suggestions.length > 0) {
       chatInput.value = suggestions[0];
       document.getElementById("suggestionBox").style.display = "none";
+
+      // Set focus back to the input field with a slight delay
+      setTimeout(() => {
+        chatInput.focus();
+      }, 10);
     }
   } else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
     // Handle Arrow Up and Arrow Down keys
@@ -179,7 +194,11 @@ chatInput.addEventListener("keydown", function (event) {
 
       // Update the selected suggestion index based on the Arrow Up or Arrow Down key
       if (event.key === "ArrowUp") {
-        selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, 0);
+        if (selectedSuggestionIndex === -1) {
+          selectedSuggestionIndex = suggestionItems.length - 1;
+        } else {
+          selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, 0);
+        }
       } else if (event.key === "ArrowDown") {
         selectedSuggestionIndex = Math.min(
           selectedSuggestionIndex + 1,
@@ -222,10 +241,21 @@ chatInput.addEventListener("keydown", function (event) {
     }
   } else if (event.key === "Escape") {
     // Handle Escape key to close the suggestion list
-    document.getElementById("suggestionBox").style.display = "none";
-    setTimeout(() => {
-      chatInput.focus();
-    }, 10);
+    const suggestionBox = document.getElementById("suggestionBox");
+    if (suggestionBox.style.display !== "none") {
+      suggestionBox.style.display = "none";
+
+      // Set focus back to the input field with a slight delay
+      focusInput();
+    }
+  } else if (event.key === "Backspace" || event.key === "Delete") {
+    // Handle Backspace and Delete keys to close the suggestion list when the input is empty
+    if (chatInput.value.trim() === "") {
+      document.getElementById("suggestionBox").style.display = "none";
+
+      // Set focus back to the input field with a slight delay
+      focusInput();
+    }
   }
 });
 
