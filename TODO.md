@@ -18,4 +18,8 @@
 [X] Add a command to inject a message in the conversation.
 [X] Add a commande to clean the history from system messages
 [X] Add input history.
-[ ] Paraléiser les chargement de pages web
+[X] Add input suggestions.
+[ ] Paraléiser les chargement de pages web.
+[ ] Move files to subfolders.
+[ ] Improve code quality.
+[ ] Improve comments.
