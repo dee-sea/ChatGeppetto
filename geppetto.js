@@ -72,6 +72,7 @@ async function sendChatMessage(message) {
     } else {
       // remove the first word
       word = message.split(" ").slice(0).join(" ");
+      console.log("word: " + word);
       text = message.replace(word, "");
     }
     history.push({
@@ -323,7 +324,7 @@ async function sendChatMessage(message) {
     const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
     messageHeader.remove();
     history = await cleanHistory(history);
-    browser.storage.local.set({ hist: JSON.stringify(history) });
+    browser.storage.local.set({ inputHistory: JSON.stringify(history) });
     enableChat();
     addChatMessage(assistant, getText("cleanhistory"));
     return;
@@ -343,6 +344,10 @@ async function sendChatMessage(message) {
     for (let i = 0; i < listMessageHeader.length; i++) {
       listMessageHeader.item(i).remove();
     }
+    history.push({
+      roles: "system",
+      content: getText("systemPrompt"),
+    });
     history.push({
       role: "assistant",
       content: getText("greeting"),
@@ -382,6 +387,7 @@ async function sendChatMessage(message) {
 }
 
 async function getResponse(history) {
+  console.log("Entered getResponse");
   var source = new SSE(GEPPETTO_API_ENDPOINT, {
     headers: {
       "Content-Type": "application/json",
@@ -399,6 +405,7 @@ async function getResponse(history) {
   source.addEventListener("message", function (e) {
     // Assuming we receive JSON-encoded data payloads:
     try {
+      console.log(e);
       var payload = JSON.parse(e.data);
     } catch (e) {}
     if (payload.choices[0].finish_reason != "stop") {
@@ -414,6 +421,7 @@ async function getResponse(history) {
       messageBody.innerHTML = html;
       hljs.highlightAll();
       chatMessages.scrollTop = chatMessages.scrollHeight;
+      console.log(answer);
       history.push({ role: "assistant", content: answer });
       browser.storage.local.set({ hist: JSON.stringify(history) });
       sendBtn.disabled = false;
