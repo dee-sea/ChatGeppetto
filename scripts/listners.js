@@ -233,6 +233,9 @@ function handleKeyDown(
       // Set focus back to the input field with a slight delay
       focusInput();
     }
+  } else if (event.ctrlKey && event.shiftKey && event.key === "Y") {
+    event.preventDefault();
+    toggleFullScreen();
   }
 }
 

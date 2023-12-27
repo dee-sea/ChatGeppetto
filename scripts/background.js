@@ -1,14 +1,10 @@
+// Create a context menu item
 browser.contextMenus.create({
   id: "ReadPage",
   title: "Read Page Content",
 });
 
-//browser.contextMenus.create({
-//  id: "ReadLink",
-//  title: "Read linked pages",
-//  contexts: ["link"],
-//});
-
+// Function for the context menu item
 browser.contextMenus.onClicked.addListener(function (info, tab) {
   if (info.menuItemId == "ReadPage") {
     browser.tabs.insertCSS({ file: "style.css" });

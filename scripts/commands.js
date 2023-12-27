@@ -231,7 +231,7 @@ async function load(message) {
     history = await loadConversation(message);
     await addChatMessage(assistant, getText("ok"));
     browser.storage.local.set({ hist: JSON.stringify(history) });
-    location.replace(location.href);
+    rebuildChatMessages(history);
   } else {
     addChatMessage(assistant, getText("invalidName"));
   }
@@ -272,14 +272,25 @@ async function listConversations() {
 //
 // Funtion to delete the last message
 //
+// async function pop() {
+//   removeLastMessage();
+//   history.pop();
+//   browser.storage.local.set({ hist: JSON.stringify(history) });
+//   rebuildChatMessages(history);
+//   enableChat();
+//   focusInput();
+//   return;
+// }
 async function pop() {
-  removeLastMessage();
-  history.pop();
+  let poppedMessage;
+  do {
+    poppedMessage = history.pop();
+    removeLastMessage();
+  } while (poppedMessage && poppedMessage.role === "system");
   browser.storage.local.set({ hist: JSON.stringify(history) });
-  location.replace(location.href);
+  rebuildChatMessages(history);
   enableChat();
   focusInput();
-  return;
 }
 
 //

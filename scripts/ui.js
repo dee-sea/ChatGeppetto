@@ -1,7 +1,6 @@
 //
 // Initialize variables
 //
-let show;
 let inputHistory = [""];
 let ihLength = 0;
 let ihIndex = 0;
@@ -63,6 +62,16 @@ chatInput.addEventListener("drop", (event) =>
 chatSendButton.addEventListener("click", () =>
   handleSendButtonClick(chatInput, history)
 );
+document.addEventListener("keydown", (event) => {
+  handleKeyDown(
+    event,
+    chatInput,
+    suggestionBox,
+    ihIndex,
+    ihLength,
+    inputHistory
+  );
+});
 
 //
 // Functions
@@ -136,7 +145,7 @@ function loadInputHistory() {
 function updateAndPersistInputHistory() {
   // Filter inputHistory to remove empty strings
   inputHistory = inputHistory.filter((x) => x !== "");
-  inputhistory = inputHistory.slice(0, 100);
+  inputHistory = inputHistory.slice(0, 100);
   inputHistory = inputHistory.filter(onlyUnique);
   inputHistory.unshift("");
   ihLength = inputHistory.length - 1;

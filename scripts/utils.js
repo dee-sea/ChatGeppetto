@@ -54,7 +54,7 @@ function onErrorShow(error) {
 
 function KeyPress(e) {
   const evtobj = window.event ? event : e;
-  if (evtobj.keyCode === 89 && evtobj.ctrlKey) {
+  if (evtobj.keyCode === 89 && evtobj.ctrlKey && !evtobj.shiftKey) {
     toggleGeppetto();
     if (chatVisible) {
       chatInput.focus();
@@ -62,6 +62,17 @@ function KeyPress(e) {
   } else if (evtobj.keyCode === 69 && evtobj.ctrlKey) {
     focusInput();
   }
+}
+
+function toggleFullScreen() {
+  const widget = document.getElementById("chatgeppetto-widget");
+  const messages = document.getElementById("chatgeppetto-messages");
+  const inputcontainer = document.getElementById(
+    "chatgeppetto-input-container"
+  );
+  widget.classList.toggle("fullscreen");
+  messages.classList.toggle("fullscreen");
+  inputcontainer.classList.toggle("fullscreen");
 }
 
 //
@@ -143,7 +154,7 @@ function focusInput() {
 }
 
 //
-// Message Removal Functions
+// Message Management Functions
 //
 function removeLastElement(selector) {
   const list = document.querySelectorAll(selector);
@@ -170,4 +181,22 @@ function clearChat() {
       ".chatgeppetto-message-body, .chatgeppetto-message-header"
     )
     .forEach((element) => element.remove());
+}
+
+// Function to render or append messages to the UI
+function renderMessages(history) {
+  for (entry in history) {
+    const message = history[entry];
+    if (message.role === "user") {
+      addChatMessage(you, message.content);
+    } else if (message.role === "assistant") {
+      addChatMessage(assistant, message.content);
+    }
+  }
+}
+
+function rebuildChatMessages(history) {
+  // Clear existing messages
+  clearChat();
+  renderMessages(history);
 }
