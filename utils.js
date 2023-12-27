@@ -141,3 +141,41 @@ function focusInput() {
     inputField.focus();
   }, 100);
 }
+
+function removeLastHeader() {
+  //remove last div whith class chatgeppetto-message-header
+  const listMessageHeader = document.querySelectorAll(
+    ".chatgeppetto-message-header"
+  );
+  const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
+  messageHeader.remove();
+}
+
+function removeLastBody() {
+  //remove last div whith class chatgeppetto-message-body
+  const listMessageBody = document.querySelectorAll(
+    ".chatgeppetto-message-body"
+  );
+  const messageBody = listMessageBody.item(listMessageBody.length - 1);
+  messageBody.remove();
+}
+
+function removeLastMessage() {
+  removeLastBody();
+  removeLastHeader();
+}
+
+function clearChat() {
+  const listMessageBody = document.querySelectorAll(
+    ".chatgeppetto-message-body"
+  );
+  const listMessageHeader = document.querySelectorAll(
+    ".chatgeppetto-message-header"
+  );
+  for (let i = 0; i < listMessageBody.length; i++) {
+    listMessageBody.item(i).remove();
+  }
+  for (let i = 0; i < listMessageHeader.length; i++) {
+    listMessageHeader.item(i).remove();
+  }
+}

@@ -56,17 +56,7 @@ async function sendChatMessage(message) {
     message.startsWith("Find ") ||
     message.startsWith("find ") // english
   ) {
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-body"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
-    //remove last div whith class chatgeppetto-message-header
-    const listMessageHeader = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
-    messageHeader.remove();
+    removeLastMessage();
     if (message.endsWith("+i")) {
       text = message.replace("+i", "");
     } else {
@@ -120,53 +110,27 @@ async function sendChatMessage(message) {
     enableChat();
     return;
   } else if (message == ":hist") {
-    // remove last div whith class chatgeppetto-message-header
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
+    removeLastHeader();
     console.log(history);
     enableChat();
     return;
   } else if (message == ":deleteConfig") {
-    // remove last div whith class chatgeppetto-message-header
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
+    reomveLastHeader();
     await deleteConfigFromLocalStorage();
     enableChat();
     return;
   } else if (message == ":deleteSuggestions") {
-    // remove last div whith class chatgeppetto-message-header
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
+    removeLastHeader();
     deleteInputHistory();
     enableChat();
     return;
   } else if (message == ":config") {
-    // remove last div whith class chatgeppetto-message-header
-    let config = await readConfigFromLocalStorage();
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
+    removeLastHeader();
     console.log(config);
     enableChat();
     return;
   } else if (message.startsWith(":set ")) {
-    // remove last div whith class chatgeppetto-message-header
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
+    removeLastHeader();
     setConfig(message);
     enableChat();
     return;
@@ -181,12 +145,7 @@ async function sendChatMessage(message) {
       return;
     }
     if (message.match(/^[a-zA-Z0-9]+$/)) {
-      // remove last div whith class chatgeppetto-message-header
-      const listMessageBody = document.querySelectorAll(
-        ".chatgeppetto-message-header"
-      );
-      const messageBody = listMessageBody.item(listMessageBody.length - 1);
-      messageBody.remove();
+      removeLastHeader();
       saveConversation(message, history);
       await addChatMessage(assistant, getText("ok"));
     } else {
@@ -198,11 +157,7 @@ async function sendChatMessage(message) {
     message = message.replace(":load ", "");
     let exists = await conversationExists(message);
     if (exists) {
-      const listMessageBody = document.querySelectorAll(
-        ".chatgeppetto-message-header"
-      );
-      const messageBody = listMessageBody.item(listMessageBody.length - 1);
-      messageBody.remove();
+      removeLastHeader();
       history = await loadConversation(message);
       await addChatMessage(assistant, getText("ok"));
       browser.storage.local.set({ hist: JSON.stringify(history) });
@@ -215,11 +170,7 @@ async function sendChatMessage(message) {
     message = message.replace(":delete ", "");
     let exists = await conversationExists(message);
     if (exists) {
-      const listMessageBody = document.querySelectorAll(
-        ".chatgeppetto-message-header"
-      );
-      const messageBody = listMessageBody.item(listMessageBody.length - 1);
-      messageBody.remove();
+      removeLastHeader();
       await deleteConversation(message);
       await addChatMessage(assistant, getText("ok"));
     } else {
@@ -227,12 +178,7 @@ async function sendChatMessage(message) {
     }
     enableChat();
   } else if (message == ":list") {
-    // remove last div whith class chatgeppetto-message-header
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
+    removeLastHeader();
     let list = await listSavedConversations();
     console.log(list);
     let convlist = getText("savedConversations") + "\n\n";
@@ -243,18 +189,7 @@ async function sendChatMessage(message) {
     enableChat();
     return;
   } else if (message == ":pop") {
-    // remove last div whith class chatgeppetto-message-body
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-body"
-    );
-    const messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
-    // remove last div whith class chatgeppetto-message-header
-    const listMessageHeader = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
-    messageHeader.remove();
+    removeLastMessage();
     history.pop();
     browser.storage.local.set({ hist: JSON.stringify(history) });
     location.replace(location.href);
@@ -262,16 +197,7 @@ async function sendChatMessage(message) {
     focusInput();
     return;
   } else if (message.startsWith(":push ")) {
-    var listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-body"
-    );
-    var messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
-    var listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    var messageBody = listMessageBody.item(listMessageBody.length - 1);
-    messageBody.remove();
+    removeLastMessage();
     message = message.replace(":push ", "");
     let role = message.split(" ")[0];
     let content = message.replace(role + " ", "");
@@ -315,11 +241,7 @@ async function sendChatMessage(message) {
       return;
     }
   } else if (message == ":clean") {
-    const listMessageHeader = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    const messageHeader = listMessageHeader.item(listMessageHeader.length - 1);
-    messageHeader.remove();
+    removeLastHeader();
     history = await cleanHistory(history);
     browser.storage.local.set({ inputHistory: JSON.stringify(history) });
     enableChat();
@@ -329,18 +251,7 @@ async function sendChatMessage(message) {
     history = [];
     browser.storage.local.set({ hist: JSON.stringify(history) });
     enableChat();
-    const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-body"
-    );
-    const listMessageHeader = document.querySelectorAll(
-      ".chatgeppetto-message-header"
-    );
-    for (let i = 0; i < listMessageBody.length; i++) {
-      listMessageBody.item(i).remove();
-    }
-    for (let i = 0; i < listMessageHeader.length; i++) {
-      listMessageHeader.item(i).remove();
-    }
+    clearChat();
     history.push({
       role: "system",
       content: getText("systemPrompt"),
@@ -379,6 +290,7 @@ async function sendChatMessage(message) {
       enableChat();
     });
     content;
+    browser.storage.local.set({ hist: JSON.stringify(history) });
   }
   return;
 }
@@ -605,55 +517,149 @@ async function getWebSearchResult(url) {
   return text;
 }
 
+// Function to get search results
 async function getSearchResults(url) {
-  let text = "";
-  let urllist = [];
-  pagecontent = await fetch(urlsearch, { origin: searchEngine }).then(
-    (response) => {
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP ${response.status}`);
+  const urllist = await fetch(urlsearch, { origin: searchEngine })
+    .then((response) => response.text())
+    .then((pagecontent) => {
+      const doc = new DOMParser().parseFromString(pagecontent, "text/html");
+      const elementList = doc.querySelectorAll(["a"]);
+      const filteredUrls = [];
+
+      for (let u = 0; u < elementList.length - 1; u++) {
+        const href = elementList.item(u).href.trim();
+        if (
+          href.includes(searchEngine) ||
+          href.includes("proxy.thele.me") ||
+          href.includes("web.archive.org")
+        ) {
+          continue;
+        }
+        filteredUrls.push(href);
       }
-      return response.text();
-    }
-  );
-  var doc = new DOMParser().parseFromString(pagecontent, "text/html");
+
+      return filteredUrls.slice(0, 5); // Adjust the limit as needed
+    })
+    .catch((error) => {
+      console.error(error);
+      sendBtn.disabled = false;
+      sendInput.disabled = false;
+    });
+
+  const fetchPromises = urllist.map(async (url, index) => {
+    return getWebSearchResult(url, index + 1, urllist.length);
+  });
+
+  const results = await Promise.all(fetchPromises);
+
   let pagelist = getText("resultPages");
-  elementList = doc.querySelectorAll(["a"]);
-  for (u = 0; u < elementList.length - 1; u++) {
-    if (
-      elementList.item(u).href.includes(searchEngine) ||
-      elementList.item(u).href.includes("proxy.thele.me") ||
-      elementList.item(u).href.includes("web.archive.org")
-    )
-      continue;
-    url = elementList.item(u).href.trim();
-    console.log("URL: " + url);
-    urllist.push(url);
+  for (let t = 0; t < results.length; t++) {
+    pagelist +=
+      urllist[t] +
+      getText("shortSeparator") +
+      results[t] +
+      getText("longSeparator");
   }
-  urllist = urllist.filter(onlyUnique);
-  urllist = urllist.slice(0, 5);
-  let urlnum = urllist.length;
+
+  history.pop();
+  pagelist +=
+    "Read and remember them carefully; you will be tested on them later.";
+  history.push({ role: "system", content: pagelist });
+  browser.storage.local.set({ hist: JSON.stringify(history) });
+
+  return pagelist;
+}
+
+// Function to get search results
+async function getSearchResults(url) {
+  const urllist = await fetch(urlsearch, { origin: searchEngine })
+    .then((response) => response.text())
+    .then((pagecontent) => {
+      const doc = new DOMParser().parseFromString(pagecontent, "text/html");
+      const elementList = doc.querySelectorAll(["a"]);
+      const filteredUrls = [];
+
+      for (let u = 0; u < elementList.length - 1; u++) {
+        const href = elementList.item(u).href.trim();
+        if (
+          href.includes(searchEngine) ||
+          href.includes("proxy.thele.me") ||
+          href.includes("web.archive.org")
+        ) {
+          continue;
+        }
+        filteredUrls.push(href);
+      }
+
+      return filteredUrls.slice(0, 5); // Adjust the limit as needed
+    })
+    .catch((error) => {
+      console.error(error);
+      sendBtn.disabled = false;
+      sendInput.disabled = false;
+    });
+
+  const fetchPromises = urllist.map(async (url, index) => {
+    return getWebSearchResult(url, index + 1, urllist.length);
+  });
+
+  const results = await Promise.all(fetchPromises);
+
+  let pagelist = getText("resultPages");
+  for (let t = 0; t < results.length; t++) {
+    pagelist +=
+      urllist[t] +
+      getText("shortSeparator") +
+      results[t] +
+      getText("longSeparator");
+  }
+
+  history.pop();
+  pagelist +=
+    "Read and remember them carefully; you will be tested on them later.";
+  history.push({ role: "system", content: pagelist });
+  browser.storage.local.set({ hist: JSON.stringify(history) });
+
+  //remove last div whith class chatgeppetto-message-body
   const listMessageBody = document.querySelectorAll(
     ".chatgeppetto-message-body"
   );
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
   messageBody.innerHTML = "";
-  for (t = 0; t < urllist.length; t++) {
-    messageBody.innerHTML =
-      getText("reading") + (t + 1) + "/" + urllist.length + "*";
-    pagelist =
-      pagelist +
-      urllist[t] +
-      getText("shortSeparator") +
-      (await getWebSearchResult(urllist[t])) +
-      getText("longSeparator");
-  }
-  history.pop();
-  pagelist =
-    pagelist +
-    "Read and remember them carefully, you will be tested on them later.";
-  history.push({ role: "system", content: pagelist });
-  browser.storage.local.set({ hist: JSON.stringify(history) });
-  messageBody.innerHTML = "";
   return pagelist;
+}
+
+// Function to fetch the content of a single search result URL
+async function getWebSearchResult(url, currentIndex, totalUrls) {
+  let text = await fetch(url, { origin: searchEngine })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP Error ${response.status}`);
+      }
+      return response.text();
+    })
+    .then((html) => {
+      const doc = new DOMParser().parseFromString(html, "text/html");
+      const elementList = doc.querySelectorAll([
+        "p",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "figcaption",
+      ]);
+      let resultText = "";
+      for (let u = 0; u < elementList.length; u++) {
+        resultText += "\n\n" + elementList.item(u).textContent.trim();
+      }
+      return resultText.trim();
+    })
+    .catch((error) => {
+      console.error(error);
+      // Handle error
+      return ""; // Placeholder for error handling, adjust as needed
+    });
+
+  return text;
 }
