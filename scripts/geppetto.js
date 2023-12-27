@@ -115,7 +115,7 @@ async function sendChatMessage(message) {
     enableChat();
     return;
   } else if (message == ":deleteConfig") {
-    reomveLastHeader();
+    removeLastHeader();
     await deleteConfigFromLocalStorage();
     enableChat();
     return;
@@ -125,6 +125,7 @@ async function sendChatMessage(message) {
     enableChat();
     return;
   } else if (message == ":config") {
+    let config = getCurrentConfig();
     removeLastHeader();
     console.log(config);
     enableChat();

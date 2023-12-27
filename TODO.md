@@ -20,6 +20,6 @@
 [X] Add input history.
 [X] Add input suggestions.
 [X] Paraléiser les chargement de pages web.
-[ ] Move files to subfolders.
+[X] Move files to subfolders.
 [ ] Improve code quality.
 [ ] Improve comments.

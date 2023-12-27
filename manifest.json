@@ -13,10 +13,10 @@
     {
       "matches": ["*://*/*"],
       "js": [
-        "scripts/geppetto.js",
         "scripts/utils.js",
         "scripts/config.js",
         "scripts/statements.js",
+        "scripts/geppetto.js",
         "scripts/ui.js",
         "scripts/conversations.js",
         "third-party/highlight.min.js",
