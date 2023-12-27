@@ -242,9 +242,6 @@ async function sendChatMessage(message) {
     await addChatMessage(assistant, markdownToHtml(convlist));
     enableChat();
     return;
-    //
-    // Clear command
-    //
   } else if (message == ":pop") {
     // remove last div whith class chatgeppetto-message-body
     const listMessageBody = document.querySelectorAll(
@@ -345,7 +342,7 @@ async function sendChatMessage(message) {
       listMessageHeader.item(i).remove();
     }
     history.push({
-      roles: "system",
+      role: "system",
       content: getText("systemPrompt"),
     });
     history.push({
@@ -395,17 +392,20 @@ async function getResponse(history) {
     },
     payload: JSON.stringify({
       messages: history,
-      mode: "instruct",
+      mode: "chat-instruct",
       instruction_template: "Mistral",
-      character: "ChatGeppetto",
+      character: "ChatGeppetto-fr",
       stream: true,
       temperature: 0.7,
     }),
   });
+  source.addEventListener("error", function (e) {
+    console.error("SSE Error:", e);
+  });
   source.addEventListener("message", function (e) {
+    console.log(e);
     // Assuming we receive JSON-encoded data payloads:
     try {
-      console.log(e);
       var payload = JSON.parse(e.data);
     } catch (e) {}
     if (payload.choices[0].finish_reason != "stop") {
