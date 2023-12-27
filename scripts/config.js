@@ -1,3 +1,6 @@
+//
+// Function to set a config value
+//
 async function setConfig(message) {
   let config = await readConfigFromLocalStorage();
 
@@ -23,6 +26,9 @@ async function setConfig(message) {
   }
 }
 
+//
+// Function to reaload the config
+//
 async function applyConfig(config) {
   if (config) {
     searchEngine = config.searchEngine;
@@ -36,6 +42,9 @@ async function applyConfig(config) {
   }
 }
 
+//
+// Function to read the current config from local storage
+//
 async function readConfigFromLocalStorage() {
   try {
     const result = await browser.storage.local.get("config");
@@ -61,6 +70,9 @@ async function readConfigFromLocalStorage() {
   }
 }
 
+//
+// Function to save the config to local storage
+//
 async function saveConfig(config) {
   try {
     await browser.storage.local.set({ config });
@@ -70,6 +82,9 @@ async function saveConfig(config) {
   }
 }
 
+//
+// Function to get the current config
+//
 async function getCurrentConfig() {
   try {
     const result = await browser.storage.local.get("config");
@@ -80,6 +95,9 @@ async function getCurrentConfig() {
   }
 }
 
+//
+// Function to delete the current config
+//
 async function deleteConfigFromLocalStorage() {
   try {
     await browser.storage.local.remove("config");

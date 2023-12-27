@@ -1,4 +1,6 @@
+//
 // Initialize variables
+//
 let show;
 let inputHistory = [""];
 let ihLength = 0;
@@ -7,14 +9,18 @@ let chatVisible = false;
 let answer = "";
 let history = [];
 
+//
 // Initialize the chat widget
+//
 injectHTMO();
 getConfigAndApply();
 browser.storage.local.get("visible").then(onGotShow, onErrorShow);
 browser.storage.local.get("hist").then(onGotHist, onErrorHist);
 loadInputHistory();
 
+//
 // get refs to UI elements
+//
 const chatToggle = document.getElementById("chatgeppetto-toggle");
 const chatWidget = document.getElementById("chatgeppetto-widget");
 const chatContainer = document.getElementById("chatgeppetto-container");
@@ -26,7 +32,9 @@ const sendInput = document.getElementById("chatgeppetto-input");
 const loadingElement = document.getElementById("loading");
 const suggestionBox = document.getElementById("suggestionBox");
 
+//
 // Assign event listeners
+//
 document.onkeydown = KeyPress;
 browser.runtime.onMessage.addListener(handleReadItMessage);
 chatToggle.addEventListener("click", () =>
@@ -60,6 +68,9 @@ chatSendButton.addEventListener("click", () =>
 // Functions
 //
 
+//
+// Function to delete the input history
+//
 function deleteInputHistory() {
   inputHistory = [""];
   ihLength = 0;
@@ -67,7 +78,9 @@ function deleteInputHistory() {
   updateAndPersistInputHistory();
 }
 
+//
 // Function to suggest input based on the current value of the input field
+//
 function suggestInput() {
   const inputValue = chatInput.value.toLowerCase().trim();
 
@@ -100,7 +113,9 @@ function suggestInput() {
   suggestionBox.style.display = suggestions.length > 0 ? "block" : "none";
 }
 
+//
 // Function to load the input history from localStorage
+//
 function loadInputHistory() {
   browser.storage.local.get("inputHist").then(
     (result) => {
@@ -115,10 +130,9 @@ function loadInputHistory() {
   );
 }
 
-// Load the input history when the page is loaded
-loadInputHistory();
-
+//
 // Function to update the input history and persist it in localStorage
+//
 function updateAndPersistInputHistory() {
   // Filter inputHistory to remove empty strings
   inputHistory = inputHistory.filter((x) => x !== "");
@@ -131,7 +145,9 @@ function updateAndPersistInputHistory() {
   browser.storage.local.set({ inputHist: JSON.stringify(inputHistory) });
 }
 
+//
 // Function to inject the HTML for the chat widget
+//
 function injectHTMO() {
   const htmlContent = `
       <button id="chatgeppetto-toggle" display="none"><i class="far fa-comment"></i></button>

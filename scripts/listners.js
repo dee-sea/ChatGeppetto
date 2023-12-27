@@ -1,4 +1,6 @@
+//
 // Event listener function for Tab key
+//
 function handleTabKey(event, chatInput, suggestionBox, inputHistory) {
   //function handleTabKey(event) {
   if (event.key === "Tab") {
@@ -18,7 +20,9 @@ function handleTabKey(event, chatInput, suggestionBox, inputHistory) {
   }
 }
 
+//
 // Event listener function for Arrow Up and Arrow Down keys
+//
 function handleArrowKeys(
   event,
   chatInput,
@@ -27,7 +31,6 @@ function handleArrowKeys(
   ihLength,
   inputHistory
 ) {
-  // function handleArrowKeys(event) {
   if (event.key === "ArrowUp" || event.key === "ArrowDown") {
     event.preventDefault();
 
@@ -81,9 +84,10 @@ function handleArrowKeys(
   }
 }
 
+//
 // Event listener function for Enter key
+//
 function handleEnterKey(event, chatInput, ihIndex, ihLength, inputHistory) {
-  // function handleEnterKey(event) {
   if (event.key === "Enter") {
     event.preventDefault();
     const userInput = chatInput.value.trim();
@@ -118,6 +122,9 @@ function handleEnterKey(event, chatInput, ihIndex, ihLength, inputHistory) {
   }
 }
 
+//
+// Event listener function for input field keydown event
+//
 function handleKeyDown(
   event,
   chatInput,
@@ -126,7 +133,6 @@ function handleKeyDown(
   ihLength,
   inputHistory
 ) {
-  // function handleKeyDown(event) {
   if (event.key === "Tab") {
     // Handle Tab key for accepting suggestions
     event.preventDefault();
@@ -230,9 +236,10 @@ function handleKeyDown(
   }
 }
 
+//
 // Event listener function for keyup event
+//
 function handleKeyUp(event, chatInput, ihIndex, ihLength, inputHistory) {
-  // function handleKeyUp(event) {
   if (event.key === "Enter") {
     event.preventDefault();
     const userInput = chatInput.value.trim();
@@ -283,9 +290,10 @@ function handleKeyUp(event, chatInput, ihIndex, ihLength, inputHistory) {
   }
 }
 
+//
 // Event listener function for drop event
+//
 function handleDrop(event, chatInput, inputHistory) {
-  // function handleDrop(event) {
   event.preventDefault();
   const userInput = event.dataTransfer.getData("text");
   if (userInput.startsWith("http://") || userInput.startsWith("https://")) {
@@ -304,9 +312,10 @@ function handleDrop(event, chatInput, inputHistory) {
   }
 }
 
+//
 // Event listener function for click event on send button
+//
 function handleSendButtonClick(chatInput, history) {
-  // function handleSendButtonClick() {
   const userInput = chatInput.value.trim();
   if (userInput) {
     addChatMessage(you, userInput);
@@ -317,24 +326,28 @@ function handleSendButtonClick(chatInput, history) {
   }
 }
 
+//
 // Event listener function for click event on chat toggle button
+//
 function handleChatToggleClick(chatWidget, chatToggle, chatVisible) {
-  // function handleChatToggleClick() {
   chatVisible = !chatVisible;
   chatWidget.classList.toggle("visible", chatVisible);
   chatToggle.innerText = chatVisible ? "Close" : "Chat";
 }
 
+//
 // Event listener function for input event
+//
 function handleInputChange(chatInput) {
-  // function handleInputChange() {
   suggestInput();
   if (chatInput.value.trim() === "") {
     document.getElementById("suggestionBox").style.display = "none";
   }
 }
 
+//
 // Event listener function for read-it message
+//
 function handleReadItMessage(msg) {
   if (msg.command === "read-it") {
     alert("read-it");

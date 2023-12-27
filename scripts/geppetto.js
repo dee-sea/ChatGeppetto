@@ -1,3 +1,4 @@
+// Constants
 const SEARCH_RESULT_LIMIT = 5;
 
 // Config
@@ -108,6 +109,9 @@ async function getWebpage(url) {
   return text;
 }
 
+//
+// Function to get the text of the current page
+//
 function readPageContent() {
   addChatMessage(you, getText("readText"));
   history.push({ role: "user", content: getText("readText") });
@@ -135,6 +139,9 @@ function readPageContent() {
   sendChatMessage(command);
 }
 
+//
+// Function to ask the LLM to suggest a query to search the web
+//
 async function getSearchQuery(history) {
   var localhistory = history;
   localhistory.push({
@@ -165,7 +172,9 @@ async function getSearchQuery(history) {
   return searchQuery;
 }
 
+//
 // Function to get search results
+//
 async function getSearchResults(url) {
   try {
     const urllist = await fetch(urlsearch, { origin: searchEngine })
@@ -227,7 +236,9 @@ async function getSearchResults(url) {
   }
 }
 
+//
 // Function to fetch the content of a single search result URL
+//
 async function getWebSearchResult(url, currentIndex, totalUrls) {
   try {
     let text = await fetch(url, { origin: searchEngine })

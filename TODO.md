@@ -21,5 +21,6 @@
 [X] Add input suggestions.
 [X] Paraléiser les chargement de pages web.
 [X] Move files to subfolders.
-[ ] Improve code quality.
-[ ] Improve comments.
+[X] Improve code quality.
+[X] Improve comments.
+[ ] Publish first version on Github.

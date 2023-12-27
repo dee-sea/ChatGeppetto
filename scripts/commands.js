@@ -1,8 +1,8 @@
+//
+// Function to handle execution flow of commands
+//
 async function executeCommand(message) {
   answer = "";
-  //
-  // Read webpage command
-  //
   if (message.startsWith("http://") || message.startsWith("https://")) {
     getURL(message).then((response) => {
       enableChat();
@@ -60,6 +60,9 @@ async function executeCommand(message) {
   }
 }
 
+//
+// Functon tu scrap the content of a webpage
+//
 async function getURL(message) {
   text = await getWebpage(message);
   removeLastHeader();
@@ -81,6 +84,9 @@ async function getURL(message) {
   enableChat();
 }
 
+//
+// Function to make the bot search the web
+//
 async function searchTheWeb(message) {
   removeLastHeader();
   removeLastMessage();
@@ -112,6 +118,9 @@ async function searchTheWeb(message) {
   return;
 }
 
+//
+// Function to read the content of a webpage
+//
 async function readPageContent(message) {
   text = message.replace(":readpagecontent ", "");
 
@@ -136,6 +145,9 @@ async function readPageContent(message) {
   return;
 }
 
+//
+// Function to print the conversation history in the console
+//
 async function hist() {
   removeLastHeader();
   console.log(history);
@@ -143,6 +155,9 @@ async function hist() {
   return;
 }
 
+//
+// Function to delete the current config
+//
 async function deleteConfig() {
   removeLastHeader();
   await deleteConfigFromLocalStorage();
@@ -150,6 +165,9 @@ async function deleteConfig() {
   return;
 }
 
+//
+// Function to delete the suggestion history
+//
 async function deleteSuggestions() {
   removeLastHeader();
   deleteInputHistory();
@@ -157,6 +175,9 @@ async function deleteSuggestions() {
   return;
 }
 
+//
+// Function to print the current config
+//
 async function printConfig() {
   let config = getCurrentConfig();
   removeLastHeader();
@@ -165,6 +186,9 @@ async function printConfig() {
   return;
 }
 
+//
+// Function to set a config value
+//
 async function setValue(message) {
   removeLastHeader();
   setConfig(message);
@@ -172,6 +196,9 @@ async function setValue(message) {
   return;
 }
 
+//
+// Function to save the current conversation
+//
 async function save(message) {
   // remove :save from message
   message = message.replace(":save ", "");
@@ -193,6 +220,9 @@ async function save(message) {
   return;
 }
 
+//
+// Function to load a saved conversation
+//
 async function load(message) {
   message = message.replace(":load ", "");
   let exists = await conversationExists(message);
@@ -208,6 +238,9 @@ async function load(message) {
   enableChat();
 }
 
+//
+// Function to delete a saved conversation
+//
 async function deleteConv(message) {
   message = message.replace(":delete ", "");
   let exists = await conversationExists(message);
@@ -221,6 +254,9 @@ async function deleteConv(message) {
   enableChat();
 }
 
+//
+// Function to list the saved conversations
+//
 async function listConversations() {
   removeLastHeader();
   let list = await listSavedConversations();
@@ -233,6 +269,9 @@ async function listConversations() {
   return;
 }
 
+//
+// Funtion to delete the last message
+//
 async function pop() {
   removeLastMessage();
   history.pop();
@@ -243,6 +282,9 @@ async function pop() {
   return;
 }
 
+//
+// Function to inject a message in the conversation
+//
 async function push(message) {
   removeLastMessage();
   message = message.replace(":push ", "");
@@ -289,6 +331,9 @@ async function push(message) {
   }
 }
 
+//
+// Function to clean the conversation history from system messages
+//
 async function clean() {
   removeLastHeader();
   history = await cleanHistory(history);
@@ -298,6 +343,9 @@ async function clean() {
   return;
 }
 
+//
+// Function to clear the conversation history
+//
 async function clear() {
   history = [];
   browser.storage.local.set({ hist: JSON.stringify(history) });
@@ -320,6 +368,9 @@ async function clear() {
   //
 }
 
+//
+// Function to print the known commands
+//
 async function helpCmd() {
   msg = getText("helpcmd");
   addChatMessage(assistant, markdownToHtml(msg));
@@ -330,6 +381,9 @@ async function helpCmd() {
   //
 }
 
+//
+// Function to print the help message
+//
 async function help() {
   let msg = getText("help");
   addChatMessage(assistant, markdownToHtml(msg));
@@ -337,6 +391,9 @@ async function help() {
   return;
 }
 
+//
+// Function to pass the message to the LLM
+//
 async function notACommand() {
   let suggestionBox = document.getElementById("suggestionBox");
   suggestionBox.style.display = "none";

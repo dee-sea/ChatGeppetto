@@ -1,3 +1,6 @@
+//
+// Function to get the stream response from the API endpoint
+//
 async function getResponse(history) {
   var source = new SSE(GEPPETTO_API_ENDPOINT, {
     headers: {
@@ -14,9 +17,16 @@ async function getResponse(history) {
     }),
   });
 
+  //
+  // Function to handle the SSE error response
+  //
   source.addEventListener("error", function (e) {
     console.error("SSE Error:", e);
   });
+
+  //
+  // Function to handle the SSE response
+  //
   source.addEventListener("message", function (e) {
     // Assuming we receive JSON-encoded data payloads:
     try {

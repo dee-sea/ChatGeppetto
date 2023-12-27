@@ -1,3 +1,6 @@
+//
+// Description: This file contains the statements used by the code with their translations.
+//
 const statements = {
   readText: {
     fr: "Lis attentivement et souviens toi du texte suivant:",

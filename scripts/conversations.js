@@ -1,4 +1,6 @@
+//
 // Function to save the conversation to local storage
+//
 async function saveConversation(conversationKey, conversation) {
   try {
     const storedConversations = await browser.storage.local.get(
@@ -12,7 +14,9 @@ async function saveConversation(conversationKey, conversation) {
   }
 }
 
+//
 // Function to load the conversation from local storage
+//
 async function loadConversation(conversationKey) {
   try {
     const storedConversations = await browser.storage.local.get(
@@ -32,7 +36,9 @@ async function loadConversation(conversationKey) {
   }
 }
 
+//
 // Function to list all saved conversations in local storage
+//
 async function listSavedConversations() {
   try {
     const storedConversations = await browser.storage.local.get(
@@ -46,7 +52,9 @@ async function listSavedConversations() {
   }
 }
 
+//
 // Function to delete a conversation from local storage
+//
 async function deleteConversation(conversationKey) {
   try {
     const storedConversations = await browser.storage.local.get(
@@ -64,7 +72,9 @@ async function deleteConversation(conversationKey) {
   }
 }
 
+//
 // Function to check if a conversation with a given key exists
+//
 async function conversationExists(conversationKey) {
   try {
     const storedConversations = await browser.storage.local.get(
@@ -79,7 +89,9 @@ async function conversationExists(conversationKey) {
   }
 }
 
+//
 // Centralized error handling function
+//
 function handleStorageError(message, error) {
   console.error(`${message}:`, error);
 }
