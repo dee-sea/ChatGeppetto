@@ -1,3 +1,5 @@
+const SEARCH_RESULT_LIMIT = 5;
+
 // Config
 var searchEngine = "";
 var GEPPETTO_API_KEY = "";
@@ -14,62 +16,11 @@ var you = "You";
 // @return: nothing
 //
 async function sendChatMessage(message) {
-  answer = "";
-  let text = "";
-
   disableChat();
-
+  closeSuggestions();
   addChatMessage(assistant, "");
-
   executeCommand(message);
-  return;
-}
-
-async function getResponse(history) {
-  console.log("Entered getResponse");
-  var source = new SSE(GEPPETTO_API_ENDPOINT, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${GEPPETTO_API_KEY}`,
-    },
-    payload: JSON.stringify({
-      messages: history,
-      mode: "chat-instruct",
-      instruction_template: "Mistral",
-      character: "ChatGeppetto-fr",
-      stream: true,
-      temperature: 0.7,
-    }),
-  });
-  source.addEventListener("error", function (e) {
-    console.error("SSE Error:", e);
-  });
-  source.addEventListener("message", function (e) {
-    console.log(e);
-    // Assuming we receive JSON-encoded data payloads:
-    try {
-      var payload = JSON.parse(e.data);
-    } catch (e) {}
-    if (payload.choices[0].finish_reason != "stop") {
-      const chatbotResponseElement = payload.choices[0].delta.content;
-      appendChatElement(chatbotResponseElement);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    } else {
-      const listMessageBody = document.querySelectorAll(
-        ".chatgeppetto-message-body"
-      );
-      const messageBody = listMessageBody.item(listMessageBody.length - 1);
-      let html = markdownToHtml(answer);
-      messageBody.innerHTML = html;
-      hljs.highlightAll();
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      console.log(answer);
-      history.push({ role: "assistant", content: answer });
-      browser.storage.local.set({ hist: JSON.stringify(history) });
-      sendBtn.disabled = false;
-      sendInput.disabled = false;
-    }
-  });
+  enableChat();
 }
 
 //
@@ -199,7 +150,7 @@ async function getSearchQuery(history) {
     body: JSON.stringify({
       messages: localhistory,
       mode: "instruct",
-      instruction_template: "Mistral",
+      instruction_template: template,
       stream: false,
       temperature: 1,
     }),
@@ -214,182 +165,108 @@ async function getSearchQuery(history) {
   return searchQuery;
 }
 
-async function getWebSearchResult(url) {
-  text = "";
-  await fetch(url, { origin: searchEngine })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Erreur HTTP ${response.status}`);
-      }
-      return response.text();
-    })
-    .then((html) => {
-      var doc = new DOMParser().parseFromString(html, "text/html");
-      elementList = doc.querySelectorAll([
-        "p",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "figcaption",
-      ]);
-      for (u = 0; u < elementList.length; u++) {
-        text = text + "\n\n" + elementList.item(u).textContent.trim();
-      }
-      text = text.trim();
-    })
-    .catch((error) => {
-      console.error(error);
-      sendBtn.disabled = false;
-      sendInput.disabled = false;
-    });
-  return text;
-}
-
 // Function to get search results
 async function getSearchResults(url) {
-  const urllist = await fetch(urlsearch, { origin: searchEngine })
-    .then((response) => response.text())
-    .then((pagecontent) => {
-      const doc = new DOMParser().parseFromString(pagecontent, "text/html");
-      const elementList = doc.querySelectorAll(["a"]);
-      const filteredUrls = [];
+  try {
+    console.log("3");
+    const urllist = await fetch(urlsearch, { origin: searchEngine })
+      .then((response) => response.text())
+      .then((pagecontent) => {
+        const doc = new DOMParser().parseFromString(pagecontent, "text/html");
+        const elementList = doc.querySelectorAll(["a"]);
+        const filteredUrls = [];
 
-      for (let u = 0; u < elementList.length - 1; u++) {
-        const href = elementList.item(u).href.trim();
-        if (
-          href.includes(searchEngine) ||
-          href.includes("proxy.thele.me") ||
-          href.includes("web.archive.org")
-        ) {
-          continue;
+        for (let u = 0; u < elementList.length - 1; u++) {
+          const href = elementList.item(u).href.trim();
+          if (
+            href.includes(searchEngine) ||
+            href.includes("proxy.thele.me") ||
+            href.includes("web.archive.org")
+          ) {
+            continue;
+          }
+          filteredUrls.push(href);
         }
-        filteredUrls.push(href);
-      }
 
-      return filteredUrls.slice(0, 5); // Adjust the limit as needed
-    })
-    .catch((error) => {
-      console.error(error);
-      sendBtn.disabled = false;
-      sendInput.disabled = false;
+        return filteredUrls.slice(0, SEARCH_RESULT_LIMIT); // Adjust the limit as needed
+      })
+      .catch((error) => {
+        console.error(error);
+        sendBtn.disabled = false;
+        sendInput.disabled = false;
+      });
+
+    const fetchPromises = urllist.map(async (url, index) => {
+      return getWebSearchResult(url, index + 1, urllist.length);
     });
 
-  const fetchPromises = urllist.map(async (url, index) => {
-    return getWebSearchResult(url, index + 1, urllist.length);
-  });
+    const results = await Promise.all(fetchPromises);
 
-  const results = await Promise.all(fetchPromises);
+    let pagelist = getText("resultPages");
+    for (let t = 0; t < results.length; t++) {
+      pagelist +=
+        urllist[t] +
+        getText("shortSeparator") +
+        results[t] +
+        getText("longSeparator");
+    }
 
-  let pagelist = getText("resultPages");
-  for (let t = 0; t < results.length; t++) {
+    history.pop();
     pagelist +=
-      urllist[t] +
-      getText("shortSeparator") +
-      results[t] +
-      getText("longSeparator");
+      "Read and remember them carefully; you will be tested on them later.";
+    history.push({ role: "system", content: pagelist });
+    browser.storage.local.set({ hist: JSON.stringify(history) });
+
+    //remove last div whith class chatgeppetto-message-body
+    const listMessageBody = document.querySelectorAll(
+      ".chatgeppetto-message-body"
+    );
+    const messageBody = listMessageBody.item(listMessageBody.length - 1);
+    messageBody.innerHTML = "";
+    return pagelist;
+  } catch (error) {
+    handleFetchError(error);
+    return ""; // Placeholder for error handling, adjust as needed
   }
-
-  history.pop();
-  pagelist +=
-    "Read and remember them carefully; you will be tested on them later.";
-  history.push({ role: "system", content: pagelist });
-  browser.storage.local.set({ hist: JSON.stringify(history) });
-
-  return pagelist;
-}
-
-// Function to get search results
-async function getSearchResults(url) {
-  const urllist = await fetch(urlsearch, { origin: searchEngine })
-    .then((response) => response.text())
-    .then((pagecontent) => {
-      const doc = new DOMParser().parseFromString(pagecontent, "text/html");
-      const elementList = doc.querySelectorAll(["a"]);
-      const filteredUrls = [];
-
-      for (let u = 0; u < elementList.length - 1; u++) {
-        const href = elementList.item(u).href.trim();
-        if (
-          href.includes(searchEngine) ||
-          href.includes("proxy.thele.me") ||
-          href.includes("web.archive.org")
-        ) {
-          continue;
-        }
-        filteredUrls.push(href);
-      }
-
-      return filteredUrls.slice(0, 5); // Adjust the limit as needed
-    })
-    .catch((error) => {
-      console.error(error);
-      sendBtn.disabled = false;
-      sendInput.disabled = false;
-    });
-
-  const fetchPromises = urllist.map(async (url, index) => {
-    return getWebSearchResult(url, index + 1, urllist.length);
-  });
-
-  const results = await Promise.all(fetchPromises);
-
-  let pagelist = getText("resultPages");
-  for (let t = 0; t < results.length; t++) {
-    pagelist +=
-      urllist[t] +
-      getText("shortSeparator") +
-      results[t] +
-      getText("longSeparator");
-  }
-
-  history.pop();
-  pagelist +=
-    "Read and remember them carefully; you will be tested on them later.";
-  history.push({ role: "system", content: pagelist });
-  browser.storage.local.set({ hist: JSON.stringify(history) });
-
-  //remove last div whith class chatgeppetto-message-body
-  const listMessageBody = document.querySelectorAll(
-    ".chatgeppetto-message-body"
-  );
-  const messageBody = listMessageBody.item(listMessageBody.length - 1);
-  messageBody.innerHTML = "";
-  return pagelist;
 }
 
 // Function to fetch the content of a single search result URL
 async function getWebSearchResult(url, currentIndex, totalUrls) {
-  let text = await fetch(url, { origin: searchEngine })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP Error ${response.status}`);
-      }
-      return response.text();
-    })
-    .then((html) => {
-      const doc = new DOMParser().parseFromString(html, "text/html");
-      const elementList = doc.querySelectorAll([
-        "p",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "figcaption",
-      ]);
-      let resultText = "";
-      for (let u = 0; u < elementList.length; u++) {
-        resultText += "\n\n" + elementList.item(u).textContent.trim();
-      }
-      return resultText.trim();
-    })
-    .catch((error) => {
-      console.error(error);
-      // Handle error
-      return ""; // Placeholder for error handling, adjust as needed
-    });
+  try {
+    console.log("4");
+    let text = await fetch(url, { origin: searchEngine })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP Error ${response.status}`);
+        }
+        return response.text();
+      })
+      .then((html) => {
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        const elementList = doc.querySelectorAll([
+          "p",
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "figcaption",
+        ]);
+        let resultText = "";
+        for (let u = 0; u < elementList.length; u++) {
+          resultText += "\n\n" + elementList.item(u).textContent.trim();
+        }
+        return resultText.trim();
+      })
+      .catch((error) => {
+        console.error(error);
+        // Handle error
+        return ""; // Placeholder for error handling, adjust as needed
+      });
 
-  return text;
+    return text;
+  } catch (error) {
+    handleFetchError(error);
+    return ""; // Placeholder for error handling, adjust as needed
+  }
 }

@@ -1,9 +1,6 @@
 //
 // UI Management
 //
-//const sendBtn = document.getElementById("chatgeppetto-send");
-//const sendInput = document.getElementById("chatgeppetto-input");
-
 function enableChat() {
   sendBtn.disabled = false;
   sendInput.disabled = false;
@@ -65,6 +62,22 @@ function KeyPress(e) {
   } else if (evtobj.keyCode === 69 && evtobj.ctrlKey) {
     focusInput();
   }
+}
+
+function closeSuggestions() {
+  const suggestions = document.getElementById("suggestionBox");
+  suggestions.style.display = "none";
+}
+
+//
+// Error Management
+//
+
+// Function to fetch handle errors
+function handleFetchError(error) {
+  console.error(error);
+  sendBtn.disabled = false;
+  sendInput.disabled = false;
 }
 
 //

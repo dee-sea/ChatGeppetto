@@ -17,6 +17,7 @@
         "scripts/config.js",
         "scripts/statements.js",
         "scripts/commands.js",
+        "scripts/response.js",
         "scripts/geppetto.js",
         "scripts/ui.js",
         "scripts/conversations.js",
