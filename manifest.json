@@ -14,20 +14,20 @@
       "matches": ["*://*/*"],
       "js": [
         "geppetto.js",
-        "utils.js",
-        "config.js",
-        "statements.js",
-        "ui.js",
-        "conversations.js",
-        "highlight.min.js",
-        "sse.js",
-        "showdown.min.js"
+        "scripts/utils.js",
+        "scripts/config.js",
+        "scripts/statements.js",
+        "scripts/ui.js",
+        "scripts/conversations.js",
+        "third-party/highlight.min.js",
+        "third-party/sse.js",
+        "third-party/showdown.min.js"
       ],
-      "css": ["style.css", "github-dark-dimmed.min.css"]
+      "css": ["css/style.css", "css/github-dark-dimmed.min.css"]
     }
   ],
   "background": {
-    "scripts": ["context-menu.js"],
+    "scripts": ["menu-scripts/context-menu.js"],
     "persistent": false
   },
   "host_permissions": ["*://*/*"],
