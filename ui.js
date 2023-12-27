@@ -76,9 +76,9 @@ function suggestInput() {
   const suggestions = inputHistory.filter(
     (entry) => entry.toLowerCase().includes(inputValue) && entry !== inputValue
   );
-  // limit the suggestions to 5
+  // limit the suggestions to 3
+  suggestions.length = 3;
   suggestions.reverse();
-  //suggestions.slice(0, 5);
 
   // Display suggestions in the suggestionBox div
   const suggestionBox = document.getElementById("suggestionBox");
