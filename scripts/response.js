@@ -1,5 +1,4 @@
 async function getResponse(history) {
-  console.log("Entered getResponse");
   var source = new SSE(GEPPETTO_API_ENDPOINT, {
     headers: {
       "Content-Type": "application/json",
@@ -19,7 +18,6 @@ async function getResponse(history) {
     console.error("SSE Error:", e);
   });
   source.addEventListener("message", function (e) {
-    console.log(e);
     // Assuming we receive JSON-encoded data payloads:
     try {
       var payload = JSON.parse(e.data);
@@ -37,7 +35,6 @@ async function getResponse(history) {
       messageBody.innerHTML = html;
       hljs.highlightAll();
       chatMessages.scrollTop = chatMessages.scrollHeight;
-      console.log(answer);
       history.push({ role: "assistant", content: answer });
       browser.storage.local.set({ hist: JSON.stringify(history) });
       sendBtn.disabled = false;

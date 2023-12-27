@@ -168,7 +168,6 @@ async function getSearchQuery(history) {
 // Function to get search results
 async function getSearchResults(url) {
   try {
-    console.log("3");
     const urllist = await fetch(urlsearch, { origin: searchEngine })
       .then((response) => response.text())
       .then((pagecontent) => {
@@ -210,13 +209,11 @@ async function getSearchResults(url) {
         results[t] +
         getText("longSeparator");
     }
-
     history.pop();
     pagelist +=
       "Read and remember them carefully; you will be tested on them later.";
     history.push({ role: "system", content: pagelist });
     browser.storage.local.set({ hist: JSON.stringify(history) });
-
     //remove last div whith class chatgeppetto-message-body
     const listMessageBody = document.querySelectorAll(
       ".chatgeppetto-message-body"
@@ -233,7 +230,6 @@ async function getSearchResults(url) {
 // Function to fetch the content of a single search result URL
 async function getWebSearchResult(url, currentIndex, totalUrls) {
   try {
-    console.log("4");
     let text = await fetch(url, { origin: searchEngine })
       .then((response) => {
         if (!response.ok) {

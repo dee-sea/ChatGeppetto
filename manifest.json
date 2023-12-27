@@ -8,10 +8,17 @@
     "48": "icons/geppetto-48.png",
     "96": "icons/geppetto-96.png"
   },
-  "permissions": ["activeTab", "contextMenus", "storage", "*://*/*"],
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage",
+    "*://*/*"
+  ],
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": [
+        "*://*/*"
+      ],
       "js": [
         "scripts/utils.js",
         "scripts/config.js",
@@ -19,20 +26,28 @@
         "scripts/commands.js",
         "scripts/response.js",
         "scripts/geppetto.js",
+        "scripts/listners.js",
         "scripts/ui.js",
         "scripts/conversations.js",
         "third-party/highlight.min.js",
         "third-party/sse.js",
         "third-party/showdown.min.js"
       ],
-      "css": ["css/style.css", "css/github-dark-dimmed.min.css"]
+      "css": [
+        "css/style.css",
+        "css/github-dark-dimmed.min.css"
+      ]
     }
   ],
   "background": {
-    "scripts": ["menu-scripts/context-menu.js"],
+    "scripts": [
+      "menu-scripts/context-menu.js"
+    ],
     "persistent": false
   },
-  "host_permissions": ["*://*/*"],
+  "host_permissions": [
+    "*://*/*"
+  ],
   "browser_specific_settings": {
     "gecko": {
       "id": "geppetto@thele.me"

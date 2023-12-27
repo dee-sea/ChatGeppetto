@@ -13,7 +13,6 @@ async function setConfig(message) {
     }
 
     if (config.hasOwnProperty(key)) {
-      console.log(`Setting config: ${key} => ${updatedValue}`);
       config[key] = updatedValue;
       await saveConfig(config);
       applyConfig(config);
@@ -25,7 +24,6 @@ async function setConfig(message) {
 }
 
 async function applyConfig(config) {
-  console.log("Applying config");
   if (config) {
     searchEngine = config.searchEngine;
     GEPPETTO_API_KEY = config.apikey;
@@ -39,15 +37,11 @@ async function applyConfig(config) {
 }
 
 async function readConfigFromLocalStorage() {
-  console.log("Reading config from local storage");
-
   try {
     const result = await browser.storage.local.get("config");
-
     if (result.config) {
       return result.config;
     } else {
-      console.log("Config not found in local storage");
       const defaultConfig = {
         searchEngine: "Enter your search engine url here",
         apikey: "Enter your API key here",
@@ -58,7 +52,6 @@ async function readConfigFromLocalStorage() {
         assistant: assistant,
         you: "You",
       };
-
       await saveConfig(defaultConfig);
       return defaultConfig;
     }
@@ -69,7 +62,6 @@ async function readConfigFromLocalStorage() {
 }
 
 async function saveConfig(config) {
-  console.log("Saving config");
   try {
     await browser.storage.local.set({ config });
   } catch (error) {
@@ -89,11 +81,8 @@ async function getCurrentConfig() {
 }
 
 async function deleteConfigFromLocalStorage() {
-  console.log("Deleting config from local storage");
-
   try {
     await browser.storage.local.remove("config");
-    console.log("Config deleted successfully");
   } catch (error) {
     console.error("Error deleting configuration:", error);
     throw error; // Propagate the error to the caller

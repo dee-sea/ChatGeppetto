@@ -5,11 +5,8 @@ async function saveConversation(conversationKey, conversation) {
       "conversations"
     );
     const conversations = storedConversations.conversations || [];
-
     conversations.push({ key: conversationKey, conversation });
     await browser.storage.local.set({ conversations });
-
-    console.log("Conversation saved successfully.");
   } catch (error) {
     handleStorageError("Error saving conversation", error);
   }
@@ -22,17 +19,12 @@ async function loadConversation(conversationKey) {
       "conversations"
     );
     const conversations = storedConversations.conversations || [];
-
     const foundConversation = conversations.find(
       (entry) => entry.key === conversationKey
     );
-
     if (!foundConversation) {
-      console.log("No conversation found in local storage.");
       return null;
     }
-
-    console.log("Conversation loaded successfully.");
     return foundConversation.conversation;
   } catch (error) {
     handleStorageError("Error loading conversation", error);
@@ -47,7 +39,6 @@ async function listSavedConversations() {
       "conversations"
     );
     const conversations = storedConversations.conversations || [];
-
     return conversations;
   } catch (error) {
     handleStorageError("Error listing saved conversations", error);
@@ -62,16 +53,12 @@ async function deleteConversation(conversationKey) {
       "conversations"
     );
     let conversations = storedConversations.conversations || [];
-
     // Remove the conversation with the specified key
     conversations = conversations.filter(
       (entry) => entry.key !== conversationKey
     );
-
     // Save the updated conversations array
     await browser.storage.local.set({ conversations });
-
-    console.log("Conversation deleted successfully.");
   } catch (error) {
     handleStorageError("Error deleting conversation", error);
   }

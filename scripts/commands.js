@@ -1,4 +1,5 @@
 async function executeCommand(message) {
+  answer = "";
   //
   // Read webpage command
   //
@@ -61,7 +62,7 @@ async function executeCommand(message) {
 
 async function getURL(message) {
   text = await getWebpage(message);
-
+  removeLastHeader();
   const listMessageBody = document.querySelectorAll(
     ".chatgeppetto-message-body"
   );
@@ -76,18 +77,20 @@ async function getURL(message) {
       getText("longSeparator"),
   });
   browser.storage.local.set({ hist: JSON.stringify(history) });
+  addChatMessage(assistant, getText("ok"));
   enableChat();
 }
 
 async function searchTheWeb(message) {
+  removeLastHeader();
   removeLastMessage();
   if (message.endsWith("+i")) {
     text = message.replace("+i", "");
   } else {
     // remove the first word
-    word = message.split(" ").slice(0).join(" ");
+    word = message.split(" ").slice(0);
     console.log("word: " + word);
-    text = message.replace(word, "");
+    text = message.replace(word + " ", "");
   }
   history.push({
     role: "user",
@@ -101,7 +104,6 @@ async function searchTheWeb(message) {
   searchQuery = searchQuery.replace('"', "");
   console.log("Searching the web for: " + searchQuery);
   var searchUrl = searchEngine + "?q=";
-  console.log(searchUrl);
   urlsearch = searchUrl + encodeURIComponent(searchQuery);
   let searchResults = await getSearchResults(urlsearch);
   getResponse(history).then((response) => {
@@ -222,7 +224,6 @@ async function deleteConv(message) {
 async function listConversations() {
   removeLastHeader();
   let list = await listSavedConversations();
-  console.log(list);
   let convlist = getText("savedConversations") + "\n\n";
   for (let i = 0; i < list.length; i++) {
     convlist += i + 1 + ". " + list[i].key + "\n";

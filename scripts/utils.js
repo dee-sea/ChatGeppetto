@@ -64,9 +64,20 @@ function KeyPress(e) {
   }
 }
 
+//
+// Suggestions Management
+//
+
 function closeSuggestions() {
   const suggestions = document.getElementById("suggestionBox");
   suggestions.style.display = "none";
+}
+
+function getFilteredSuggestions(inputValue, inputHistory) {
+  return inputHistory.filter(
+    (entry) =>
+      entry.toLowerCase().startsWith(inputValue) && entry !== inputValue
+  );
 }
 
 //
