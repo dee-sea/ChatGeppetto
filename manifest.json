@@ -13,7 +13,7 @@
     {
       "matches": ["*://*/*"],
       "js": [
-        "geppetto.js",
+        "scripts/geppetto.js",
         "scripts/utils.js",
         "scripts/config.js",
         "scripts/statements.js",
