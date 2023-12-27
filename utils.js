@@ -90,6 +90,8 @@ function KeyPress(e) {
     if (chatVisible) {
       chatInput.focus();
     }
+  } else if (evtobj.keyCode == 69 && evtobj.ctrlKey) {
+    focusInput();
   }
 }
 
@@ -133,7 +135,9 @@ function cleanHistory(history) {
 }
 
 function focusInput() {
+  console.log("focus");
+  let inputField = document.getElementById("chatgeppetto-input");
   setTimeout(() => {
-    chatInput.focus();
+    inputField.focus();
   }, 100);
 }
