@@ -7,11 +7,11 @@ async function saveConversation(conversationKey, conversation) {
     const conversations = storedConversations.conversations || [];
 
     conversations.push({ key: conversationKey, conversation });
-    await browser.storage.local.set({ conversations: conversations });
+    await browser.storage.local.set({ conversations });
 
     console.log("Conversation saved successfully.");
   } catch (error) {
-    console.error("Error saving conversation:", error);
+    handleStorageError("Error saving conversation", error);
   }
 }
 
@@ -35,7 +35,7 @@ async function loadConversation(conversationKey) {
     console.log("Conversation loaded successfully.");
     return foundConversation.conversation;
   } catch (error) {
-    console.error("Error loading conversation:", error);
+    handleStorageError("Error loading conversation", error);
     return null;
   }
 }
@@ -50,7 +50,7 @@ async function listSavedConversations() {
 
     return conversations;
   } catch (error) {
-    console.error("Error listing saved conversations:", error);
+    handleStorageError("Error listing saved conversations", error);
     return [];
   }
 }
@@ -69,11 +69,11 @@ async function deleteConversation(conversationKey) {
     );
 
     // Save the updated conversations array
-    await browser.storage.local.set({ conversations: conversations });
+    await browser.storage.local.set({ conversations });
 
     console.log("Conversation deleted successfully.");
   } catch (error) {
-    console.error("Error deleting conversation:", error);
+    handleStorageError("Error deleting conversation", error);
   }
 }
 
@@ -84,14 +84,15 @@ async function conversationExists(conversationKey) {
       "conversations"
     );
     const conversations = storedConversations.conversations || [];
-    for (let i = 0; i < conversations.length; i++) {
-      if (conversations[i].key === conversationKey) {
-        return true;
-      }
-    }
-    return false;
+
+    return conversations.some((entry) => entry.key === conversationKey);
   } catch (error) {
-    console.error("Error checking if conversation exists:", error);
+    handleStorageError("Error checking if conversation exists", error);
     return false;
   }
+}
+
+// Centralized error handling function
+function handleStorageError(message, error) {
+  console.error(`${message}:`, error);
 }
