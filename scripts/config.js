@@ -19,9 +19,9 @@ async function setConfig(message) {
       config[key] = updatedValue;
       await saveConfig(config);
       applyConfig(config);
-      addChatMessage(assistant, "Config updated");
+      addChatMessage(assistant, "Config updated", true);
     } else {
-      addChatMessage(assistant, `Config key ${key} not found`);
+      addChatMessage(assistant, `Config key ${key} not found`, true);
     }
   }
 }

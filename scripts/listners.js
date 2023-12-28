@@ -236,6 +236,7 @@ function handleKeyDown(
   } else if (event.ctrlKey && event.shiftKey && event.key === "Y") {
     event.preventDefault();
     toggleFullScreen();
+    conversationList.classList.toggle("fullscreen");
   }
 }
 

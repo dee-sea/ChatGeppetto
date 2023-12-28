@@ -67,12 +67,14 @@ function KeyPress(e) {
 function toggleFullScreen() {
   const widget = document.getElementById("chatgeppetto-widget");
   const messages = document.getElementById("chatgeppetto-messages");
+  const conversations = document.getElementById("conversation-switcher");
   const inputcontainer = document.getElementById(
     "chatgeppetto-input-container"
   );
   widget.classList.toggle("fullscreen");
   messages.classList.toggle("fullscreen");
   inputcontainer.classList.toggle("fullscreen");
+  conversations.classList.toggle("fullscreen");
 }
 
 //
@@ -173,6 +175,10 @@ function removeLastBody() {
 function removeLastMessage() {
   removeLastBody();
   removeLastHeader();
+  const lastContainer = document.querySelectorAll(
+    ".chatgeppetto-message-container"
+  );
+  lastContainer.item(lastContainer.length - 1).remove();
 }
 
 function clearChat() {
@@ -211,4 +217,11 @@ function rebuildChatMessages(history) {
       container.remove();
     }
   });
+}
+
+function emptyLastBody() {
+  const lastBody = chatMessages.querySelector(
+    ".chatgeppetto-message-body:last-child"
+  );
+  lastBody.innerHTML = "";
 }

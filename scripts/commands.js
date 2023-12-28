@@ -4,6 +4,7 @@
 async function executeCommand(message) {
   answer = "";
   if (message.startsWith("http://") || message.startsWith("https://")) {
+    //addChatMessage(you, markdownToHtml(message));
     getURL(message).then((response) => {
       enableChat();
     });
@@ -56,6 +57,7 @@ async function executeCommand(message) {
   } else if (message == "Help" || message == "help" || message == "?") {
     help();
   } else {
+    addChatMessage(assistant, "");
     notACommand(message);
   }
 }
@@ -65,12 +67,6 @@ async function executeCommand(message) {
 //
 async function getURL(message) {
   text = await getWebpage(message);
-  removeLastHeader();
-  const listMessageBody = document.querySelectorAll(
-    ".chatgeppetto-message-body"
-  );
-  const messageBody = listMessageBody.item(listMessageBody.length - 1);
-  messageBody.innerHTML = "";
   history.push({
     role: "system",
     content:
@@ -80,7 +76,7 @@ async function getURL(message) {
       getText("longSeparator"),
   });
   browser.storage.local.set({ hist: JSON.stringify(history) });
-  addChatMessage(assistant, getText("ok"));
+  addChatMessage(assistant, getText("ok"), true);
   enableChat();
 }
 
@@ -112,6 +108,7 @@ async function searchTheWeb(message) {
   var searchUrl = searchEngine + "?q=";
   urlsearch = searchUrl + encodeURIComponent(searchQuery);
   let searchResults = await getSearchResults(urlsearch);
+  emptyLastBody();
   getResponse(history).then((response) => {
     enableChat();
   });
@@ -138,7 +135,7 @@ async function readPageContent(message) {
       getText("longSeparator"),
   });
   browser.storage.local.set({ hist: JSON.stringify(history) });
-  addChatMessage(assistant, getText("ok"));
+  addChatMessage(assistant, getText("ok"), true);
   history.push({ role: "assistant", content: getText("ok") });
   browser.storage.local.set({ hist: JSON.stringify(history) });
   enableChat();
@@ -149,7 +146,6 @@ async function readPageContent(message) {
 // Function to print the conversation history in the console
 //
 async function hist() {
-  removeLastHeader();
   console.log(history);
   enableChat();
   return;
@@ -180,7 +176,6 @@ async function deleteSuggestions() {
 //
 async function printConfig() {
   let config = getCurrentConfig();
-  removeLastHeader();
   console.log(config);
   enableChat();
   return;
@@ -190,7 +185,6 @@ async function printConfig() {
 // Function to set a config value
 //
 async function setValue(message) {
-  removeLastHeader();
   setConfig(message);
   enableChat();
   return;
@@ -200,12 +194,10 @@ async function setValue(message) {
 // Function to save the current conversation
 //
 async function save(message) {
-  // remove :save from message
   message = message.replace(":save ", "");
-  //check if message is a valid string to use as a name for the saved config
   let exists = await conversationExists(message);
   if (exists) {
-    addChatMessage(assistant, getText("alreadyExists"));
+    addChatMessage(assistant, getText("alreadyExists"), true);
     enableChat();
     return;
   }
@@ -213,9 +205,9 @@ async function save(message) {
     removeLastHeader();
     await saveConversation(message, history);
     await populateConversationList();
-    await addChatMessage(assistant, getText("ok"));
+    await addChatMessage(assistant, getText("ok"), true);
   } else {
-    addChatMessage(assistant, getText("invalidName"));
+    addChatMessage(assistant, getText("invalidName"), true);
   }
   enableChat();
   return;
@@ -230,11 +222,11 @@ async function load(message) {
   if (exists) {
     removeLastHeader();
     history = await loadConversation(message);
-    await addChatMessage(assistant, getText("ok"));
+    await addChatMessage(assistant, getText("ok"), true);
     browser.storage.local.set({ hist: JSON.stringify(history) });
     rebuildChatMessages(history);
   } else {
-    addChatMessage(assistant, getText("invalidName"));
+    addChatMessage(assistant, getText("invalidName"), true);
   }
   enableChat();
 }
@@ -246,11 +238,10 @@ async function deleteConv(message) {
   message = message.replace(":delete ", "");
   let exists = await conversationExists(message);
   if (exists) {
-    removeLastHeader();
     await deleteConversation(message);
-    await addChatMessage(assistant, getText("ok"));
+    await addChatMessage(assistant, getText("ok"), true);
   } else {
-    addChatMessage(assistant, getText("invalidName"));
+    addChatMessage(assistant, getText("invalidName"), true);
   }
   populateConversationList();
   enableChat();
@@ -266,7 +257,7 @@ async function listConversations() {
   for (let i = 0; i < list.length; i++) {
     convlist += i + 1 + ". " + list[i].key + "\n";
   }
-  await addChatMessage(assistant, markdownToHtml(convlist));
+  await addChatMessage(assistant, markdownToHtml(convlist), true);
   enableChat();
   return;
 }
@@ -299,7 +290,6 @@ async function pop() {
 // Function to inject a message in the conversation
 //
 async function push(message) {
-  removeLastMessage();
   message = message.replace(":push ", "");
   let role = message.split(" ")[0];
   let content = message.replace(role + " ", "");
@@ -338,7 +328,7 @@ async function push(message) {
     enableChat();
     return;
   } else {
-    addChatMessage(assistant, getText("invalidRole"));
+    addChatMessage(assistant, getText("invalidRole"), true);
     enableChat();
     return;
   }
@@ -352,7 +342,7 @@ async function clean() {
   history = await cleanHistory(history);
   browser.storage.local.set({ inputHistory: JSON.stringify(history) });
   enableChat();
-  addChatMessage(assistant, getText("cleanhistory"));
+  addChatMessage(assistant, getText("cleanhistory"), true);
   return;
 }
 
@@ -404,7 +394,7 @@ async function clear() {
 //
 async function helpCmd() {
   msg = getText("helpcmd");
-  addChatMessage(assistant, markdownToHtml(msg));
+  addChatMessage(assistant, markdownToHtml(msg), true);
   enableChat();
   return;
   //
@@ -417,7 +407,7 @@ async function helpCmd() {
 //
 async function help() {
   let msg = getText("help");
-  addChatMessage(assistant, markdownToHtml(msg));
+  addChatMessage(assistant, markdownToHtml(msg), true);
   enableChat();
   return;
 }

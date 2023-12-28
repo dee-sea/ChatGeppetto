@@ -19,7 +19,6 @@ var you = "You";
 async function sendChatMessage(message) {
   disableChat();
   closeSuggestions();
-  addChatMessage(assistant, "");
   executeCommand(message);
   enableChat();
 }
@@ -30,10 +29,18 @@ async function sendChatMessage(message) {
 // @param message: the message to add
 // @return void
 //
-function addChatMessage(sender, message) {
+function addChatMessage(sender, message, dimmed = false) {
   if (sender == assistant || sender == you) {
     const messageContainer = document.createElement("div");
     messageContainer.classList.add("chatgeppetto-message-container");
+    if (dimmed) {
+      messageContainer.classList.add("dimmed");
+    }
+    if (sender == assistant) {
+      messageContainer.classList.add("geppettobubble");
+    } else if (sender == you) {
+      messageContainer.classList.add("userbubble");
+    }
     const messageHeader = document.createElement("div");
     messageHeader.classList.add("chatgeppetto-message-header");
     messageHeader.textContent = sender + ":";

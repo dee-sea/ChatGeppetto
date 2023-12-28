@@ -43,7 +43,7 @@
   overflow-y: scroll;
   padding: 10px;
   margin: auto;
-  width: 430px;
+  width: 95%;
   flex-direction: column;
   justify-content: top;
 }
@@ -77,10 +77,13 @@
 #chatgeppetto-input {
   flex: 1;
   padding: 5px;
-  border: none;
   border-radius: 5px;
   margin-right: 5px;
   width: 90%;
+  background-color: #636363;
+  border: 3px solid #535353;
+  border-radius: 5px;
+  color: #dfdfdf;
 }
 
 #chatgeppetto-send {
@@ -185,8 +188,8 @@
 }
 
 .suggestionItem.selected {
-  background-color: #acacac; /* Green background color for the selected suggestion */
-  color: white; /* White text color for the selected suggestion */
+  background-color: #acacac;
+  color: white;
 }
 
 #chatgeppetto-widget.fullscreen {
@@ -199,9 +202,37 @@
 
 #chatgeppetto-messages.fullscreen {
   width: 45%;
+}
+
+.chatgeppetto-message-container.dimmed {
+  opacity: 0.3;
+}
+
+.chatgeppetto-message-container.userbubble {
+  align-self: flex-end;
+  background-color: #555055;
+  border-radius: 25px 25px 0 25px;
+  border: 1px solid #353035;
+  padding: 10px;
+}
+
+.chatgeppetto-message-container.geppettobubble {
+  align-self: flex-start;
+  background-color: #505555;
+  border-radius: 25px 25px 25px 0;
+  border: 1px solid #303535;
+  padding: 10px;
+}
+
+#chatgeppetto-message.fullscreen {
+  width: 45%;
   margin: 0 auto;
 }
 
+#chatgeppetto-message.container.fullscreen {
+  width: 45%;
+  margin: 0 auto;
+}
 #chatgeppetto-input-container.fullscreen {
   width: 45%;
   margin: 0 auto;
@@ -211,7 +242,6 @@
   position: fixed;
   position: fixed;
   left: 0px;
-  display: none;
   transition: left 0.3s ease-in-out;
   top: 0;
   width: 250px;
@@ -230,12 +260,11 @@
 #conversation-switcher h2 {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px; /* Add some spacing between the title and the list items */
+  margin-bottom: 10px;
 }
 
-#chatgeppetto-widget.fullscreen #conversation-switcher {
-  display: block; /* Visible when in full-screen mode */
-  /* Add additional styling for the conversation switcher here */
+#conversation-switcher.fullscreen {
+  display: block;
 }
 
 .conversationItem {

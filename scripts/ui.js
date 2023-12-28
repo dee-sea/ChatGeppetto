@@ -75,6 +75,7 @@ const sendBtn = document.getElementById("chatgeppetto-send");
 const sendInput = document.getElementById("chatgeppetto-input");
 const loadingElement = document.getElementById("loading");
 const suggestionBox = document.getElementById("suggestionBox");
+const conversationsList = document.getElementById("conversation-switcher");
 
 //
 // Assign event listeners
@@ -120,13 +121,11 @@ document.addEventListener("keydown", (event) => {
 
 populateConversationList();
 
-const savedConversationsList = document.getElementById("conversation-switcher");
 let isMouseNear = false;
 
 // Add event listeners to show/hide the container
 document.addEventListener("mousemove", (event) => {
   const proximityThreshold = 250; // Adjust this value based on your preference
-
   isMouseNear = event.clientX < proximityThreshold;
   updateContainerVisibility();
 });
@@ -134,9 +133,9 @@ document.addEventListener("mousemove", (event) => {
 // Function to update the visibility of the container
 function updateContainerVisibility() {
   if (isMouseNear) {
-    savedConversationsList.classList.remove("hidden");
+    conversationsList.classList.remove("hidden");
   } else {
-    savedConversationsList.classList.add("hidden");
+    conversationsList.classList.add("hidden");
   }
 }
 
