@@ -31,7 +31,10 @@ async function getResponse(history) {
     // Assuming we receive JSON-encoded data payloads:
     try {
       var payload = JSON.parse(e.data);
-    } catch (e) {}
+    } catch (e) {
+      console.error("Error parsing JSON data:", e);
+      browser.storage.local.set({ hist: JSON.stringify(history) });
+    }
     if (payload.choices[0].finish_reason != "stop") {
       const chatbotResponseElement = payload.choices[0].delta.content;
       appendChatElement(chatbotResponseElement);

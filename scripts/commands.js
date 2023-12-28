@@ -421,6 +421,6 @@ async function notACommand() {
   await getResponse(history).then((response) => {
     enableChat();
   });
-  content;
   browser.storage.local.set({ hist: JSON.stringify(history) });
+  content;
 }
