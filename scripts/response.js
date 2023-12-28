@@ -32,7 +32,6 @@ async function getResponse(history) {
     try {
       var payload = JSON.parse(e.data);
     } catch (e) {
-      console.error("Error parsing JSON data:", e);
       browser.storage.local.set({ hist: JSON.stringify(history) });
     }
     if (payload.choices[0].finish_reason != "stop") {
