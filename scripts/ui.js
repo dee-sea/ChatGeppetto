@@ -220,40 +220,6 @@ function updateAndPersistInputHistory() {
   browser.storage.local.set({ inputHist: JSON.stringify(inputHistory) });
 }
 
-//
-// Function to inject the HTML for the chat widget
-//
-// function injectHTMO() {
-//   const htmlContent = `
-//       <button id="chatgeppetto-toggle" display="none"><i class="far fa-comment"></i></button>
-//       <div id="chatgeppetto-widget">
-//         <div id="chatgeppetto-container">
-//           <div id="chatgeppetto-title">ChatGeppetto</div>
-//           <div id="chatgeppetto-messages"></div>
-//           <div id="chatgeppetto-input-container">
-//             <input
-//               id="chatgeppetto-input"
-//               type="text"
-//               placeholder="Write your message"
-//               autofocus
-//             />
-//             <div id="suggestionBox"></div>
-//             <button id="chatgeppetto-send">Send</button>
-//             <div id="loading">
-//               <div class="spinner"></div>
-//               <div class="message">Loading...</div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-// `;
-//   var chatdiv = document.createElement("div");
-//   chatdiv.innerHTML = htmlContent;
-//   document.body.appendChild(chatdiv);
-//   setTimeout(() => {
-//     console.log("chatgeppetto widget injected");
-//   }, 100);
-// }
 // Function to inject the HTML for the chat widget
 function injectHTMO() {
   const htmlContent = `
@@ -280,8 +246,7 @@ function injectHTMO() {
         <div id="conversation-switcher">
           <h2>Conversations</h2>
         </div>
-      </div>
-`;
+      </div>`;
   var chatdiv = document.createElement("div");
   chatdiv.innerHTML = htmlContent;
   document.body.appendChild(chatdiv);

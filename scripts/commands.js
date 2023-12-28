@@ -91,7 +91,6 @@ async function searchTheWeb(message) {
   } else {
     // remove the first word
     word = message.split(" ").slice(0);
-    console.log("word: " + word);
     text = message.replace(word + " ", "");
   }
   history.push({
