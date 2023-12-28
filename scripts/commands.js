@@ -379,7 +379,6 @@ async function clean() {
 // }
 async function clear() {
   history = [];
-  browser.storage.local.set({ hist: JSON.stringify(history) });
 
   // Add system and greeting messages
   history.push({
@@ -394,8 +393,7 @@ async function clear() {
   // Save the updated history
   browser.storage.local.set({ hist: JSON.stringify(history) });
 
-  // Display the greeting message
-  addChatMessage(assistant, markdownToHtml(getText("greeting")));
+  rebuildChatMessages(history);
 
   enableChat();
   return;

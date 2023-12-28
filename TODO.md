@@ -26,3 +26,7 @@
 [X] Improve code quality.
 [X] Improve comments.
 [ ] Publish first version on Github.
+
+# BUGS
+
+Conversation not load on click in fullscreen mode.

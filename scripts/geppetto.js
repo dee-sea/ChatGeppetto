@@ -31,18 +31,20 @@ async function sendChatMessage(message) {
 // @return void
 //
 function addChatMessage(sender, message) {
-  const messageContainer = document.createElement("div");
-  messageContainer.classList.add("chatgeppetto-message-container");
-  const messageHeader = document.createElement("div");
-  messageHeader.classList.add("chatgeppetto-message-header");
-  messageHeader.textContent = sender + ":";
-  const messageBody = document.createElement("div");
-  messageBody.classList.add("chatgeppetto-message-body");
-  messageBody.innerHTML = message;
-  messageContainer.appendChild(messageHeader);
-  messageContainer.appendChild(messageBody);
-  chatMessages.appendChild(messageContainer);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  if (sender == assistant || sender == you) {
+    const messageContainer = document.createElement("div");
+    messageContainer.classList.add("chatgeppetto-message-container");
+    const messageHeader = document.createElement("div");
+    messageHeader.classList.add("chatgeppetto-message-header");
+    messageHeader.textContent = sender + ":";
+    const messageBody = document.createElement("div");
+    messageBody.classList.add("chatgeppetto-message-body");
+    messageBody.innerHTML = message;
+    messageContainer.appendChild(messageHeader);
+    messageContainer.appendChild(messageBody);
+    chatMessages.appendChild(messageContainer);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
 }
 
 //

@@ -176,11 +176,14 @@ function removeLastMessage() {
 }
 
 function clearChat() {
-  document
-    .querySelectorAll(
-      ".chatgeppetto-message-body, .chatgeppetto-message-header"
-    )
-    .forEach((element) => element.remove());
+  const bodies = chatMessages.querySelectorAll(".chatgeppetto-message-body");
+  const headers = chatMessages.querySelectorAll(".chatgeppetto-message-header");
+  const containters = chatMessages.querySelectorAll(
+    "chatgeppetto-message-container"
+  );
+  bodies.forEach((body) => body.remove());
+  headers.forEach((header) => header.remove());
+  containters.forEach((container) => container.remove());
 }
 
 // Function to render or append messages to the UI
@@ -188,9 +191,9 @@ function renderMessages(history) {
   for (entry in history) {
     const message = history[entry];
     if (message.role === "user") {
-      addChatMessage(you, message.content);
+      addChatMessage(you, markdownToHtml(message.content));
     } else if (message.role === "assistant") {
-      addChatMessage(assistant, message.content);
+      addChatMessage(assistant, markdownToHtml(message.content));
     }
   }
 }
@@ -199,4 +202,13 @@ function rebuildChatMessages(history) {
   // Clear existing messages
   clearChat();
   renderMessages(history);
+  const containers = chatMessages.querySelectorAll(
+    ".chatgeppetto-message-container"
+  );
+  // remove empty containers
+  containers.forEach((container) => {
+    if (!container.hasChildNodes()) {
+      container.remove();
+    }
+  });
 }

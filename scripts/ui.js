@@ -134,10 +134,8 @@ document.addEventListener("mousemove", (event) => {
 function updateContainerVisibility() {
   if (isMouseNear) {
     savedConversationsList.classList.remove("hidden");
-    savedConversationsList.display = "block";
   } else {
     savedConversationsList.classList.add("hidden");
-    savedConversationsList.display = "none";
   }
 }
 
