@@ -139,6 +139,9 @@ suggestions.
 Use `pop` and `push [role] [message]` to remove and insert user, bot
 or system messages in the current conversation.
 
+When the bot answers in a dimmed bubble, it means that the answer was
+a notification and is not saved in the conversation.
+
 Finally, type CTRL + SHIFT + y to enter fullscreen mode. In fullscreen
 mode a panel with all saved conversations is displayed when you approach
 the mouse to the left border of the screen. You can click on a

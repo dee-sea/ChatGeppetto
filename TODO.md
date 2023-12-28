@@ -20,9 +20,10 @@
 [X] Add input history.
 [X] Add input suggestions.
 [X] Paraléiser les chargement de pages web.
-[X] Added Fullscreen mode.
-[X] Added saved conversation pannel in fullscreen mode.
-[ ] Add dimmed messages.
+[X] Add Fullscreen mode.
+[X] Add saved conversation pannel in fullscreen mode.
+[X] Add dimmed messages.
+[X] Add bubbles
 [X] Move files to subfolders.
 [X] Improve code quality.
 [X] Improve comments.
