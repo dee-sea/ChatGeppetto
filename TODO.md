@@ -22,6 +22,7 @@
 [X] Paraléiser les chargement de pages web.
 [X] Added Fullscreen mode.
 [X] Added saved conversation pannel in fullscreen mode.
+[ ] Add dimmed messages.
 [X] Move files to subfolders.
 [X] Improve code quality.
 [X] Improve comments.
@@ -30,3 +31,4 @@
 # BUGS
 
 Conversation not load on click in fullscreen mode.
+

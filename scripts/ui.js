@@ -15,7 +15,7 @@ async function populateConversationList() {
       conversationItem.textContent = conversation.key;
       // Add a click event listener to switch to the selected conversation
       conversationItem.addEventListener("click", () =>
-        switchConversation(name)
+        switchConversation(conversation.key)
       );
       conversationList.appendChild(conversationItem);
     });
@@ -24,6 +24,7 @@ async function populateConversationList() {
 
 // Function to switch to a specific conversation
 async function switchConversation(name) {
+  console.log("Switching to conversation:", name);
   // Get the list of conversations from local storage
   try {
     let exists = await conversationExists(name);
