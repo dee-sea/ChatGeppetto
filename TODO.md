@@ -20,6 +20,8 @@
 [X] Add input history.
 [X] Add input suggestions.
 [X] Paraléiser les chargement de pages web.
+[X] Added Fullscreen mode.
+[X] Added saved conversation pannel in fullscreen mode.
 [X] Move files to subfolders.
 [X] Improve code quality.
 [X] Improve comments.

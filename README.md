@@ -33,6 +33,7 @@ answering you.
 - Save and load conversations.
 - input history and suggestions from past inputs.
 - remove and insert user, bot or system messages in conversation.
+- Fullscreen mode, with saved conversations panel
 
 # What do I need to run ChatGeppetto?
 
@@ -135,6 +136,10 @@ When you start typing in the input field, ChatGeppetto will suggest you
 previous inputs. You can use the up and down arrows to navigate in the
 suggestions.
 
-Finally, use `pop` and `push [role] [message]` to remove and insert user, bot
+Use `pop` and `push [role] [message]` to remove and insert user, bot
 or system messages in the current conversation.
 
+Finally, type CTRL + SHIFT + y to enter fullscreen mode. In fullscreen
+mode a panel with all saved conversations is displayed when you approach
+the mouse to the left border of the screen. You can click on a
+conversation to load it.
