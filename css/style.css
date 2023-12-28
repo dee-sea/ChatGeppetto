@@ -14,6 +14,8 @@
 }
 
 #chatgeppetto-container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   border-radius: 10px;
   background-color: #333333;
@@ -34,14 +36,21 @@
 }
 
 #chatgeppetto-messages {
-  height: 93%;
+  flex: 1;
+  display: flex;
+  height: calc(100% - 30px);
   background-color: #434343;
   overflow-y: scroll;
   padding: 10px;
+  margin: auto;
+  width: 430px;
+  flex-direction: column;
+  justify-content: top;
 }
 
 .chatgeppetto-message-container {
   margin-bottom: 10px;
+  align-self: flex-start;
 }
 
 .chatgeppetto-message-header {
@@ -59,9 +68,9 @@
   align-items: center;
   background-color: #434343;
   padding: 10px;
-  position: 350absolute;
+  position: relative;
   bottom: 0;
-  width: 450px;
+  width: 43opx;
   height: 30px;
 }
 
@@ -196,4 +205,43 @@
 #chatgeppetto-input-container.fullscreen {
   width: 45%;
   margin: 0 auto;
+}
+
+#conversation-switcher {
+  position: fixed;
+  position: fixed;
+  left: 0px;
+  display: none;
+  transition: left 0.3s ease-in-out;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  padding: 10px;
+  background-color: #202020;
+  overflow-y: auto;
+  display: none; /* Hidden by default */
+}
+
+.hidden {
+  left: -250px;
+  display: block;
+}
+
+#conversation-switcher h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px; /* Add some spacing between the title and the list items */
+}
+
+#chatgeppetto-widget.fullscreen #conversation-switcher {
+  display: block; /* Visible when in full-screen mode */
+  /* Add additional styling for the conversation switcher here */
+}
+
+.conversationItem {
+  padding: 5px;
+  cursor: pointer;
+  color: #dfdfdf;
+  font-size: 14px;
+  font-weight: bold;
 }

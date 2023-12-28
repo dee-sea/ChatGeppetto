@@ -211,7 +211,8 @@ async function save(message) {
   }
   if (message.match(/^[a-zA-Z0-9]+$/)) {
     removeLastHeader();
-    saveConversation(message, history);
+    await saveConversation(message, history);
+    await populateConversationList();
     await addChatMessage(assistant, getText("ok"));
   } else {
     addChatMessage(assistant, getText("invalidName"));
@@ -251,6 +252,7 @@ async function deleteConv(message) {
   } else {
     addChatMessage(assistant, getText("invalidName"));
   }
+  populateConversationList();
   enableChat();
 }
 
@@ -357,11 +359,29 @@ async function clean() {
 //
 // Function to clear the conversation history
 //
+// async function clear() {
+//   history = [];
+//   browser.storage.local.set({ hist: JSON.stringify(history) });
+//   enableChat();
+//   clearChat();
+//   history.push({
+//     role: "system",
+//     content: getText("systemPrompt"),
+//   });
+//   history.push({
+//     role: "assistant",
+//     content: getText("greeting"),
+//   });
+//   browser.storage.local.set({ hist: JSON.stringify(history) });
+//   addChatMessage(assistant, markdownToHtml(getText("greeting")));
+//   enableChat();
+//   return;
+// }
 async function clear() {
   history = [];
   browser.storage.local.set({ hist: JSON.stringify(history) });
-  enableChat();
-  clearChat();
+
+  // Add system and greeting messages
   history.push({
     role: "system",
     content: getText("systemPrompt"),
@@ -370,13 +390,15 @@ async function clear() {
     role: "assistant",
     content: getText("greeting"),
   });
+
+  // Save the updated history
   browser.storage.local.set({ hist: JSON.stringify(history) });
+
+  // Display the greeting message
   addChatMessage(assistant, markdownToHtml(getText("greeting")));
+
   enableChat();
   return;
-  //
-  // unknown command
-  //
 }
 
 //

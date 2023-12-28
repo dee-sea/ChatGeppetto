@@ -1,4 +1,48 @@
 //
+// Saved conversation management
+//
+// Function to populate the conversation list
+async function populateConversationList() {
+  const conversationList = document.getElementById("conversation-switcher");
+  conversationList.innerHTML = ""; // Clear previous entries
+
+  //get the list of conversations from local storage
+  browser.storage.local.get("conversations").then((result) => {
+    const conversations = result.conversations || [];
+    conversations.forEach((conversation, index) => {
+      const conversationItem = document.createElement("div");
+      conversationItem.classList.add("conversationItem");
+      conversationItem.textContent = conversation.key;
+      // Add a click event listener to switch to the selected conversation
+      conversationItem.addEventListener("click", () =>
+        switchConversation(name)
+      );
+      conversationList.appendChild(conversationItem);
+    });
+  });
+}
+
+// Function to switch to a specific conversation
+async function switchConversation(name) {
+  // Get the list of conversations from local storage
+  try {
+    let exists = await conversationExists(name);
+    if (exists) {
+      removeLastHeader();
+      history = await loadConversation(name);
+      await addChatMessage(assistant, getText("ok"));
+      browser.storage.local.set({ hist: JSON.stringify(history) });
+      rebuildChatMessages(history);
+    } else {
+      addChatMessage(assistant, getText("invalidName"));
+    }
+    enableChat();
+  } catch (error) {
+    console.error("Error switching conversation:", error);
+  }
+}
+
+//
 // Initialize variables
 //
 let inputHistory = [""];
@@ -72,6 +116,30 @@ document.addEventListener("keydown", (event) => {
     inputHistory
   );
 });
+
+populateConversationList();
+
+const savedConversationsList = document.getElementById("conversation-switcher");
+let isMouseNear = false;
+
+// Add event listeners to show/hide the container
+document.addEventListener("mousemove", (event) => {
+  const proximityThreshold = 250; // Adjust this value based on your preference
+
+  isMouseNear = event.clientX < proximityThreshold;
+  updateContainerVisibility();
+});
+
+// Function to update the visibility of the container
+function updateContainerVisibility() {
+  if (isMouseNear) {
+    savedConversationsList.classList.remove("hidden");
+    savedConversationsList.display = "block";
+  } else {
+    savedConversationsList.classList.add("hidden");
+    savedConversationsList.display = "none";
+  }
+}
 
 //
 // Functions
@@ -157,6 +225,38 @@ function updateAndPersistInputHistory() {
 //
 // Function to inject the HTML for the chat widget
 //
+// function injectHTMO() {
+//   const htmlContent = `
+//       <button id="chatgeppetto-toggle" display="none"><i class="far fa-comment"></i></button>
+//       <div id="chatgeppetto-widget">
+//         <div id="chatgeppetto-container">
+//           <div id="chatgeppetto-title">ChatGeppetto</div>
+//           <div id="chatgeppetto-messages"></div>
+//           <div id="chatgeppetto-input-container">
+//             <input
+//               id="chatgeppetto-input"
+//               type="text"
+//               placeholder="Write your message"
+//               autofocus
+//             />
+//             <div id="suggestionBox"></div>
+//             <button id="chatgeppetto-send">Send</button>
+//             <div id="loading">
+//               <div class="spinner"></div>
+//               <div class="message">Loading...</div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+// `;
+//   var chatdiv = document.createElement("div");
+//   chatdiv.innerHTML = htmlContent;
+//   document.body.appendChild(chatdiv);
+//   setTimeout(() => {
+//     console.log("chatgeppetto widget injected");
+//   }, 100);
+// }
+// Function to inject the HTML for the chat widget
 function injectHTMO() {
   const htmlContent = `
       <button id="chatgeppetto-toggle" display="none"><i class="far fa-comment"></i></button>
@@ -178,6 +278,9 @@ function injectHTMO() {
               <div class="message">Loading...</div>
             </div>
           </div>
+        </div>
+        <div id="conversation-switcher">
+          <h2>Conversations</h2>
         </div>
       </div>
 `;
