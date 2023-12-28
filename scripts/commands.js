@@ -23,7 +23,8 @@ async function executeCommand(message) {
       enableChat();
     });
   } else if (message.startsWith(":readpagecontent")) {
-    readPageContent().then((response) => {
+    text = message.replace(":readpagecontent ", "");
+    readPageContent(text).then((response) => {
       enableChat();
     });
   } else if (message == ":hist") {
@@ -117,9 +118,7 @@ async function searchTheWeb(message) {
 //
 // Function to read the content of a webpage
 //
-async function readPageContent(message) {
-  text = message.replace(":readpagecontent ", "");
-
+async function readPageContent(text) {
   const listMessageBody = document.querySelectorAll(
     ".chatgeppetto-message-body"
   );

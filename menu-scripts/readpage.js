@@ -1,1 +1,1 @@
-readPageContent();
+readPageContentMenu();

@@ -121,7 +121,7 @@ async function getWebpage(url) {
 //
 // Function to get the text of the current page
 //
-function readPageContent() {
+function readPageContentMenu() {
   addChatMessage(you, getText("readText"));
   history.push({ role: "user", content: getText("readText") });
   let text = "";

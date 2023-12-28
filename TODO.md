@@ -31,5 +31,3 @@
 
 # BUGS
 
-Conversation not load on click in fullscreen mode.
-
