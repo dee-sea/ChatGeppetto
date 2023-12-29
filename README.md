@@ -10,9 +10,6 @@ to be able to chat with a bot and make him help me in web searches. Then
 I tought that it would be great if it was ont only on the search engine,
 but on all the web. So I switched to a Firefox extention.
 
-It's not yet available on the Firefox store. You need to install it
-manually.
-
 ChatGeppetto is still in early development. A lot of bugs still need to 
 to be found and fixed. The code is not ready for production. But it's
 already usable and I use it everyday. I'm currently working on bug fixes 
@@ -49,7 +46,10 @@ installed.
 
 # How do I install ChatGeppetto?
 
-If the extension is not in the store. You need to install it manually.
+## Install from Firefox Add-ons
+
+The extention is now available on [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/chatgeppetto/).
+## Install from source
 
 1. You need to clone this repository.
 2. cd into the cloned repository.
