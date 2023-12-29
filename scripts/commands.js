@@ -116,6 +116,31 @@ async function searchTheWeb(message) {
 }
 
 //
+// Funtion to rget the selected text
+//
+function getSel() {
+  const userInput = getSelectedText();
+  const selectedText =
+    getText("readText") +
+    getText("longSeparator") +
+    userInput +
+    getText("longSeparator");
+  addChatMessage(you, markdownToHtml(getText("selectedText")));
+  history.push({ role: "system", content: selectedText });
+  browser.storage.local.set({ hist: JSON.stringify(history) });
+  addChatMessage(assistant, getText("ok"));
+  if (window.getSelection) {
+    if (window.getSelection().empty) {
+      // Chrome
+      window.getSelection().empty();
+    } else if (window.getSelection().removeAllRanges) {
+      // Firefox
+      window.getSelection().removeAllRanges();
+    }
+  }
+}
+
+//
 // Function to read the content of a webpage
 //
 async function readPageContent(text) {

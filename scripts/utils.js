@@ -105,7 +105,7 @@ function handleFetchError(error) {
 }
 
 //
-// Text and Config Functions
+// Text Functions
 //
 function markdownToHtml(text) {
   const converter = new showdown.Converter();
@@ -125,6 +125,19 @@ function getText(textName) {
   } else {
     return "Text not found";
   }
+}
+
+function getSelectedText() {
+  var text = "";
+  if (window.getSelection) {
+    text = window.getSelection().toString();
+  } else if (document.selection && document.selection.type != "Control") {
+    text = document.selection.createRange().text;
+  } else if (document.getSelection()) {
+    text = document.getSelection().toString();
+  }
+  console.log("text :", text);
+  return text;
 }
 
 //
