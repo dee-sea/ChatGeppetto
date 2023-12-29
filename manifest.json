@@ -1,17 +1,24 @@
 {
   "manifest_version": 2,
   "name": "ChatGeppetto",
-  "version": "1.0",
+  "version": "1.1",
   "description": "ChatGeppetto is a browser extension to add a chatbot to all Websites you visit. he is internet aware and can answer questions about the current page and more.",
   "homepage_url": "https://github.com/dee-sea/ChatGeppetto",
   "icons": {
     "48": "icons/geppetto-48.png",
     "96": "icons/geppetto-96.png"
   },
-  "permissions": ["activeTab", "contextMenus", "storage", "*://*/*"],
+  "permissions": [
+    "activeTab",
+    "contextMenus",
+    "storage",
+    "*://*/*"
+  ],
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
+      "matches": [
+        "*://*/*"
+      ],
       "js": [
         "scripts/utils.js",
         "scripts/config.js",
@@ -26,14 +33,21 @@
         "third-party/sse.js",
         "third-party/showdown.min.js"
       ],
-      "css": ["css/style.css", "css/github-dark-dimmed.min.css"]
+      "css": [
+        "css/style.css",
+        "css/github-dark-dimmed.min.css"
+      ]
     }
   ],
   "background": {
-    "scripts": ["scripts/background.js"],
+    "scripts": [
+      "scripts/background.js"
+    ],
     "persistent": false
   },
-  "host_permissions": ["*://*/*"],
+  "host_permissions": [
+    "*://*/*"
+  ],
   "browser_specific_settings": {
     "gecko": {
       "id": "geppetto@thele.me"

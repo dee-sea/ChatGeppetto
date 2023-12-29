@@ -29,7 +29,6 @@
 [X] Improve comments.
 [X] Publish first version on Github.
 [X] Submit to Firefox Addons.
-[ ] Add LaTex support.
 [X] Add context menu item for adding selected text.
 [ ] Port it to Chrome.
 
