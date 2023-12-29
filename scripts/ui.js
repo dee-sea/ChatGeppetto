@@ -108,16 +108,16 @@ chatInput.addEventListener("drop", (event) =>
 chatSendButton.addEventListener("click", () =>
   handleSendButtonClick(chatInput, history)
 );
-document.addEventListener("keydown", (event) => {
-  handleKeyDown(
-    event,
-    chatInput,
-    suggestionBox,
-    ihIndex,
-    ihLength,
-    inputHistory
-  );
-});
+// document.addEventListener("keydown", (event) => {
+//   handleKeyDown(
+//     event,
+//     chatInput,
+//     suggestionBox,
+//     ihIndex,
+//     ihLength,
+//     inputHistory
+//   );
+// });
 
 populateConversationList();
 
