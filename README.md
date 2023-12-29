@@ -109,10 +109,14 @@ You can select text on a page and Drag and Drop it in the input field.
 The text will be fed to the bot memory and will be used to generate
 subsequent answers.
 
-The add-on adds a `Read Page Content` entry in the context menu. If you
+The add-on adds a `Send Page to ChatGeppetto` entry in the context menu. If you
 select this entry, the add-on will read the content of the current page
 and feed it to the bot memory. The bot will use this information to
 generate subsequent answers.
+
+There is also a `Send selection to ChatGeppetto` entry in the context
+menu when text is selected. If you select this entry, the add-on will
+inject the selected text in the bot memory.
 
 If you want to get ChatGeppetto to read other pages, simply tyle a URL
 in the input field and press enter or darg and drop a link on the field.
