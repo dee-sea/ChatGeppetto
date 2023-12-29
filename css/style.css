@@ -18,19 +18,19 @@
   flex-direction: column;
   height: 100%;
   border-radius: 10px;
-  background-color: #333333;
+  background-color: #282828;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
-  color: #f8f8f8;
+  color: #f2e5bc;
 }
 
 #chatgeppetto-title {
   padding: 10px;
   font-weight: bold;
-  background-color: #252525;
+  background-color: #1d2021;
   display: none;
-  color: #ffffff;
+  color: #f2e5bc;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -39,7 +39,7 @@
   flex: 1;
   display: flex;
   height: calc(100% - 30px);
-  background-color: #434343;
+  background-color: #32302f;
   overflow-y: scroll;
   padding: 10px;
   margin: auto;
@@ -55,7 +55,7 @@
 
 .chatgeppetto-message-header {
   font-size: 18px;
-  color: #838383;
+  color: #d5c4a1;
   font-weight: bold;
 }
 
@@ -66,7 +66,7 @@
 #chatgeppetto-input-container {
   display: flex;
   align-items: center;
-  background-color: #434343;
+  background-color: #32302f;
   padding: 10px;
   position: relative;
   bottom: 0;
@@ -80,10 +80,10 @@
   border-radius: 5px;
   margin-right: 5px;
   width: 90%;
-  background-color: #636363;
-  border: 3px solid #535353;
+  background-color: #504945;
+  border: 3px solid #282828;
   border-radius: 5px;
-  color: #dfdfdf;
+  color: #f2e5bc;
 }
 
 #chatgeppetto-send {
@@ -138,11 +138,11 @@
 #suggestionBox {
   position: absolute;
   display: none;
-  border: 1px solid #ccc;
-  background-color: #fff;
+  border: 1px solid #1d2021;
+  background-color: #504945;
   border-radius: 5px;
   width: 94%;
-  color: #333;
+  color: #f2e5bc;
   max-height: 100px;
   overflow-y: auto;
   bottom: 40px;
@@ -154,12 +154,12 @@
 }
 
 .suggestionItem:hover {
-  background-color: #f2f2f2;
+  background-color: #504945;
 }
 
 .suggestionItem.selected {
-  background-color: #acacac;
-  color: white;
+  background-color: #3c3836;
+  color: #f2e5bc;
 }
 
 #chatgeppetto-widget.fullscreen {
@@ -180,17 +180,17 @@
 
 .chatgeppetto-message-container.userbubble {
   align-self: flex-end;
-  background-color: #555055;
+  background-color: #3c3836;
   border-radius: 25px 25px 0 25px;
-  border: 1px solid #353035;
+  border: 3px solid #af3a03;
   padding: 10px;
 }
 
 .chatgeppetto-message-container.geppettobubble {
   align-self: flex-start;
-  background-color: #505555;
+  background-color: #3c3836;
   border-radius: 25px 25px 25px 0;
-  border: 1px solid #303535;
+  border: 3px solid #79740e;
   padding: 10px;
 }
 
@@ -217,7 +217,7 @@
   width: 250px;
   height: 100%;
   padding: 10px;
-  background-color: #202020;
+  background-color: #1d2021;
   overflow-y: auto;
   display: none; /* Hidden by default */
 }
@@ -240,7 +240,7 @@
 .conversationItem {
   padding: 5px;
   cursor: pointer;
-  color: #dfdfdf;
+  color: #f2e5bc;
   font-size: 14px;
   font-weight: bold;
 }
