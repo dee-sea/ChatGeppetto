@@ -61,7 +61,7 @@ async function readConfigFromLocalStorage() {
     } else {
       // Create a default config if none exists and save it
       const defaultConfig = {
-        searchEngine: "https://searx.be/",
+        searchEngine: "https://searx.thele.me/",
         apikey: "Enter your API key here",
         api: "https://api.openai.com/v1/chat/completions",
         language: "en",
