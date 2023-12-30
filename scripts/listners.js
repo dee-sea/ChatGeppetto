@@ -258,7 +258,10 @@ function KeyPress(e) {
   if (evtobj.keyCode === 89 && evtobj.ctrlKey && !evtobj.shiftKey) {
     toggleGeppetto();
     if (chatVisible) {
-      chatInput.focus();
+      // Set focus back to the input field with a slight delay
+      timeout = setTimeout(() => {
+        focusInput();
+      }, 50);
     }
   } else if (evtobj.keyCode === 69 && evtobj.ctrlKey) {
     focusInput();

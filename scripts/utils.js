@@ -154,7 +154,7 @@ function cleanHistory(history) {
 function focusInput() {
   const inputField = document.getElementById("chatgeppetto-input");
   setTimeout(() => {
-    inputField.focus();
+    inputField.focus({ focusVisible: true });
   }, 100);
 }
 
