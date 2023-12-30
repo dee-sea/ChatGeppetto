@@ -61,16 +61,47 @@ async function readConfigFromLocalStorage() {
     } else {
       // Create a default config if none exists and save it
       const defaultConfig = {
-        searchEngine: "Enter your search engine URL here",
+        searchEngine: "https://searx.be/",
         apikey: "Enter your API key here",
-        api: "Enter your API endpoint here",
+        api: "https://api.openai.com/v1/chat/completions",
         language: "en",
-        template: "Enter your instruction template here",
-        character: "Enter your TextGen character here",
+        template: "Mistral",
+        character: "ChatGeppetto",
         assistant: assistant,
         you: "You",
       };
       await saveConfig(defaultConfig);
+      msg = markdownToHtml(
+        "It seems you did not have a configuration already set.\n\nA default configuration pointing to OpenAI has been created for you, with the following values:\n\n" +
+          "API endpoint: " +
+          defaultConfig.api +
+          "\n" +
+          "Language: " +
+          defaultConfig.language +
+          "\n" +
+          "Search engine: " +
+          defaultConfig.searchEngine +
+          "\n" +
+          "Template: " +
+          defaultConfig.template +
+          "\n" +
+          "Character: " +
+          defaultConfig.character +
+          "\n" +
+          "Assistant: " +
+          defaultConfig.assistant +
+          "\n" +
+          "You: " +
+          defaultConfig.you +
+          "\n\n" +
+          "If you plan to use the OpenAI API, you will need to enter your API key in the configuration with:\n" +
+          "`:set apikey <your API key>` and you are ready to go\n\n" +
+          "If you plan to use a local TextGen model, you will need to enter the API endpoint and key in the configuration with:\n" +
+          "`:set api <your API endpoint>` and\n" +
+          "`:set apikey <your API key>`\n\n" +
+          "Feel free to change the other values to your liking.\n\n",
+      );
+      addChatMessage(assistant, msg, true);
       return defaultConfig;
     }
   } catch (error) {
@@ -88,7 +119,7 @@ async function saveConfig(config) {
     await browser.storage.local.set({ config });
   } catch (error) {
     console.error("Error saving configuration:", error);
-    throw error; // Propagate the error to the caller
+    throw error;
   }
 }
 
@@ -118,4 +149,3 @@ async function deleteConfigFromLocalStorage() {
     throw error; // Propagate the error to the caller
   }
 }
-
