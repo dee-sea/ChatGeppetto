@@ -230,26 +230,19 @@ function injectHTMO() {
       <button id="chatgeppetto-toggle" display="none"><i class="far fa-comment"></i></button>
       <div id="chatgeppetto-widget">
         <div id="chatgeppetto-container">
-          <div id="chatgeppetto-title">ChatGeppetto</div>
           <div id="chatgeppetto-messages"></div>
-          <div id="chatgeppetto-input-container">
-            <input
-              id="chatgeppetto-input"
-              type="text"
-              placeholder="Write your message"
-              autofocus
-            />
-            <div id="chatgeppetto-suggestionBox"></div>
-            <button id="chatgeppetto-send">Send</button>
-            <div id="chatgeppetto-loading">
-              <div class="spinner"></div>
-              <div class="message">Loading...</div>
+            <div id="chatgeppetto-input-container">
+              <input
+                id="chatgeppetto-input"
+                type="text"
+                placeholder="Write your message"
+                autofocus
+              />
+              <div id="chatgeppetto-suggestionBox"></div>
+              <button id="chatgeppetto-send">Send</button>
             </div>
-          </div>
         </div>
-        <div id="chatgeppetto-converstationSwitcher">
-          <h2>Conversations</h2>
-        </div>
+        <div id="chatgeppetto-converstationSwitcher"></div>
       </div>`;
   var chatdiv = document.createElement("div");
   chatdiv.innerHTML = htmlContent;

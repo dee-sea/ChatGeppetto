@@ -52,18 +52,6 @@ function onErrorShow(error) {
   show = false;
 }
 
-function KeyPress(e) {
-  const evtobj = window.event ? event : e;
-  if (evtobj.keyCode === 89 && evtobj.ctrlKey && !evtobj.shiftKey) {
-    toggleGeppetto();
-    if (chatVisible) {
-      chatInput.focus();
-    }
-  } else if (evtobj.keyCode === 69 && evtobj.ctrlKey) {
-    focusInput();
-  }
-}
-
 function toggleFullScreen() {
   const widget = document.getElementById("chatgeppetto-widget");
   const messages = document.getElementById("chatgeppetto-messages");

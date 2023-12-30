@@ -239,10 +239,29 @@ function handleKeyDown(
       // Set focus back to the input field with a slight delay
       focusInput();
     }
-  } else if (event.ctrlKey && event.shiftKey && event.key === "Y") {
+  }
+}
+
+function KeyPress(e) {
+  if (event.ctrlKey && event.shiftKey && event.key === "Y") {
     event.preventDefault();
     toggleFullScreen();
-    conversationList.classList.toggle("fullscreen");
+  } else if (event.ctrlKey && event.shiftKey && event.key === "E") {
+    event.preventDefault();
+    clear();
+  } else if (event.ctrlKey && event.key === "E") {
+    event.preventDefault();
+    focusInput();
+  }
+
+  const evtobj = window.event ? event : e;
+  if (evtobj.keyCode === 89 && evtobj.ctrlKey && !evtobj.shiftKey) {
+    toggleGeppetto();
+    if (chatVisible) {
+      chatInput.focus();
+    }
+  } else if (evtobj.keyCode === 69 && evtobj.ctrlKey) {
+    focusInput();
   }
 }
 
