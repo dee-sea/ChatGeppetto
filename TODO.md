@@ -30,6 +30,8 @@
 [X] Publish first version on Github.
 [X] Submit to Firefox Addons.
 [X] Add context menu item for adding selected text.
+[X] Make the plugin OpenAI compatible.
+[X] Tweak css to avoid conflicts with the main page.
 [ ] Port it to Chrome.
 
 # BUGS

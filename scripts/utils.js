@@ -67,9 +67,11 @@ function KeyPress(e) {
 function toggleFullScreen() {
   const widget = document.getElementById("chatgeppetto-widget");
   const messages = document.getElementById("chatgeppetto-messages");
-  const conversations = document.getElementById("conversation-switcher");
+  const conversations = document.getElementById(
+    "chatgeppetto-converstationSwitcher",
+  );
   const inputcontainer = document.getElementById(
-    "chatgeppetto-input-container"
+    "chatgeppetto-input-container",
   );
   widget.classList.toggle("fullscreen");
   messages.classList.toggle("fullscreen");
@@ -82,14 +84,14 @@ function toggleFullScreen() {
 //
 
 function closeSuggestions() {
-  const suggestions = document.getElementById("suggestionBox");
+  const suggestions = document.getElementById("chatgeppetto-suggestionBox");
   suggestions.style.display = "none";
 }
 
 function getFilteredSuggestions(inputValue, inputHistory) {
   return inputHistory.filter(
     (entry) =>
-      entry.toLowerCase().startsWith(inputValue) && entry !== inputValue
+      entry.toLowerCase().startsWith(inputValue) && entry !== inputValue,
   );
 }
 
@@ -157,7 +159,7 @@ async function getConfigAndApply() {
 //
 function cleanHistory(history) {
   return history.filter(
-    (message) => message.role === "user" || message.role === "assistant"
+    (message) => message.role === "user" || message.role === "assistant",
   );
 }
 
@@ -189,7 +191,7 @@ function removeLastMessage() {
   removeLastBody();
   removeLastHeader();
   const lastContainer = document.querySelectorAll(
-    ".chatgeppetto-message-container"
+    ".chatgeppetto-message-container",
   );
   lastContainer.item(lastContainer.length - 1).remove();
 }
@@ -198,7 +200,7 @@ function clearChat() {
   const bodies = chatMessages.querySelectorAll(".chatgeppetto-message-body");
   const headers = chatMessages.querySelectorAll(".chatgeppetto-message-header");
   const containters = chatMessages.querySelectorAll(
-    "chatgeppetto-message-container"
+    "chatgeppetto-message-container",
   );
   bodies.forEach((body) => body.remove());
   headers.forEach((header) => header.remove());
@@ -222,7 +224,7 @@ function rebuildChatMessages(history) {
   clearChat();
   renderMessages(history);
   const containers = chatMessages.querySelectorAll(
-    ".chatgeppetto-message-container"
+    ".chatgeppetto-message-container",
   );
   // remove empty containers
   containers.forEach((container) => {
@@ -234,7 +236,7 @@ function rebuildChatMessages(history) {
 
 function emptyLastBody() {
   const lastBody = chatMessages.querySelector(
-    ".chatgeppetto-message-body:last-child"
+    ".chatgeppetto-message-body:last-child",
   );
   lastBody.innerHTML = "";
 }

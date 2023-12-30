@@ -29,7 +29,7 @@ function handleArrowKeys(
   suggestionBox,
   ihIndex,
   ihLength,
-  inputHistory
+  inputHistory,
 ) {
   if (event.key === "ArrowUp" || event.key === "ArrowDown") {
     event.preventDefault();
@@ -37,8 +37,9 @@ function handleArrowKeys(
     const inputValue = chatInput.value.trim();
 
     if (inputValue !== "") {
-      const suggestionItems =
-        suggestionBox.getElementsByClassName("suggestionItem");
+      const suggestionItems = suggestionBox.getElementsByClassName(
+        "chatgeppetto-suggestionItem",
+      );
       let selectedSuggestionIndex = -1;
 
       for (let i = 0; i < suggestionItems.length; i++) {
@@ -56,7 +57,7 @@ function handleArrowKeys(
       } else if (event.key === "ArrowDown") {
         selectedSuggestionIndex = Math.min(
           selectedSuggestionIndex + 1,
-          suggestionItems.length - 1
+          suggestionItems.length - 1,
         );
       }
 
@@ -131,7 +132,7 @@ function handleKeyDown(
   suggestionBox,
   ihIndex,
   ihLength,
-  inputHistory
+  inputHistory,
 ) {
   if (event.key === "Tab") {
     // Handle Tab key for accepting suggestions
@@ -145,7 +146,8 @@ function handleKeyDown(
     // Use the first suggestion if available
     if (suggestions.length > 0) {
       chatInput.value = suggestions[0];
-      document.getElementById("suggestionBox").style.display = "none";
+      document.getElementById("chatgeppetto-suggestionBox").style.display =
+        "none";
 
       // Set focus back to the input field with a slight delay
       setTimeout(() => {
@@ -160,9 +162,12 @@ function handleKeyDown(
 
     // If the input field is not empty, navigate through suggestions
     if (inputValue !== "") {
-      const suggestionBox = document.getElementById("suggestionBox");
-      const suggestionItems =
-        suggestionBox.getElementsByClassName("suggestionItem");
+      const suggestionBox = document.getElementById(
+        "chatgeppetto-suggestionBox",
+      );
+      const suggestionItems = suggestionBox.getElementsByClassName(
+        "chatgeppetto-suggestionItem",
+      );
 
       // Determine the selected suggestion index
       let selectedSuggestionIndex = -1;
@@ -183,7 +188,7 @@ function handleKeyDown(
       } else if (event.key === "ArrowDown") {
         selectedSuggestionIndex = Math.min(
           selectedSuggestionIndex + 1,
-          suggestionItems.length - 1
+          suggestionItems.length - 1,
         );
       }
 
@@ -218,7 +223,7 @@ function handleKeyDown(
     }
   } else if (event.key === "Escape") {
     // Handle Escape key to close the suggestion list
-    const suggestionBox = document.getElementById("suggestionBox");
+    const suggestionBox = document.getElementById("chatgeppetto-suggestionBox");
     if (suggestionBox.style.display !== "none") {
       suggestionBox.style.display = "none";
 
@@ -228,7 +233,8 @@ function handleKeyDown(
   } else if (event.key === "Backspace" || event.key === "Delete") {
     // Handle Backspace and Delete keys to close the suggestion list when the input is empty
     if (chatInput.value.trim() === "") {
-      document.getElementById("suggestionBox").style.display = "none";
+      document.getElementById("chatgeppetto-suggestionBox").style.display =
+        "none";
 
       // Set focus back to the input field with a slight delay
       focusInput();
@@ -281,7 +287,7 @@ function handleKeyUp(event, chatInput, ihIndex, ihLength, inputHistory) {
     }
   }
   if (event.key === "Escape") {
-    const suggestionBox = document.getElementById("suggestionBox");
+    const suggestionBox = document.getElementById("chatgeppetto-suggestionBox");
     if (suggestionBox.style.display !== "none") {
       suggestionBox.style.display = "none";
       focusInput();
@@ -345,7 +351,8 @@ function handleChatToggleClick(chatWidget, chatToggle, chatVisible) {
 function handleInputChange(chatInput) {
   suggestInput();
   if (chatInput.value.trim() === "") {
-    document.getElementById("suggestionBox").style.display = "none";
+    document.getElementById("chatgeppetto-suggestionBox").style.display =
+      "none";
   }
 }
 

@@ -3,7 +3,9 @@
 //
 // Function to populate the conversation list
 async function populateConversationList() {
-  const conversationList = document.getElementById("conversation-switcher");
+  const conversationList = document.getElementById(
+    "chatgeppetto-converstationSwitcher",
+  );
   conversationList.innerHTML = ""; // Clear previous entries
 
   //get the list of conversations from local storage
@@ -11,11 +13,11 @@ async function populateConversationList() {
     const conversations = result.conversations || [];
     conversations.forEach((conversation, index) => {
       const conversationItem = document.createElement("div");
-      conversationItem.classList.add("conversationItem");
+      conversationItem.classList.add("chatgeppetto-conversationItem");
       conversationItem.textContent = conversation.key;
       // Add a click event listener to switch to the selected conversation
       conversationItem.addEventListener("click", () =>
-        switchConversation(conversation.key)
+        switchConversation(conversation.key),
       );
       conversationList.appendChild(conversationItem);
     });
@@ -73,9 +75,11 @@ const chatInput = document.getElementById("chatgeppetto-input");
 const chatSendButton = document.getElementById("chatgeppetto-send");
 const sendBtn = document.getElementById("chatgeppetto-send");
 const sendInput = document.getElementById("chatgeppetto-input");
-const loadingElement = document.getElementById("loading");
-const suggestionBox = document.getElementById("suggestionBox");
-const conversationsList = document.getElementById("conversation-switcher");
+const loadingElement = document.getElementById("chatgeppetto-loading");
+const suggestionBox = document.getElementById("chatgeppetto-suggestionBox");
+const conversationsList = document.getElementById(
+  "chatgeppetto-converstationSwitcher",
+);
 
 //
 // Assign event listeners
@@ -83,11 +87,11 @@ const conversationsList = document.getElementById("conversation-switcher");
 document.onkeydown = KeyPress;
 browser.runtime.onMessage.addListener(handleReadItMessage);
 chatToggle.addEventListener("click", () =>
-  handleChatToggleClick(chatWidget, chatToggle, chatVisible)
+  handleChatToggleClick(chatWidget, chatToggle, chatVisible),
 );
 chatInput.addEventListener("input", () => handleInputChange(chatInput));
 chatInput.addEventListener("keydown", (event) =>
-  handleTabKey(event, chatInput, suggestionBox, inputHistory)
+  handleTabKey(event, chatInput, suggestionBox, inputHistory),
 );
 chatInput.addEventListener("keydown", (event) =>
   handleKeyDown(
@@ -96,17 +100,17 @@ chatInput.addEventListener("keydown", (event) =>
     suggestionBox,
     ihIndex,
     ihLength,
-    inputHistory
-  )
+    inputHistory,
+  ),
 );
 chatInput.addEventListener("keyup", (event) =>
-  handleKeyUp(event, chatInput, ihIndex, ihLength, inputHistory)
+  handleKeyUp(event, chatInput, ihIndex, ihLength, inputHistory),
 );
 chatInput.addEventListener("drop", (event) =>
-  handleDrop(event, chatInput, inputHistory)
+  handleDrop(event, chatInput, inputHistory),
 );
 chatSendButton.addEventListener("click", () =>
-  handleSendButtonClick(chatInput, history)
+  handleSendButtonClick(chatInput, history),
 );
 // document.addEventListener("keydown", (event) => {
 //   handleKeyDown(
@@ -133,9 +137,9 @@ document.addEventListener("mousemove", (event) => {
 // Function to update the visibility of the container
 function updateContainerVisibility() {
   if (isMouseNear) {
-    conversationsList.classList.remove("hidden");
+    conversationsList.classList.remove("chatgeppetto-hidden");
   } else {
-    conversationsList.classList.add("hidden");
+    conversationsList.classList.add("chatgeppetto-hidden");
   }
 }
 
@@ -161,19 +165,19 @@ function suggestInput() {
 
   // Filter inputHistory to find suggestions containing the current input value
   const suggestions = inputHistory.filter(
-    (entry) => entry.toLowerCase().includes(inputValue) && entry !== inputValue
+    (entry) => entry.toLowerCase().includes(inputValue) && entry !== inputValue,
   );
   // limit the suggestions to 3
   suggestions.length = 3;
   suggestions.reverse();
 
   // Display suggestions in the suggestionBox div
-  const suggestionBox = document.getElementById("suggestionBox");
+  const suggestionBox = document.getElementById("chatgeppetto-suggestionBox");
   suggestionBox.innerHTML = "";
 
   suggestions.forEach((suggestion) => {
     const suggestionItem = document.createElement("div");
-    suggestionItem.classList.add("suggestionItem");
+    suggestionItem.classList.add("chatgeppetto-suggestionItem");
     suggestionItem.textContent = suggestion;
 
     suggestionItem.addEventListener("click", () => {
@@ -201,7 +205,7 @@ function loadInputHistory() {
     },
     (error) => {
       console.error("Error loading input history:", error);
-    }
+    },
   );
 }
 
@@ -235,15 +239,15 @@ function injectHTMO() {
               placeholder="Write your message"
               autofocus
             />
-            <div id="suggestionBox"></div>
+            <div id="chatgeppetto-suggestionBox"></div>
             <button id="chatgeppetto-send">Send</button>
-            <div id="loading">
+            <div id="chatgeppetto-loading">
               <div class="spinner"></div>
               <div class="message">Loading...</div>
             </div>
           </div>
         </div>
-        <div id="conversation-switcher">
+        <div id="chatgeppetto-converstationSwitcher">
           <h2>Conversations</h2>
         </div>
       </div>`;

@@ -1,4 +1,5 @@
 #chatgeppetto-widget {
+  all: revert;
   position: fixed;
   top: 50%;
   right: -450px;
@@ -94,7 +95,7 @@
   background-color: #284269;
   color: #ffffff;
   cursor: pointer;
-  visibility: hidden;
+  visibility: chatgeppetto-hidden;
   display: none;
 }
 
@@ -118,7 +119,7 @@
   cursor: pointer;
   opacity: 0.95;
   transition: background-color 0.3s ease-in-out;
-  visibility: hidden;
+  visibility: chatgeppetto-hidden;
 }
 
 #chatgeppetto-toggle:hover {
@@ -131,11 +132,11 @@
   line-height: 60px;
 }
 
-#loading {
+#chatgeppetto-loading {
   display: none;
 }
 
-#suggestionBox {
+#chatgeppetto-suggestionBox {
   position: absolute;
   display: none;
   border: 1px solid #1d2021;
@@ -148,16 +149,16 @@
   bottom: 40px;
 }
 
-.suggestionItem {
+.chatgeppetto-suggestionItem {
   padding: 5px;
   cursor: pointer;
 }
 
-.suggestionItem:hover {
+.chatgeppetto-suggestionItem:hover {
   background-color: #504945;
 }
 
-.suggestionItem.selected {
+.chatgeppetto-suggestionItem.selected {
   background-color: #3c3836;
   color: #f2e5bc;
 }
@@ -211,7 +212,7 @@
   margin: 0 auto;
 }
 
-#conversation-switcher {
+#chatgeppetto-converstationSwitcher {
   position: fixed;
   position: fixed;
   left: 0px;
@@ -223,25 +224,25 @@
   background-color: #1d2021;
   overflow-y: auto;
   display: none;
-  /* Hidden by default */
+  /* chatgeppetto-hidden by default */
 }
 
-.hidden {
+.chatgeppetto-hidden {
   left: -250px;
   display: block;
 }
 
-#conversation-switcher h2 {
+#chatgeppetto-converstationSwitcher h2 {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-#conversation-switcher.fullscreen {
+#chatgeppetto-converstationSwitcher.fullscreen {
   display: block;
 }
 
-.conversationItem {
+.chatgeppetto-conversationItem {
   padding: 5px;
   cursor: pointer;
   color: #f2e5bc;

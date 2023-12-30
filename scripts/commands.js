@@ -440,7 +440,7 @@ async function help() {
 // Function to pass the message to the LLM
 //
 async function notACommand() {
-  let suggestionBox = document.getElementById("suggestionBox");
+  let suggestionBox = document.getElementById("chatgeppetto-suggestionBox");
   suggestionBox.style.display = "none";
   console.log("Not a command");
   await getResponse(history).then((response) => {
