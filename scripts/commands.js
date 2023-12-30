@@ -9,15 +9,16 @@ async function executeCommand(message) {
       enableChat();
     });
   } else if (
-    message.endsWith("+i") ||
-    message.startsWith("Cherche ") ||
-    message.startsWith("cherche ") ||
-    message.startsWith("Recherche ") ||
-    message.startsWith("recherche ") || // french
-    message.startsWith("Search ") ||
-    message.startsWith("search ") ||
-    message.startsWith("Find ") ||
-    message.startsWith("find ") // english
+    (message.endsWith("+i") ||
+      message.startsWith("Cherche ") ||
+      message.startsWith("cherche ") ||
+      message.startsWith("Recherche ") ||
+      message.startsWith("recherche ") ||
+      message.startsWith("Search ") ||
+      message.startsWith("search ") ||
+      message.startsWith("Find ") ||
+      message.startsWith("find ")) &&
+    !GEPPETTO_API_ENDPOINT.startsWith("https://api.openai.com")
   ) {
     searchTheWeb(message).then((response) => {
       enableChat();
@@ -145,7 +146,7 @@ function getSel() {
 //
 async function readPageContent(text) {
   const listMessageBody = document.querySelectorAll(
-    ".chatgeppetto-message-body"
+    ".chatgeppetto-message-body",
   );
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
   messageBody.innerHTML = "";
@@ -441,6 +442,7 @@ async function help() {
 async function notACommand() {
   let suggestionBox = document.getElementById("suggestionBox");
   suggestionBox.style.display = "none";
+  console.log("Not a command");
   await getResponse(history).then((response) => {
     enableChat();
   });

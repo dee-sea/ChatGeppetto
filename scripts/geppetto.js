@@ -61,7 +61,7 @@ function addChatMessage(sender, message, dimmed = false) {
 //
 function appendChatElement(token) {
   const listMessageBody = document.querySelectorAll(
-    ".chatgeppetto-message-body"
+    ".chatgeppetto-message-body",
   );
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
   const text = messageBody.innerHTML;
@@ -157,28 +157,52 @@ async function getSearchQuery(history) {
     role: "user",
     content: getText("keywords"),
   });
-  const searchQuery = await fetch(GEPPETTO_API_ENDPOINT, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${GEPPETTO_API_KEY}`,
-    },
-    body: JSON.stringify({
-      messages: localhistory,
-      mode: "instruct",
-      instruction_template: template,
-      stream: false,
-      temperature: 1,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      return data.choices[0].message.content;
+  if (GEPPETTO_API_ENDPOINT.startsWith("https://api.openai.com/")) {
+    const searchQuery = await fetch(GEPPETTO_API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GEPPETTO_API_KEY}`,
+      },
+      body: JSON.stringify({
+        messages: localhistory,
+        model: "gpt-3.5-turbo",
+        stream: false,
+        temperature: 1,
+      }),
     })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-  return searchQuery;
+      .then((response) => response.json())
+      .then((data) => {
+        return data.choices[0].message.content;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    return searchQuery;
+  } else {
+    const searchQuery = await fetch(GEPPETTO_API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GEPPETTO_API_KEY}`,
+      },
+      body: JSON.stringify({
+        messages: localhistory,
+        mode: "instruct",
+        instruction_template: template,
+        stream: false,
+        temperature: 1,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data.choices[0].message.content;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    return searchQuery;
+  }
 }
 
 //
@@ -234,7 +258,7 @@ async function getSearchResults(url) {
     browser.storage.local.set({ hist: JSON.stringify(history) });
     //remove last div whith class chatgeppetto-message-body
     const listMessageBody = document.querySelectorAll(
-      ".chatgeppetto-message-body"
+      ".chatgeppetto-message-body",
     );
     const messageBody = listMessageBody.item(listMessageBody.length - 1);
     messageBody.innerHTML = "";
