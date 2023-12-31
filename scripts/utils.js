@@ -228,3 +228,12 @@ function emptyLastBody() {
   );
   lastBody.innerHTML = "";
 }
+
+function copyToClipboard(text) {
+  const dummyTextarea = document.createElement("textarea");
+  dummyTextarea.value = text;
+  document.body.appendChild(dummyTextarea);
+  dummyTextarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(dummyTextarea);
+}

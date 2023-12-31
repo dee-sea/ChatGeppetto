@@ -44,6 +44,13 @@ function addChatMessage(sender, message, dimmed = false) {
     const messageHeader = document.createElement("div");
     messageHeader.classList.add("chatgeppetto-message-header");
     messageHeader.textContent = sender + ":";
+    if (sender == assistant) {
+      const copyButton = document.createElement("button");
+      copyButton.classList.add("chatgeppetto-copy");
+      copyButton.innerHTML = "";
+      copyButton.setAttribute("title", "Copy");
+      messageHeader.appendChild(copyButton);
+    }
     const messageBody = document.createElement("div");
     messageBody.classList.add("chatgeppetto-message-body");
     messageBody.innerHTML = message;

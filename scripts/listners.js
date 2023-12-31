@@ -386,3 +386,16 @@ function handleReadItMessage(msg) {
     alert("read-it");
   }
 }
+
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("chatgeppetto-copy")) {
+    const messageBody = event.target.parentNode;
+    const messageParent = event.target.parentNode.parentNode;
+    const messageContent = messageBody.innerText;
+    copyToClipboard(messageContent);
+    messageParent.classList.add("dimmed");
+    timeout = setTimeout(() => {
+      messageParent.classList.remove("dimmed");
+    }, 500);
+  }
+});

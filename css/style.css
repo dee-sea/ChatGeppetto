@@ -55,6 +55,7 @@
 }
 
 .chatgeppetto-message-header {
+  position: relative;
   font-size: 18px;
   color: #d5c4a1;
   font-weight: bold;
@@ -97,6 +98,24 @@
   cursor: pointer;
   visibility: chatgeppetto-hidden;
   display: none;
+}
+
+.chatgeppetto-copy {
+  cursor: pointer;
+  position: absolute;
+  top: -10px;
+  right: 0;
+  color: #f2e5bc;
+  border: none;
+  padding: 0px 0px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Monolisa Nerd Font", monospace;
+  background-color: rgba(76, 175, 80, 0);
+  margin-top: 8px;
 }
 
 #chatgeppetto-toggle {
