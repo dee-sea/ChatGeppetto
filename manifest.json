@@ -34,8 +34,7 @@
         "third-party/showdown.min.js"
       ],
       "css": [
-        "css/style.css",
-        "css/github-dark-dimmed.min.css"
+        "css/style.css"
       ]
     }
   ],
