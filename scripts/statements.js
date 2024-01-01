@@ -46,6 +46,10 @@ const statements = {
     fr: "Ne réponds pas à la question, donne juste des mots clés à chercher sur Google pour trouver la réponse. Soit facuel, ajoute aucun text. Donne juste une liste de mots clés.",
     en: "Do not answer the question, just gives keywords to search on Google to find the answer. Be factual, add no text. Just give a list of keywords.",
   },
+  conversationSummary: {
+    fr: "Fais moi un résumé de la conversation précédente.\n\n",
+    en: "Give me a summary of the previous conversation.\n\n",
+  },
   resultPages: {
     fr: "Voici une liste de pages avec leurs urls et le texte pour t'aider à répondre:\n\n",
     en: "Here is a list of pages with their urls and text to help you answer:\n\n",

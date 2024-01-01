@@ -1,3 +1,11 @@
+browser.storage.local.get("visible").then((result) => {
+  if (result.visible) {
+    body = document.querySelector("body");
+    body.classList.add("chatgeppetto-open");
+    chatWidget.classList.add("chatgeppetto-visible");
+  }
+});
+
 //
 // Saved conversation management
 //
@@ -67,13 +75,10 @@ loadInputHistory();
 //
 // get refs to UI elements
 //
-const chatToggle = document.getElementById("chatgeppetto-toggle");
 const chatWidget = document.getElementById("chatgeppetto-widget");
 const chatContainer = document.getElementById("chatgeppetto-container");
 const chatMessages = document.getElementById("chatgeppetto-messages");
 const chatInput = document.getElementById("chatgeppetto-input");
-const chatSendButton = document.getElementById("chatgeppetto-send");
-const sendBtn = document.getElementById("chatgeppetto-send");
 const sendInput = document.getElementById("chatgeppetto-input");
 const loadingElement = document.getElementById("chatgeppetto-loading");
 const suggestionBox = document.getElementById("chatgeppetto-suggestionBox");
@@ -86,9 +91,6 @@ const conversationsList = document.getElementById(
 //
 document.onkeydown = KeyPress;
 browser.runtime.onMessage.addListener(handleReadItMessage);
-chatToggle.addEventListener("click", () =>
-  handleChatToggleClick(chatWidget, chatToggle, chatVisible),
-);
 chatInput.addEventListener("input", () => handleInputChange(chatInput));
 chatInput.addEventListener("keydown", (event) =>
   handleTabKey(event, chatInput, suggestionBox, inputHistory),
@@ -108,9 +110,6 @@ chatInput.addEventListener("keyup", (event) =>
 );
 chatInput.addEventListener("drop", (event) =>
   handleDrop(event, chatInput, inputHistory),
-);
-chatSendButton.addEventListener("click", () =>
-  handleSendButtonClick(chatInput, history),
 );
 // document.addEventListener("keydown", (event) => {
 //   handleKeyDown(
@@ -227,7 +226,6 @@ function updateAndPersistInputHistory() {
 // Function to inject the HTML for the chat widget
 function injectHTMO() {
   const htmlContent = `
-      <button id="chatgeppetto-toggle" display="none"><i class="far fa-comment"></i></button>
       <div id="chatgeppetto-widget">
         <div id="chatgeppetto-container">
           <div id="chatgeppetto-messages"></div>
@@ -239,7 +237,6 @@ function injectHTMO() {
                 autofocus
               />
               <div id="chatgeppetto-suggestionBox"></div>
-              <button id="chatgeppetto-send">Send</button>
             </div>
         </div>
         <div id="chatgeppetto-converstationSwitcher"></div>

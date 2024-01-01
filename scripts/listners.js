@@ -262,6 +262,7 @@ function KeyPress(e) {
       timeout = setTimeout(() => {
         focusInput();
       }, 50);
+      // get a reference to the body
     }
   } else if (evtobj.keyCode === 69 && evtobj.ctrlKey) {
     focusInput();

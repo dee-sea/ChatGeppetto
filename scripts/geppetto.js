@@ -116,7 +116,6 @@ async function getWebpage(url) {
     .catch((error) => {
       console.error(error);
       addChatMessage(assistant, markdownToHtml(getText("loadError")));
-      sendBtn.disabled = false;
       sendInput.disabled = false;
       let dumb = history.pop();
       dumb = history.pop();
@@ -153,6 +152,63 @@ function readPageContentMenu() {
   text = text.trim();
   command = ":readpagecontent " + text;
   sendChatMessage(command);
+}
+
+//
+// Function to get a summary of the current conversation
+//
+async function summarizeConversation(history) {
+  var localhistory = history;
+  localhistory.push({
+    role: "user",
+    content: getText("conversationSummary"),
+  });
+  if (GEPPETTO_API_ENDPOINT.startsWith("https://api.openai.com/")) {
+    const searchQuery = await fetch(GEPPETTO_API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GEPPETTO_API_KEY}`,
+      },
+      body: JSON.stringify({
+        messages: localhistory,
+        model: "gpt-3.5-turbo",
+        stream: false,
+        temperature: 1,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data.choices[0].message.content;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    return searchQuery;
+  } else {
+    const searchQuery = await fetch(GEPPETTO_API_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GEPPETTO_API_KEY}`,
+      },
+      body: JSON.stringify({
+        messages: localhistory,
+        mode: "instruct",
+        instruction_template: template,
+        stream: false,
+        temperature: 1,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        return data.choices[0].message.content;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+    return searchQuery;
+  }
 }
 
 //
@@ -240,7 +296,6 @@ async function getSearchResults(url) {
       })
       .catch((error) => {
         console.error(error);
-        sendBtn.disabled = false;
         sendInput.disabled = false;
       });
 

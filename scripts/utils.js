@@ -2,22 +2,27 @@
 // UI Management
 //
 function enableChat() {
-  sendBtn.disabled = false;
   sendInput.disabled = false;
   sendInput.focus();
 }
 
 function disableChat() {
-  sendBtn.disabled = true;
   sendInput.disabled = true;
 }
 
 function toggleGeppetto() {
   chatVisible = !chatVisible;
   chatWidget.classList.toggle("visible", chatVisible);
-  chatToggle.innerText = chatVisible ? "Close" : "Chat";
   chatInput.focus();
   show = !show;
+  const body = document.querySelector("body");
+  if (chatVisible) {
+    body.classList.add("chatgeppetto-open");
+    chatWidget.classList.add("chatgeppetto-visible");
+  } else {
+    body.classList.remove("chatgeppetto-open");
+    chatWidget.classList.remove("chatgeppetto-visible");
+  }
   browser.storage.local.set({ visible: show });
   chatInput.focus();
 }
@@ -43,7 +48,6 @@ function onErrorHist(error) {
 function onGotShow(item) {
   chatVisible = item.visible;
   chatWidget.classList.toggle("visible", chatVisible);
-  chatToggle.innerText = chatVisible ? "Close" : "Chat";
   chatInput.focus();
   show = item.visible;
 }
@@ -90,7 +94,6 @@ function getFilteredSuggestions(inputValue, inputHistory) {
 // Function to fetch handle errors
 function handleFetchError(error) {
   console.error(error);
-  sendBtn.disabled = false;
   sendInput.disabled = false;
 }
 
@@ -236,4 +239,13 @@ function copyToClipboard(text) {
   dummyTextarea.select();
   document.execCommand("copy");
   document.body.removeChild(dummyTextarea);
+}
+
+function estimateContextLength(chatHistory) {
+  let totalTokens = 0;
+  for (const message of chatHistory) {
+    const tokens = message.content.split(/\s+/);
+    totalTokens += tokens.length;
+  }
+  return totalTokens * 2;
 }

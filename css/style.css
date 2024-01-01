@@ -1,26 +1,31 @@
+body.chatgeppetto-open {
+  margin-right: 450px;
+}
+
 #chatgeppetto-widget {
   all: revert;
   position: fixed;
-  top: 50%;
-  right: -450px;
-  transform: translateY(-50%);
-  width: 450px;
+  top: 0px;
+  right: 0px;
+  width: 25%;
   z-index: 99999;
   transition: right 0s;
   height: 100%;
+  display: none;
+  margin-left: auto;
+  display: none;
 }
 
-#chatgeppetto-widget.visible {
+#chatgeppetto-widget.chatgeppetto-visible {
   right: 0;
+  display: block;
 }
 
 #chatgeppetto-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  border-radius: 10px;
   background-color: #282828;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   color: #f2e5bc;
@@ -72,7 +77,7 @@
   padding: 10px;
   position: relative;
   bottom: 0;
-  width: 43opx;
+  width: 95%;
   height: 30px;
 }
 
