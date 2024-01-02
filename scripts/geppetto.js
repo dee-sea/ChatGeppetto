@@ -158,6 +158,19 @@ function readPageContentMenu() {
   sendChatMessage(command);
 }
 
+async function cont() {
+  // get the text from the last geppetto-message-body
+  const listMessageBody = document.querySelectorAll(
+    ".chatgeppetto-message-body",
+  );
+  const messageBody = listMessageBody.item(listMessageBody.length - 1);
+  let text =
+    getText("continue") + "\n\n" + messageBody.textContent.slice(0, -3);
+  text = [{ role: "user", content: text }];
+  console.log(text);
+  await getResponse(text, true, history);
+}
+
 //
 // Function to get a summary of the current conversation
 //

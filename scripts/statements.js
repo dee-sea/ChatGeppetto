@@ -50,6 +50,10 @@ const statements = {
     fr: "Fais moi un résumé le plus court possible de la conversation précédente.\n\n",
     en: "Give me a summary of the previous conversation as short as possible.\n\n",
   },
+  continue: {
+    fr: "[INST]Ne réponds pas au texte, mais Continue le texte suivant.[/INST]",
+    en: "[INST]Do not answer the text, but Continue the following text.[/INST]",
+  },
   resultPages: {
     fr: "Voici une liste de pages avec leurs urls et le texte pour t'aider à répondre:\n\n",
     en: "Here is a list of pages with their urls and text to help you answer:\n\n",

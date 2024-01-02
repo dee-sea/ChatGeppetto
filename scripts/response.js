@@ -1,7 +1,7 @@
 //
 // Function to get the stream response from the API endpoint
 //
-async function getResponse(history) {
+async function getResponse(history, continuation = false, realHistory = []) {
   disableChat();
   var source;
   if (!readConfigFromLocalStorage()) {
@@ -42,21 +42,41 @@ async function getResponse(history) {
         console.error("Error:", error);
       });
   } else {
-    source = new SSE(GEPPETTO_API_ENDPOINT, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${GEPPETTO_API_KEY}`,
-      },
-      payload: JSON.stringify({
-        messages: history,
-        mode: "chat-instruct",
-        instruction_template: template,
-        character: character,
-        stream: true,
-        temperature: temperature,
-        max_tokens: 8192,
-      }),
-    });
+    if (continuation) {
+      let endpoint = GEPPETTO_API_ENDPOINT.replace("chat/", "");
+      console.log(endpoint);
+      let text = history[history.length - 1].content;
+      console.log("XXX" + text + "XXX");
+      source = new SSE(endpoint, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${GEPPETTO_API_KEY}`,
+        },
+        payload: JSON.stringify({
+          max_tokens: 200,
+          prompt: text,
+          temperature: temperature,
+          stream: true,
+        }),
+      });
+    } else {
+      let endpoint = GEPPETTO_API_ENDPOINT;
+      source = new SSE(endpoint, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${GEPPETTO_API_KEY}`,
+        },
+        payload: JSON.stringify({
+          messages: history,
+          mode: "chat-instruct",
+          instruction_template: template,
+          character: character,
+          stream: true,
+          temperature: temperature,
+          max_tokens: 128,
+        }),
+      });
+    }
   }
 
   if (GEPPETTO_API_ENDPOINT.startsWith("https://api.openai.com/")) {
@@ -87,18 +107,44 @@ async function getResponse(history) {
     // Function to handle the SSE response
     //
     source.addEventListener("message", async function (e) {
-      console.log(e.data);
       // Assuming we receive JSON-encoded data payloads:
       try {
         var payload = JSON.parse(e.data);
       } catch (e) {
         browser.storage.local.set({ hist: JSON.stringify(history) });
-        // return;
+        const listMessageBody = document.querySelectorAll(
+          ".chatgeppetto-message-body",
+        );
+        const messageBody = listMessageBody.item(listMessageBody.length - 1);
+        const contButton = document.createElement("button");
+        contButton.classList.add("chatgeppetto-cont");
+        contButton.innerHTML = "...";
+        contButton.setAttribute("title", "Continue");
       }
+      console.log(e.data);
       if (payload.choices[0].finish_reason != "stop") {
-        const chatbotResponseElement = payload.choices[0].delta.content;
-        appendChatElement(chatbotResponseElement);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        if (payload.choices[0].finish_reason == "length") {
+          console.log("length reason");
+          // get the last div with class chatgeppetto-message-body
+          const listMessageBody = document.querySelectorAll(
+            ".chatgeppetto-message-body",
+          );
+          const messageBody = listMessageBody.item(listMessageBody.length - 1);
+          const contButton = document.createElement("button");
+          contButton.classList.add("chatgeppetto-cont");
+          contButton.innerHTML = "...";
+          contButton.setAttribute("title", "Continue");
+          messageBody.appendChild(contButton);
+        } else {
+          var chatbotResponseElement;
+          if (continuation) {
+            chatbotResponseElement = payload.choices[0].text;
+          } else {
+            chatbotResponseElement = payload.choices[0].delta.content;
+          }
+          appendChatElement(chatbotResponseElement);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
       } else {
         const listMessageBody = document.querySelectorAll(
           ".chatgeppetto-message-body",
@@ -106,6 +152,12 @@ async function getResponse(history) {
         const messageBody = listMessageBody.item(listMessageBody.length - 1);
         let contextLength = estimateContextLength(history);
         // add the last message to the history
+        let lastUserMessage = history
+          .filter((message) => message.role === "user")
+          .pop().content;
+        if (continuation) {
+          answer = lastUserMessage.replace(getText("continue"), "") + answer;
+        }
         history.push({ role: "assistant", content: answer });
         if (contextLength > cLength) {
           addChatMessage(
@@ -172,8 +224,18 @@ async function getResponse(history) {
             );
           }
         }
+        if (continuation) {
+          history = realHistory;
+          history.pop();
+          history.pop();
+          history.push({ role: "assistant", content: answer });
+        }
         let html = markdownToHtml(answer);
         messageBody.innerHTML = html;
+        // get the last div with class chatgeppetto-message-body
+        const listMessageBody2 = document.querySelectorAll(
+          ".chatgeppetto-message-body",
+        );
         hljs.highlightAll();
         chatMessages.scrollTop = chatMessages.scrollHeight;
         browser.storage.local.set({ hist: JSON.stringify(history) });

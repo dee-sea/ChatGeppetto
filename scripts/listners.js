@@ -398,5 +398,7 @@ document.addEventListener("click", function (event) {
     timeout = setTimeout(() => {
       messageParent.classList.remove("dimmed");
     }, 500);
+  } else if (event.target.classList.contains("chatgeppetto-cont")) {
+    cont();
   }
 });

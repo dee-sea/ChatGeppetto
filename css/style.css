@@ -105,6 +105,28 @@ body.chatgeppetto-open {
   display: none;
 }
 
+.chatgeppetto-cont {
+  cursor: pointer;
+  position: relative;
+  bottom: 0px;
+  right: 0px;
+  color: #f2e5bc;
+  border: none;
+  padding: 0px 0px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: rgba(76, 175, 80, 0);
+  margin-top: 8px;
+}
+
+.chatgeppetto-cont.chatgeppetto-hidden {
+  visibility: hidden;
+  display: none;
+}
+
 .chatgeppetto-copy {
   cursor: pointer;
   position: absolute;
