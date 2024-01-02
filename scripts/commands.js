@@ -108,16 +108,21 @@ async function searchTheWeb(message) {
   //   content: text,
   // });
   addChatMessage(you, markdownToHtml(text));
-  addChatMessage(assistant, getText("searching"));
+  addChatMessage(assistant, markdownToHtml(getText("searching")));
   let searchQuery = await getSearchQuery(history).then((response) => {
     return response;
   });
   searchQuery = searchQuery.replace('"', "");
   console.log("Searching the web for: " + searchQuery);
+  //change the last div with class chatgeppetto-message-body text to "Searching the web for: " + searchQuery)
+  const listMessageBody = document.querySelectorAll(
+    ".chatgeppetto-message-body",
+  );
+  const messageBody = listMessageBody.item(listMessageBody.length - 1);
+  messageBody.innerHTML = markdownToHtml(getText("gettingPages"));
   var searchUrl = searchEngine + "?q=";
   urlsearch = searchUrl + encodeURIComponent(searchQuery);
   let searchResults = await getSearchResults(urlsearch);
-  //emptyLastBody();
   await notACommand();
   enableChat();
   return;

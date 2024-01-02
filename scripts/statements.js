@@ -22,6 +22,10 @@ const statements = {
     fr: "*Recherche en cours...*",
     en: "*Searching the web...*",
   },
+  gettingPage: {
+    fr: "*Récupération des pages...*",
+    en: "*Getting pages...*",
+  },
   greeting: {
     fr: "Salut, je suis ChatGeppetto.\nComment puis-je t'aider aujourd'hui ?",
     en: "Hi, I'm ChatGeppetto.\nHow can I help you today?",
