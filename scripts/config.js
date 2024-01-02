@@ -44,6 +44,9 @@ async function applyConfig(config) {
     character = config.character + "-" + config.language;
     assistant = config.assistant;
     you = config.you;
+    temperature = config.temperature;
+    cLength = config.contextLength;
+    keep = config.keep;
   }
 }
 
@@ -69,6 +72,9 @@ async function readConfigFromLocalStorage() {
         character: "ChatGeppetto",
         assistant: assistant,
         you: "You",
+        temperature: 0.7,
+        contextLength: 1024,
+        keep: 5,
       };
       await saveConfig(defaultConfig);
       msg = markdownToHtml(
@@ -93,6 +99,12 @@ async function readConfigFromLocalStorage() {
           "\n" +
           "You: " +
           defaultConfig.you +
+          "\n" +
+          "Context length: " +
+          defaultConfig.contextLength +
+          "\n" +
+          "Messages to keep: " +
+          defaultConfig.keep +
           "\n\n" +
           "If you plan to use the OpenAI API, you will need to enter your API key in the configuration with:\n" +
           "`:set apikey <your API key>` and you are ready to go\n\n" +
@@ -130,6 +142,16 @@ async function getCurrentConfig() {
   try {
     // Retrieve the current config from local storage
     const result = await browser.storage.local.get("config");
+    // Check if returned config contains a key named contextLength
+    // if not add is as a default value of 1024, add the keeo key
+    // with a default value of 5 and the temperature key with a
+    // default value of 0.7
+    if (!result.config.hasOwnProperty("contextLength")) {
+      result.config.contextLength = 1024;
+      result.config.keep = 5;
+      result.config.temperature = 0.7;
+      await saveConfig(result.config);
+    }
     return result.config || null;
   } catch (error) {
     console.error("Error getting current configuration:", error);

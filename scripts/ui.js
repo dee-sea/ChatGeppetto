@@ -60,7 +60,6 @@ let inputHistory = [""];
 let ihLength = 0;
 let ihIndex = 0;
 let chatVisible = false;
-let answer = "";
 let history = [];
 
 //

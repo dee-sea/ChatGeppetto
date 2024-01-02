@@ -243,7 +243,7 @@ function copyToClipboard(text) {
 
 function estimateContextLength(chatHistory) {
   let totalTokens = 0;
-  for (const message of chatHistory) {
+  for (const message of history) {
     const tokens = message.content.split(/\s+/);
     totalTokens += tokens.length;
   }

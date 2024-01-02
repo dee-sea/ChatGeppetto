@@ -86,7 +86,6 @@ async function getURL(message) {
 // Function to make the bot search the web
 //
 async function searchTheWeb(message) {
-  removeLastHeader();
   removeLastMessage();
   if (message.endsWith("+i")) {
     text = message.replace("+i", "");
@@ -110,9 +109,8 @@ async function searchTheWeb(message) {
   urlsearch = searchUrl + encodeURIComponent(searchQuery);
   let searchResults = await getSearchResults(urlsearch);
   emptyLastBody();
-  getResponse(history).then((response) => {
-    enableChat();
-  });
+  await notACommand();
+  enableChat();
   return;
 }
 
@@ -199,7 +197,7 @@ async function deleteSuggestions() {
 // Function to print the current config
 //
 async function printConfig() {
-  let config = getCurrentConfig();
+  let config = await getCurrentConfig();
   console.log(config);
   enableChat();
   return;
@@ -286,18 +284,6 @@ async function listConversations() {
   return;
 }
 
-//
-// Funtion to delete the last message
-//
-// async function pop() {
-//   removeLastMessage();
-//   history.pop();
-//   browser.storage.local.set({ hist: JSON.stringify(history) });
-//   rebuildChatMessages(history);
-//   enableChat();
-//   focusInput();
-//   return;
-// }
 async function pop() {
   let poppedMessage;
   do {
@@ -362,7 +348,7 @@ async function push(message) {
 // Function to clean the conversation history from system messages
 //
 async function clean() {
-  removeLastHeader();
+  removeLastMessage();
   history = await cleanHistory(history);
   browser.storage.local.set({ inputHistory: JSON.stringify(history) });
   enableChat();
@@ -370,39 +356,15 @@ async function clean() {
   return;
 }
 
-//
-// Function to clear the conversation history
-//
-// async function clear() {
-//   history = [];
-//   browser.storage.local.set({ hist: JSON.stringify(history) });
-//   enableChat();
-//   clearChat();
-//   history.push({
-//     role: "system",
-//     content: getText("systemPrompt"),
-//   });
-//   history.push({
-//     role: "assistant",
-//     content: getText("greeting"),
-//   });
-//   browser.storage.local.set({ hist: JSON.stringify(history) });
-//   addChatMessage(assistant, markdownToHtml(getText("greeting")));
-//   enableChat();
-//   return;
-// }
 async function clear() {
   history = [];
 
-  // Add system and greeting messages
-  history.push({
-    role: "system",
-    content: getText("systemPrompt"),
-  });
   history.push({
     role: "assistant",
     content: getText("greeting"),
   });
+
+  cLength = getConfigAndApply();
 
   // Save the updated history
   browser.storage.local.set({ hist: JSON.stringify(history) });
@@ -442,10 +404,6 @@ async function help() {
 async function notACommand() {
   let suggestionBox = document.getElementById("chatgeppetto-suggestionBox");
   suggestionBox.style.display = "none";
-  console.log("Not a command");
-  await getResponse(history).then((response) => {
-    enableChat();
-  });
+  await getResponse(history);
   browser.storage.local.set({ hist: JSON.stringify(history) });
-  content;
 }

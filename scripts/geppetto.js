@@ -10,6 +10,10 @@ var template = "default";
 var character = "ChatGeppetto";
 var assistant = "ChatGeppetto";
 var you = "You";
+var temperature = 0.7;
+var keep = 5;
+var cLength = 1024;
+var answer = "";
 
 //
 // Function to sent messages to the chatbot
@@ -175,6 +179,8 @@ async function summarizeConversation(history) {
         model: "gpt-3.5-turbo",
         stream: false,
         temperature: 1,
+        max_tokens: 128,
+        min_tokens: 32,
       }),
     })
       .then((response) => response.json())

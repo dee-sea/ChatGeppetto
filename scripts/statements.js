@@ -47,8 +47,8 @@ const statements = {
     en: "Do not answer the question, just gives keywords to search on Google to find the answer. Be factual, add no text. Just give a list of keywords.",
   },
   conversationSummary: {
-    fr: "Fais moi un résumé de la conversation précédente.\n\n",
-    en: "Give me a summary of the previous conversation.\n\n",
+    fr: "Fais moi un résumé le plus court possible de la conversation précédente.\n\n",
+    en: "Give me a summary of the previous conversation as short as possible.\n\n",
   },
   resultPages: {
     fr: "Voici une liste de pages avec leurs urls et le texte pour t'aider à répondre:\n\n",

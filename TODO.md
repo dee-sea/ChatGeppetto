@@ -32,6 +32,7 @@
 [X] Add context menu item for adding selected text.
 [X] Make the plugin OpenAI compatible.
 [X] Tweak css to avoid conflicts with the main page.
+[X] Implement memory management
 [ ] Port it to Chrome.
 
 # BUGS

@@ -192,7 +192,7 @@ body.chatgeppetto-open {
   right: 0;
   border-radius: 0;
   height: 100%;
-  top: 50%;
+  top: 0px;
 }
 
 #chatgeppetto-messages.fullscreen {
