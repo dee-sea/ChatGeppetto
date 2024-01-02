@@ -23,16 +23,17 @@ try to make it better and better.
 - Sidebar panel to chat with the bot.
 - Open and close the panel with a keyboard shortcut.
 - Feed text selection and pages to the bot memory.
-- Internet aware bot. The bot can make searches on the internet before
-answering you.
+- Internet aware bot. The bot can make searches on the internet before answering you.
 - Bot configuration with special commands.
 - Save and load conversations.
 - input history and suggestions from past inputs.
 - remove and insert user, bot or system messages in conversation.
 - Fullscreen mode, with saved conversations panel
 - Supports OpenAI ChatGPT and Oobabooga TextGen.
-- Memory management: auto-cleaning of system prompts and auto 
-summarisation of the beginning of the conversation.
+- Memory management: auto-cleaning of system prompts and auto summarisation of the beginning of the conversation.
+- Continue on max tokens reached.
+- Copy button to copy the bot answer to the clipboard.
+- Syntax highlighting for code in the bot answers.
 
 # What do I need to run ChatGeppetto?
 
