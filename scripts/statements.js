@@ -19,12 +19,12 @@ const statements = {
     en: "*Selected text*",
   },
   searching: {
-    fr: "*Recherche en cours...*",
-    en: "*Searching the web...*",
+    fr: "*Recherche en cours*",
+    en: "*Searching the web*",
   },
-  gettingPage: {
-    fr: "*Récupération des pages...*",
-    en: "*Getting pages...*",
+  gettingPages: {
+    fr: "*Récupération des pages*",
+    en: "*Getting pages*",
   },
   greeting: {
     fr: "Salut, je suis ChatGeppetto.\nComment puis-je t'aider aujourd'hui ?",
