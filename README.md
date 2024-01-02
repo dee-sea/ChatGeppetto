@@ -30,7 +30,9 @@ answering you.
 - input history and suggestions from past inputs.
 - remove and insert user, bot or system messages in conversation.
 - Fullscreen mode, with saved conversations panel
-- Now supports OpenAI ChatGPT and Oobabooga TextGen.
+- Supports OpenAI ChatGPT and Oobabooga TextGen.
+- Memory management: auto-cleaning of system prompts and auto 
+summarisation of the beginning of the conversation.
 
 # What do I need to run ChatGeppetto?
 
