@@ -20,7 +20,6 @@ async function getResponse(history) {
     );
     return;
   } else if (GEPPETTO_API_ENDPOINT.startsWith("https://api.openai.com/")) {
-    console.log("Using OpenAI API");
     source = await fetch(GEPPETTO_API_ENDPOINT, {
       method: "POST",
       headers: {
@@ -43,7 +42,6 @@ async function getResponse(history) {
         console.error("Error:", error);
       });
   } else {
-    console.log("Using TextGen API");
     source = new SSE(GEPPETTO_API_ENDPOINT, {
       headers: {
         "Content-Type": "application/json",
@@ -106,7 +104,6 @@ async function getResponse(history) {
         );
         const messageBody = listMessageBody.item(listMessageBody.length - 1);
         let contextLength = estimateContextLength(history);
-        console.log("Context length: " + contextLength);
         // add the last message to the history
         history.push({ role: "assistant", content: answer });
         if (contextLength > cLength) {
@@ -115,7 +112,8 @@ async function getResponse(history) {
             "I'm sorry, I can't remember that far back.",
             true,
           );
-          clean();
+          // if conversation contains elements with the system role
+          await clean();
           const list = document.querySelectorAll(".chatgeppetto-message-body");
           const last = list.item(list.length - 2);
           const lastText = last.textContent;

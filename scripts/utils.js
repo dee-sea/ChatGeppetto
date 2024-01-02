@@ -129,7 +129,6 @@ function getSelectedText() {
   } else if (document.getSelection()) {
     text = document.getSelection().toString();
   }
-  console.log("text :", text);
   return text;
 }
 
