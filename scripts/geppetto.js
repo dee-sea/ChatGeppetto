@@ -12,7 +12,8 @@ var assistant = "ChatGeppetto";
 var you = "You";
 var temperature = 0.7;
 var keep = 5;
-var cLength = 1024;
+var cLength = 2048;
+var maxTokens = 2048;
 var answer = "";
 
 //

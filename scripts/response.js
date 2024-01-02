@@ -31,7 +31,7 @@ async function getResponse(history, continuation = false, realHistory = []) {
         model: "gpt-3.5-turbo",
         stream: false,
         temperature: temperature,
-        max_tokens: 500,
+        max_tokens: maxTokens,
       }),
     })
       .then((response) => response.json())
@@ -53,7 +53,7 @@ async function getResponse(history, continuation = false, realHistory = []) {
           Authorization: `Bearer ${GEPPETTO_API_KEY}`,
         },
         payload: JSON.stringify({
-          max_tokens: 200,
+          max_tokens: maxTokens,
           prompt: text,
           temperature: temperature,
           stream: true,
@@ -73,7 +73,7 @@ async function getResponse(history, continuation = false, realHistory = []) {
           character: character,
           stream: true,
           temperature: temperature,
-          max_tokens: 128,
+          max_tokens: maxTokens,
         }),
       });
     }

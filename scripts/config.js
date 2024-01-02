@@ -47,6 +47,7 @@ async function applyConfig(config) {
     temperature = config.temperature;
     cLength = config.contextLength;
     keep = config.keep;
+    maxTokens = config.maxTokens;
   }
 }
 
@@ -73,8 +74,9 @@ async function readConfigFromLocalStorage() {
         assistant: assistant,
         you: "You",
         temperature: 0.7,
-        contextLength: 1024,
+        contextLength: 2048,
         keep: 5,
+        maxTokens: 2048,
       };
       await saveConfig(defaultConfig);
       msg = markdownToHtml(
@@ -105,6 +107,12 @@ async function readConfigFromLocalStorage() {
           "\n" +
           "Messages to keep: " +
           defaultConfig.keep +
+          "\n" +
+          "Temperature: " +
+          defaultConfig.temperature +
+          "\n" +
+          "Max tokens: " +
+          defaultConfig.maxTokens +
           "\n\n" +
           "If you plan to use the OpenAI API, you will need to enter your API key in the configuration with:\n" +
           "`:set apikey <your API key>` and you are ready to go\n\n" +
@@ -150,6 +158,10 @@ async function getCurrentConfig() {
       result.config.contextLength = 1024;
       result.config.keep = 5;
       result.config.temperature = 0.7;
+      await saveConfig(result.config);
+    }
+    if (!result.config.hasOwnProperty("maxTokens")) {
+      result.config.maxTokens = 1024;
       await saveConfig(result.config);
     }
     return result.config || null;

@@ -207,7 +207,14 @@ async function deleteSuggestions() {
 //
 async function printConfig() {
   let config = await getCurrentConfig();
-  console.log(config);
+  // Format a pretty markdown table from the config to be printed
+  let configString = "Configuration:\n\n";
+  configString += "| Key | Value |\n| --- | --- |\n";
+  for (let key in config) {
+    configString += "| " + key + " | " + config[key] + " |\n";
+  }
+  addChatMessage(assistant, markdownToHtml(configString), true);
+  await getConfigAndApply();
   enableChat();
   return;
 }
@@ -217,6 +224,7 @@ async function printConfig() {
 //
 async function setValue(message) {
   setConfig(message);
+
   enableChat();
   return;
 }
