@@ -138,7 +138,7 @@ function getSel() {
     getText("longSeparator") +
     userInput +
     getText("longSeparator");
-  addChatMessage(you, markdownToHtml(getText("selectedText")));
+  addChatMessage(you, markdownToHtml(getText("selectedText")), true);
   history.push({ role: "system", content: selectedText });
   browser.storage.local.set({ hist: JSON.stringify(history) });
   addChatMessage(assistant, getText("ok"));
