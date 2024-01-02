@@ -54,7 +54,7 @@ async function getResponse(history) {
         character: character,
         stream: true,
         temperature: temperature,
-        max_tokens: 2048,
+        max_tokens: 8192,
       }),
     });
   }
@@ -87,6 +87,7 @@ async function getResponse(history) {
     // Function to handle the SSE response
     //
     source.addEventListener("message", async function (e) {
+      console.log(e.data);
       // Assuming we receive JSON-encoded data payloads:
       try {
         var payload = JSON.parse(e.data);
@@ -152,6 +153,7 @@ async function getResponse(history) {
             history.push(message);
           }
           browser.storage.local.set({ hist: JSON.stringify(history) });
+          removeLastMessage();
         }
         contextLength = estimateContextLength(history);
         if (contextLength > cLength) {

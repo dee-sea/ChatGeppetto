@@ -3,6 +3,15 @@
 //
 async function executeCommand(message) {
   answer = "";
+  //remove all dimmed chatgeppetto-message-container with class dimmed
+  const listMessageContainer = document.querySelectorAll(
+    ".chatgeppetto-message-container",
+  );
+  for (let i = 0; i < listMessageContainer.length; i++) {
+    if (listMessageContainer[i].classList.contains("dimmed")) {
+      listMessageContainer[i].remove();
+    }
+  }
   if (message.startsWith("http://") || message.startsWith("https://")) {
     //addChatMessage(you, markdownToHtml(message));
     getURL(message).then((response) => {
@@ -94,10 +103,10 @@ async function searchTheWeb(message) {
     word = message.split(" ").slice(0);
     text = message.replace(word + " ", "");
   }
-  history.push({
-    role: "user",
-    content: text,
-  });
+  // history.push({
+  //   role: "user",
+  //   content: text,
+  // });
   addChatMessage(you, markdownToHtml(text));
   addChatMessage(assistant, getText("searching"));
   let searchQuery = await getSearchQuery(history).then((response) => {
@@ -108,7 +117,7 @@ async function searchTheWeb(message) {
   var searchUrl = searchEngine + "?q=";
   urlsearch = searchUrl + encodeURIComponent(searchQuery);
   let searchResults = await getSearchResults(urlsearch);
-  emptyLastBody();
+  //emptyLastBody();
   await notACommand();
   enableChat();
   return;
