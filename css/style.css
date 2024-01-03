@@ -17,7 +17,7 @@ p {
   position: fixed;
   top: 0px;
   right: 0px;
-  width: 25% !important;
+  width: 25%;
   z-index: 99999;
   transition: right 0s;
   height: 100%;
