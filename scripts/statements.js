@@ -62,6 +62,10 @@ const statements = {
     fr: "Voici une liste de pages avec leurs urls et le texte pour t'aider à répondre:\n\n",
     en: "Here is a list of pages with their urls and text to help you answer:\n\n",
   },
+  rememberPages: {
+    fr: "Lis et souviens toi bien de ces pages web, tu seras interrogé dessus plus tard.",
+    en: "Read and remember them carefully; you will be tested on them later.",
+  },
   reading: {
     fr: "*Lecture de la page ",
     en: "*Reading page ",

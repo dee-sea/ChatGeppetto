@@ -359,8 +359,7 @@ async function getSearchResults(url) {
         getText("longSeparator");
     }
     history.pop();
-    pagelist +=
-      "Read and remember them carefully; you will be tested on them later.";
+    pagelist += getText("rememberPages");
     history.push({ role: "system", content: pagelist });
     browser.storage.local.set({ hist: JSON.stringify(history) });
     //remove last div whith class chatgeppetto-message-body

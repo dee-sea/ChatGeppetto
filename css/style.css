@@ -1,5 +1,15 @@
+@font-face {
+  font-family: "Monolisa Nerd Font";
+  src: url("https://chef.thele.me/MonoLisa%20Regular%20Nerd%20Font%20Complete.ttf") format("ttf");
+  /* Ajoutez d'autres formats de police si nécessaire (e.g., woff, ttf) */
+}
+
 body.chatgeppetto-open {
   margin-right: 450px;
+}
+
+p {
+  all: revert;
 }
 
 #chatgeppetto-widget {
@@ -7,7 +17,7 @@ body.chatgeppetto-open {
   position: fixed;
   top: 0px;
   right: 0px;
-  width: 25%;
+  width: 25% !important;
   z-index: 99999;
   transition: right 0s;
   height: 100%;
@@ -26,7 +36,7 @@ body.chatgeppetto-open {
   flex-direction: column;
   height: 100%;
   background-color: #282828;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Monolisa Nerd Font", sans-serif !important;
   font-size: 14px;
   color: #f2e5bc;
 }
@@ -68,6 +78,7 @@ body.chatgeppetto-open {
 
 .chatgeppetto-message-body {
   margin-top: 5px;
+  color: #f2e5bc !important;
 }
 
 #chatgeppetto-input-container {
@@ -94,7 +105,7 @@ body.chatgeppetto-open {
 }
 
 #chatgeppetto-send {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Monolisa Nerd Font", sans-serif !important;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
@@ -140,7 +151,7 @@ body.chatgeppetto-open {
   display: block;
   font-size: 18px;
   font-weight: bold;
-  font-family: "Monolisa Nerd Font", monospace;
+  font-family: "Monolisa Nerd Font", monospace !important;
   background-color: rgba(76, 175, 80, 0);
   margin-top: 8px;
 }
@@ -158,13 +169,13 @@ body.chatgeppetto-open {
   display: block;
   font-size: 18px;
   font-weight: bold;
-  font-family: "Monolisa Nerd Font", monospace;
+  font-family: "Monolisa Nerd Font", monospace !important;
   background-color: rgba(76, 175, 80, 0);
   margin-top: 8px;
 }
 
 #chatgeppetto-toggle {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Monolisa Nerd Font", sans-serif !important;
   position: fixed;
   bottom: 10px;
   right: 20px;

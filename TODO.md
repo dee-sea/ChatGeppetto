@@ -34,7 +34,7 @@
 [X] Tweak css to avoid conflicts with the main page.
 [X] Implement memory management
 [X] Add a "Continue" mechanism to the chatbot.
-[ ] Managing context length overflow.
+[X] Managing context length overflow.
 [ ] Port it to Chrome.
 
 # BUGS
