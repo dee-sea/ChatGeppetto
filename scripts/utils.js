@@ -36,6 +36,7 @@ function onGotHist(item) {
       converter.setFlavor("github");
       const html = converter.makeHtml(entry.content);
       addChatMessage(name, html);
+      activateCopyButton();
       hljs.highlightAll();
     }
   }
@@ -205,8 +206,31 @@ function renderMessages(history) {
       addChatMessage(you, markdownToHtml(message.content));
     } else if (message.role === "assistant") {
       addChatMessage(assistant, markdownToHtml(message.content));
+      activateCopyButton();
     }
   }
+}
+
+// function to switch the visilibity of the abort and copy buttons
+function activateCopyButton() {
+  // get the last button with class chatgeppetto-abort and chatgeppetto-copy
+  const abortList = document.querySelectorAll(".chatgeppetto-abort");
+  const copyList = document.querySelectorAll(".chatgeppetto-copy");
+  const abort = abortList.item(abortList.length - 1);
+  const copy = copyList.item(copyList.length - 1);
+  copy.style.display = "block";
+  abort.style.display = "none";
+}
+
+// function to switch the visilibity of the abort and copy buttons
+function activateAbortButton() {
+  // get the last button with class chatgeppetto-abort and chatgeppetto-copy
+  const abortList = document.querySelectorAll(".chatgeppetto-abort");
+  const copyList = document.querySelectorAll(".chatgeppetto-copy");
+  const abort = abortList.item(abortList.length - 1);
+  const copy = copyList.item(copyList.length - 1);
+  copy.style.display = "none";
+  abort.style.display = "block";
 }
 
 function rebuildChatMessages(history) {

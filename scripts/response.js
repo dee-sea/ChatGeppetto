@@ -1,3 +1,7 @@
+// Create an AbortController
+let abortController = new AbortController();
+let signal = abortController.signal;
+
 // Function to get the stream response from the API endpoint
 async function getResponse(history, continuation = false, realHistory = []) {
   disableChat();
@@ -45,10 +49,26 @@ async function handleOpenAIResponse(source, history) {
 
 // Function to handle SSE response
 function handleSSEResponse(source, history, continuation, realHistory) {
-  // Function to handle the SSE error response
-  source.addEventListener("error", function (e) {
-    console.error("SSE Error:", e);
+  const listCopy = document.querySelectorAll(".chatgeppetto-copy");
+  const copy = listCopy.item(listCopy.length - 1);
+  copy.style.display = "none";
+  const listAbort = document.querySelectorAll(".chatgeppetto-abort");
+  const abort = listAbort.item(listAbort.length - 1);
+  abort.style.display = "block";
+
+  source.addEventListener("abort", function (event) {
+    // Handle the aborted state here
+    console.log("SSE Connection Aborted", event);
+    // Additional actions if needed
   });
+  // source.addEventListener("error", function (e) {
+  //   if (e.message === "Aborted") {
+  //     // Handle the aborted state
+  //     console.log("SSE Aborted");
+  //   } else {
+  //     console.error("SSE Error:", e);
+  //   }
+  // });
 
   // Function to handle the SSE response
   source.addEventListener("message", async function (e) {
@@ -113,6 +133,9 @@ function handleStopFinishReason(payload, history, continuation, realHistory) {
   hljs.highlightAll();
   chatMessages.scrollTop = chatMessages.scrollHeight;
 
+  copy.style.display = "block";
+  abort.style.display = "none";
+
   browser.storage.local.set({ hist: JSON.stringify(history) });
   sendInput.disabled = false;
   answer = "";
@@ -139,6 +162,9 @@ function handleLengthFinishReason(payload, history) {
     ".chatgeppetto-message-body",
   );
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
+
+  copy.style.display = "block";
+  abort.style.display = "none";
 
   const contButton = document.createElement("button");
   contButton.classList.add("chatgeppetto-cont");
@@ -238,6 +264,8 @@ function getSource(history, continuation) {
   return source;
 }
 
+let sseInstance = null; // Declare a variable to store the SSE instance globally
+
 // Function to get new SSE
 function getNewSSE(history) {
   let endpoint = GEPPETTO_API_ENDPOINT;
@@ -256,6 +284,7 @@ function getNewSSE(history) {
       temperature: temperature,
       max_tokens: maxTokens,
     }),
+    abortSignal: signal,
   });
 }
 
@@ -275,5 +304,12 @@ function getContinuationSSE(history) {
       temperature: temperature,
       stream: true,
     }),
+    abortSignal: signal,
   });
+}
+
+function resetAbortController() {
+  abortController.abort();
+  abortController = new AbortController();
+  signal = abortController.signal;
 }

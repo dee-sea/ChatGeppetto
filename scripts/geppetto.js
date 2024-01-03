@@ -55,6 +55,11 @@ function addChatMessage(sender, message, dimmed = false) {
       copyButton.innerHTML = "";
       copyButton.setAttribute("title", "Copy");
       messageHeader.appendChild(copyButton);
+      const abortButton = document.createElement("button");
+      abortButton.classList.add("chatgeppetto-abort");
+      abortButton.innerHTML = "";
+      abortButton.setAttribute("title", "Copy");
+      messageHeader.appendChild(abortButton);
     }
     const messageBody = document.createElement("div");
     messageBody.classList.add("chatgeppetto-message-body");
@@ -170,6 +175,26 @@ async function cont() {
   text = [{ role: "user", content: text }];
   console.log(text);
   await getResponse(text, true, history);
+}
+
+async function abortGeneration() {
+  console.log("abort");
+  abortController.abort();
+  abortController = new AbortController();
+  signal = abortController.signal;
+  activateCopyButton();
+  // get the last div with class chatgeppetto-message-body
+  const listMessageBody = document.querySelectorAll(
+    ".chatgeppetto-message-body",
+  );
+  const messageBody = listMessageBody.item(listMessageBody.length - 1);
+  let bodyText = messageBody.textContent;
+  removeLastMessage();
+  addChatMessage(assistant, markdownToHtml(bodyText));
+  activateCopyButton();
+  history.push({ role: "assistant", content: bodyText });
+  browser.storage.local.set({ hist: JSON.stringify(history) });
+  sendInput.disabled = false;
 }
 
 //

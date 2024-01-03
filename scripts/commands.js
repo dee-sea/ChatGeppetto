@@ -388,6 +388,14 @@ async function clear() {
 
   cLength = getConfigAndApply();
 
+  // get the last button with class chatgeppetto-abort and chatgeppetto-copy
+  const abortList = document.querySelectorAll(".chatgeppetto-abort");
+  const copyList = document.querySelectorAll(".chatgeppetto-copy");
+  const abort = abortList.item(abortList.length - 1);
+  const copy = copyList.item(copyList.length - 1);
+  copy.style.display = "block";
+  abort.style.display = "none";
+
   // Save the updated history
   browser.storage.local.set({ hist: JSON.stringify(history) });
 

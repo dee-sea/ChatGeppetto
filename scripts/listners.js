@@ -400,5 +400,7 @@ document.addEventListener("click", function (event) {
     }, 500);
   } else if (event.target.classList.contains("chatgeppetto-cont")) {
     cont();
+  } else if (event.target.classList.contains("chatgeppetto-abort")) {
+    abortGeneration();
   }
 });
