@@ -28,3 +28,25 @@ browser.contextMenus.onClicked.addListener(function (info, tab) {
     });
   }
 });
+
+// Register keyboard shortcuts
+browser.commands.onCommand.addListener(function (command) {
+  if (command === "readPage") {
+    // Handle the "readPage" command
+    console.log("Read Page command executed");
+    sendMessageToTabs({ action: "readPageContent" });
+  } else if (command === "readSelection") {
+    // Handle the "readSelection" command
+    console.log("Read Selection command executed");
+    sendMessageToTabs({ action: "getSelection" });
+  }
+});
+
+// Function to send a message to all tabs
+function sendMessageToTabs(message) {
+  browser.tabs.query({}, function (tabs) {
+    for (let tab of tabs) {
+      browser.tabs.sendMessage(tab.id, message);
+    }
+  });
+}

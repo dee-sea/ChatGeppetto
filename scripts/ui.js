@@ -1,3 +1,13 @@
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.action === "readPageContent") {
+    // Execute the function for reading the page content
+    readPageContentMenu();
+  } else if (request.action === "getSelection") {
+    // Execute the function for getting the selection
+    getSel();
+  }
+});
+
 browser.storage.local.get("visible").then((result) => {
   if (result.visible) {
     body = document.querySelector("body");

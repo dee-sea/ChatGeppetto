@@ -12,6 +12,7 @@
     "activeTab",
     "contextMenus",
     "storage",
+    "tabs",
     "*://*/*"
   ],
   "content_scripts": [
@@ -44,6 +45,20 @@
     "default_icon": {
       "48": "/icons/geppetto-48.png",
       "96": "/icons/geppetto-96.png"
+    }
+  },
+  "commands": {
+    "readPage": {
+      "suggested_key": {
+        "default": "Ctrl+Alt+P"
+      },
+      "description": "Read Page"
+    },
+    "readSelection": {
+      "suggested_key": {
+        "default": "Ctrl+Alt+S"
+      },
+      "description": "Read Selection"
     }
   },
   "background": {

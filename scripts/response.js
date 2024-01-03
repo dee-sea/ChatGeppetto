@@ -120,6 +120,7 @@ function handleStopFinishReason(payload, history, continuation, realHistory) {
     answer = lastUserMessage.replace(getText("continue"), "") + answer;
   }
 
+  activateCopyButton();
   history.push({ role: "assistant", content: answer });
 
   handleContextLength(contextLength, history, continuation, realHistory);
@@ -163,8 +164,7 @@ function handleLengthFinishReason(payload, history) {
   );
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
 
-  copy.style.display = "block";
-  abort.style.display = "none";
+  activateCopyButton();
 
   const contButton = document.createElement("button");
   contButton.classList.add("chatgeppetto-cont");

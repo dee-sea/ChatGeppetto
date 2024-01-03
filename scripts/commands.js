@@ -133,22 +133,26 @@ async function searchTheWeb(message) {
 //
 function getSel() {
   const userInput = getSelectedText();
-  const selectedText =
-    getText("readText") +
-    getText("longSeparator") +
-    userInput +
-    getText("longSeparator");
-  addChatMessage(you, markdownToHtml(getText("selectedText")), true);
-  history.push({ role: "system", content: selectedText });
-  browser.storage.local.set({ hist: JSON.stringify(history) });
-  addChatMessage(assistant, getText("ok"));
-  if (window.getSelection) {
-    if (window.getSelection().empty) {
-      // Chrome
-      window.getSelection().empty();
-    } else if (window.getSelection().removeAllRanges) {
-      // Firefox
-      window.getSelection().removeAllRanges();
+  if (userInput != "") {
+    const selectedText =
+      getText("readText") +
+      getText("longSeparator") +
+      userInput +
+      getText("longSeparator");
+    addChatMessage(you, markdownToHtml(getText("selectedText")), true);
+    history.push({ role: "system", content: selectedText });
+    browser.storage.local.set({ hist: JSON.stringify(history) });
+    let nbWords = userInput.split(" ").length;
+    addChatMessage(assistant, getText("ok") + " " + nbWords + " words.", true);
+    activateCopyButton();
+    if (window.getSelection) {
+      if (window.getSelection().empty) {
+        // Chrome
+        window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {
+        // Firefox
+        window.getSelection().removeAllRanges();
+      }
     }
   }
 }
@@ -162,6 +166,12 @@ async function readPageContent(text) {
   );
   const messageBody = listMessageBody.item(listMessageBody.length - 1);
   messageBody.innerHTML = "";
+  let nbWords = text.split(" ").length;
+  // if (nbWords > 10000) just keep the first 10000 words
+  if (nbWords > 10000) {
+    text = text.split(" ").slice(0, 10000).join(" ");
+    nbWords = 10000;
+  }
   history.push({
     role: "system",
     content:
@@ -171,7 +181,7 @@ async function readPageContent(text) {
       getText("longSeparator"),
   });
   browser.storage.local.set({ hist: JSON.stringify(history) });
-  addChatMessage(assistant, getText("ok"), true);
+  addChatMessage(assistant, getText("ok") + " " + nbWords + " words.", true);
   history.push({ role: "assistant", content: getText("ok") });
   browser.storage.local.set({ hist: JSON.stringify(history) });
   enableChat();
