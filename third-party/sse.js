@@ -152,7 +152,7 @@ var SSE = function (url, options) {
         if (part.trim().length > 0) {
           this.dispatchEvent(this._parseEventChunk(part));
         }
-      }.bind(this)
+      }.bind(this),
     );
     this.chunk = lastPart;
   };
@@ -209,7 +209,7 @@ var SSE = function (url, options) {
         } else {
           e[field] = value;
         }
-      }.bind(this)
+      }.bind(this),
     );
 
     var event = new CustomEvent(e.event || "message");
@@ -229,6 +229,51 @@ var SSE = function (url, options) {
   };
 
   /**
+   * @type Abort
+   * Aborts the stream
+   * @return {void}
+   */
+  this.abort = function () {
+    console.log("SSE Aborted");
+    if (this.readyState === this.CLOSED) {
+      return;
+    }
+
+    if (this.xhr) {
+      this.xhr.abort();
+    }
+
+    this.xhr = null;
+    this.chunk = "";
+    this.progress = 0;
+    this._setReadyState(this.CLOSED);
+    this.dispatchEvent(new CustomEvent("abort"));
+  };
+
+  // /**
+  //  * @type Abort
+  //  * Aborts the stream
+  //  * @return {void}
+  //  */
+  //
+  // this.abort = function () {
+  //   console.log("SSE Aborted");
+  //   if (this.readyState === this.CLOSED) {
+  //     return;
+  //   }
+  //
+  //   if (this.xhr) {
+  //     this.xhr.abort();
+  //   }
+  //
+  //   this.xhr = null;
+  //   this.chunk = "";
+  //   this.progress = 0;
+  //   this._setReadyState(this.CLOSED);
+  //   this.dispatchEvent(new CustomEvent("abort"));
+  // };
+
+  /**
    * starts the streaming
    * @type Stream
    * @return {void}
@@ -246,10 +291,29 @@ var SSE = function (url, options) {
     this.xhr.addEventListener("load", this._onStreamLoaded.bind(this));
     this.xhr.addEventListener(
       "readystatechange",
-      this._checkStreamClosed.bind(this)
+      this._checkStreamClosed.bind(this),
     );
     this.xhr.addEventListener("error", this._onStreamFailure.bind(this));
     this.xhr.addEventListener("abort", this._onStreamAbort.bind(this));
+
+    // // Handle errors, including AbortError
+    // this.xhr.addEventListener(
+    //   "error",
+    //   function (e) {
+    //     if (e.name === "AbortError") {
+    //       // Handle the aborted state
+    //       console.log("SSE Aborted");
+    //       this.dispatchEvent(new CustomEvent("abort"));
+    //     } else {
+    //       // Handle other error states
+    //       console.error("SSE Error:", e);
+    //       this._onStreamFailure(e);
+    //     }
+    //   }.bind(this),
+    // );
+
+    signal.addEventListener("abort", this.abort.bind(this));
+
     this.xhr.open(this.method, this.url);
     for (var header in this.headers) {
       this.xhr.setRequestHeader(header, this.headers[header]);
